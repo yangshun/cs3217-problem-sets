@@ -11,6 +11,8 @@
 // OVERVIEW: This class implements a rectangle and the associated
 //             operations.
 
+// TA: should synthesize each variable separately.
+// -1pts.
 @synthesize origin, rotation, width, height; 
 //corners;
 
@@ -53,6 +55,9 @@
 	double y = point.y;
 	
 	// modifies the coordinates of the corner based on the angle of rotation
+  // TA: Line too long, preferably split to 2 lines
+  // TA: Should calculate rotation angle only once.
+  // -2pts.
 	point.x = (x - self.center.x)*cos(self.rotation*M_PI/180) + (y - self.center.y)*sin(self.rotation*M_PI/180) + self.center.x;
 	point.y = (y - self.center.y)*cos(self.rotation*M_PI/180) - (x - self.center.x)*sin(self.rotation*M_PI/180) + self.center.y;
 	
@@ -96,6 +101,7 @@
 	
 	self = [super init];
 	
+  // TA: bad indentation.
   if(self) {
 		CGPoint rectOrigin = CGPointMake(rect.origin.x, rect.origin.y);
 		self.origin = rectOrigin;
@@ -113,6 +119,8 @@
   // around the center of mass
 
 	rotation += angle;
+    // TA: Why do you need to update corners?
+    // -1pts.
 	corners = [self corners];
 	
 	// while loops to act as a modulo operator to ensure angle of rotation stays
@@ -130,6 +138,7 @@
   // MODIFIES: self
   // EFFECTS: translates this shape by the specified dx (along the
   //            X-axis) and dy coordinates (along the Y-axis)
+  // TA: wrong indentation.
     CGPoint newOrigin = CGPointMake(self.origin.x + dx, self.origin.y + dy);
     self.origin = newOrigin;
 
@@ -150,7 +159,10 @@
 	
 	// Makes use of Separate-Axis Theorem to determine if all the points of the other
 	// rectangle object lies on one side of an edge. 
+    // TA: space before and after =, <
 	for(int i=0; i<4; i++) {
+        // TA: line too long, split to 2
+        // -2pts.
 		CGPoint vec = CGPointMake((float)(self.corners[(i+1)%4].x - self.corners[i%4].x), (float)(self.corners[(i+1)%4].y - self.corners[i%4].y));
 		CGPoint rotated = CGPointMake((-1*vec.y),(vec.x));
 				
@@ -159,12 +171,21 @@
 
 		int count = 0;
 		for(int j=0; j<4; j++) {
+            // TA: When split an equation into multiple line,
+            // the second line should be tabbed in.
 			BOOL side = ((rotated.x * (rect.corners[j].x - self.corners[i].x)) + 
 			(rotated.y * (rect.corners[j].y - self.corners[i].y))) >= 0;
 			
 			if(side != refSide)
 				count++;
 		}
+        // TA: always use { } for if statement
+        // eg: 
+        // if (...) {
+        //    ...
+        // } else {
+        //    ...
+        // }
 		if(count == 4)
 			return NO;
 		else {

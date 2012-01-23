@@ -22,6 +22,9 @@ static int overlaps(struct Rectangle rect1, struct Rectangle rect2) {
 	// If the left edge of a particular rectangle is to the right of the right edge of another 
 	// rectangle, then there is no way they can overlap. Same logic applies for the top and bottom edges.
 	// Four conditions are used to test for overlapping as shown below:
+    //
+    // TA: bad indentation.
+    // -1pts.
 	if(!((rect1.origin_x + rect1.width < rect2.origin_x) ||
 			 (rect2.origin_x + rect2.width < rect1.origin_x) ||
 			 (rect1.origin_y + rect1.height < rect2.origin_y) ||
@@ -53,7 +56,11 @@ int main (int argc, const char * argv[]) {
 	scanf("%d %d", &rect2.width, &rect2.height);
 	
 	// check if overlapping and write message
+
+    // TA: Space after 'if'
 	if(overlaps(rect1, rect2))
+    // TA: It's prefered to put this block in a pair of { }
+    // even if there's only 1 command inside an if statement.
 		printf("The two rectangles are overlapping!\n");
 	else 
 		printf("The two rectangles are not overlapping!\n");
@@ -73,6 +80,7 @@ int main (int argc, const char * argv[]) {
 	scanf("%lf", &rotation2);
     
 	// rotate rectangle objects
+    // TA: space after comma (,)
 	CGPoint origin1 = CGPointMake((CGFloat)(rect1.origin_x),(CGFloat)(rect1.origin_y));
 	CGPoint origin2 = CGPointMake((CGFloat)(rect2.origin_x),(CGFloat)(rect2.origin_y));
     
@@ -90,6 +98,7 @@ int main (int argc, const char * argv[]) {
 	[peRect2 rotate: rotation2];
 	
 	// check if rectangle objects overlap and write message
+    // TA: space after 'if', use { }
 	if([peRect1 overlapsWithRect: peRect2])
 		NSLog(@"The two rectangles are overlapping!\n");
 	else 
@@ -109,9 +118,18 @@ int test(void) {
   // EFFECTS: returns 1 if all test cases are successfully passed and 0 otherwise
 	
 	BOOL overlap = NO, overlapAfterRotation = NO, allTestCasesPassed = YES;
+
+    // TA: Should separate test of Problem 1 and Problem 2
+
+    // TA: You should not copy & paste 1 piece of code multiple times.
+    // If something is copied more than 2 times, it's probably a good idea to
+    // put it in a separate function.
+    // -5pts.
 	
 	// Test Case 1: Rectangles are not overlapping initially, overlap after rotated.
 	
+    // TA: Bad naming
+    // -2pts.
 	struct Rectangle rect1_1, rect2_1;
 	rect1_1.origin_x = 0;
 	rect1_1.origin_y = 100;
@@ -135,6 +153,9 @@ int test(void) {
 	
 	overlapAfterRotation = [peRect1_1 overlapsWithRect: peRect2_1];
 	
+    // TA: You should not compare boolean variable. It might fail to work.
+    // Use !overlap && overlapAfterRotation)
+    // -2pts.
 	if(overlap == NO && overlapAfterRotation == YES) {
 		NSLog(@"Test case 1 passed!\n");
 	} else {
@@ -167,6 +188,7 @@ int test(void) {
 	
 	overlapAfterRotation = [peRect1_2 overlapsWithRect: peRect2_2];
 	
+    // TA: !overlap && !overlapAfterRotation)
 	if(overlap == NO && overlapAfterRotation == NO) {
 		NSLog(@"Test case 2 passed!\n");
 	} else {
@@ -174,6 +196,7 @@ int test(void) {
 		NSLog(@"Test case 2 failed!\n");
 	}
 	
+    // TA: Space after //
     //Test Case 3: Rectangles are overlapping initially, not overlapping after rotated.
     
     struct Rectangle rect1_3, rect2_3;
@@ -384,6 +407,11 @@ Alternative representation:
  Disadvantages: Can be a hassle to calculate the center point, width and height.
 
 
+// TA: WRONG!! 2 corners are not enough to determine the rotation and two other
+// corners of the rectangle. Remember the rectangle can be rotated, not necessary
+// have edges parallel to the axes.
+
+
 
 Question 2(i): Reflection (Bonus Question)
 ==========================
@@ -408,5 +436,8 @@ Question 2(i): Reflection (Bonus Question)
  They could have gave a rough outline of the approach to the question.
  This problem feels like a mathematics problem rather than a programming one. The toughest part 
  was coming up with the algorithm to check for the overlapping.
+
+// TA: Thanks! But just curious, from which source did you know that the
+// positive y-axis points southwards? Some students missed it.
 
 */

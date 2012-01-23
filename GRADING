@@ -1,0 +1,40 @@
+CS3217 - Software Engineering on Moderm Application Platforms
+Grading Report for Problem Set 1
+Student:
+
+-----
+Grading
+
+Problem 1:   10/10 -
+Problem 2a:  10/10 -
+Problem 2b:   5/5  -
+Problem 2c:  10/10 -
+Problem 2d:  10/10 -
+Problem 2e:  20/20 -
+Problem 2f:   5/5  -
+Problem 2g:  20/20 -
+Problem 2h:   0/10 - Wrong answer.
+Bonus:        3/3  -
+Style:        -16
+
+Total:      77/100
+
+-----
+Autograder Test Results: 31/31
+
+
+
+
+
+------
+Comments by Tutor/TA:
+
+* Please use meaningful commit messages. 'helloworld' is not acceptable.
+
+* You should separate the implementation into small commits (like commit after implement 
+  a feature or a functionality) if possible.
+
+* Use space instead of TAB (or configure XCODE so that it converst TAB to space
+
+* Overall well done! There are some comments on styling. Please be mindful and
+avoid repeating them.
