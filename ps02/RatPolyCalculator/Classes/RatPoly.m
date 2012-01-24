@@ -39,7 +39,7 @@
                 format:@"terms pointing to nil"];
   if ([self isNaN])
     return;
-  for(int i = 0; i< [terms count]; i++) {
+  for (int i = 0; i< [terms count]; i++) {
     RatTerm* curr = [terms objectAtIndex:i];
     // checkRep for RatTerm
     if ([curr coeff] == nil) {
@@ -91,7 +91,7 @@
   //             a zero polynomial remember to call checkRep to check for representation invariant
   self = [super init];
   
-  if([rt isZero]) {
+  if ([rt isZero]) {
     terms = [[NSArray alloc]init];
   } else {
     terms = [[NSArray alloc]initWithObjects:(RatTerm*)rt, nil];
@@ -130,8 +130,8 @@
   // REQUIRES: self != nil
   // EFFECTS: returns YES if this RatPoly is NaN
   //             i.e. returns YES if and only if some coefficient = "NaN".
-  for(int i = 0; i < [terms count]; i++) {
-    if([[[terms objectAtIndex:i]coeff]isNaN]) {
+  for (int i = 0; i < [terms count]; i++) {
+    if ([[[terms objectAtIndex:i]coeff]isNaN]) {
       return YES;
     }
   }
@@ -256,7 +256,7 @@
     
     for (int i = 0; i < [[self terms]count]; i++) {
       NSMutableArray* currTerms = [[NSMutableArray alloc]initWithCapacity:[[p terms]count]];
-      for(int j = 0; j < [[p terms]count]; j++) {
+      for (int j = 0; j < [[p terms]count]; j++) {
         [currTerms addObject:[[[self terms]objectAtIndex:i]mul:[[p terms]objectAtIndex:j]]];
       }
       RatPoly* currPoly = [[RatPoly alloc]initWithTerms:currTerms];
@@ -332,10 +332,10 @@
   
   if ([self isNaN])
     return NAN;
-  else if([[self terms]count] == 0) {
+  else if ([[self terms]count] == 0) {
     sum = 0;
   } else {
-    for(int i=0; i<[terms count]; i++) {
+    for (int i = 0; i < [terms count]; i++) {
       sum += [[terms objectAtIndex:i]eval:d];
     }
   }    
@@ -411,7 +411,7 @@
     // using '+' and '-' as delimiters
     int lastIndexOfSign = 0; 
     for (int i = 1; i < [str length]; i++) {
-      if([str characterAtIndex:i] == '+') {
+      if ([str characterAtIndex:i] == '+') {
         NSRange range = NSMakeRange(lastIndexOfSign, i-lastIndexOfSign);
         [polyStrTerms addObject:[str substringWithRange:range]];
         lastIndexOfSign = i+1;

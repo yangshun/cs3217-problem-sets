@@ -14,10 +14,10 @@
 
 
 @interface RatPolyTests : SenTestCase {
-    RatNum *nanNum;
-    RatTerm *nanTerm;
-    RatPoly *nanPoly;
-    RatPoly* zeroPoly;
+  RatNum *nanNum;
+  RatTerm *nanTerm;
+  RatPoly *nanPoly;
+  RatPoly* zeroPoly;
 }
 
 @end
