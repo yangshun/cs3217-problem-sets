@@ -13,7 +13,7 @@
 
 @implementation RatPolyTests
 
-//declare convenience constructors
+// Declare convenience constructors
 RatNum* num(int i) {
   return [[RatNum alloc] initWithInteger:i];
 }
@@ -56,7 +56,7 @@ RatPoly* poly2(NSArray* polyTerms) {
   STAssertTrue(1==1, @"", @"");
 }
 
-//Test various constructors
+// Test various constructors
 -(void)testCtor{
   poly(5, 1, 2);
   poly(-2, 1, 3);
@@ -72,7 +72,7 @@ RatPoly* poly2(NSArray* polyTerms) {
 	poly(0, 0, 0);
 }
 
-//Test getTerm method
+// Test getTerm method
 -(void)testGetTerm{
 	STAssertTrue([[poly(3, 1, 2) getTerm:2] isEqual:term3(3, 1, 2)], @"", @"");
 	STAssertTrue([[poly(-3, 4, 3) getTerm:3] isEqual:term3(-3, 4, 3)], @"", @"");
@@ -82,7 +82,7 @@ RatPoly* poly2(NSArray* polyTerms) {
   STAssertTrue([[poly2(terms2(term(3, 5),term(2, 3)))getTerm:2] isEqual:term(0, 0)], @"", @"");
 }
 
-//Test isNaN method
+// Test isNaN method
 -(void)testIsNaN{
   STAssertTrue([poly(3, 0, 2) isNaN], @"", @"");
   STAssertFalse([poly(3, 3, 2) isNaN], @"", @"");
@@ -90,7 +90,7 @@ RatPoly* poly2(NSArray* polyTerms) {
 	STAssertTrue([poly2(terms2(term(3, 5),nanTerm)) isNaN], @"", @"");
 }
 
-//Test degree method
+// Test degree method
 -(void)testDegree{
   STAssertTrue([poly(3, 1, 2) degree] == 2, @"", @"");
   STAssertTrue([poly(-3, 4, 5) degree] == 5, @"", @"");
@@ -100,7 +100,7 @@ RatPoly* poly2(NSArray* polyTerms) {
   STAssertTrue([poly2(terms2(term3(-3, 6, 4),term(-2, 3))) degree] == 4, @"", @"");
 }
 
-//Test negate method
+// Test negate method
 -(void)testNegate{
   STAssertTrue([[poly(3, 1, 2) negate] isEqual:poly(-3, 1, 2)], @"", @"");
   STAssertTrue([[poly(-3, 4, 5) negate] isEqual:poly(3, 4, 5)], @"", @"");
@@ -110,7 +110,7 @@ RatPoly* poly2(NSArray* polyTerms) {
   STAssertTrue([[poly2(terms2(term3(3, 6, 3),term(-2, 2))) negate] isEqual: poly2(terms2(term3(-3, 6, 3),term(2, 2)))], @"", @"");
 }
 
-//Test eval method
+// Test eval method
 -(void)testEval{
 	STAssertEqualsWithAccuracy(0.0, [poly(0, 5, 0) eval:1.2], 0.0000001, @"", @"");
 	STAssertEqualsWithAccuracy(2.0, [poly(2, 1, 0) eval:3.1], 0.0000001, @"", @"");
@@ -122,7 +122,7 @@ RatPoly* poly2(NSArray* polyTerms) {
   STAssertEqualsWithAccuracy(0.0, [poly2(terms2(term3(0, 6, 2),term(0, 3))) eval:9.9], 0.0000001, @"", @"");
 }
 
-//Test isEquals method
+// Test isEquals method
 -(void)testEquals{
 	STAssertEqualObjects(poly(3, 5, 2), poly(3, 5, 2), @"", @"");
 	STAssertEqualObjects(poly2(terms2(term(3, 5),term(2, 3))), poly2(terms2(term(3, 5),term(2, 3))), @"", @"");
@@ -143,7 +143,7 @@ RatPoly* poly2(NSArray* polyTerms) {
 	STAssertEqualObjects(target, [RatPoly valueOf:actual], @"", @"");
 }
 
-//Test valueOf methods
+// Test valueOf methods
 -(void)testValueOfSimple{
   [self testValueOf:@"x" :poly(1, 1, 1)];
   [self testValueOf:@"-x^2" :poly(-1, 1, 2)];
@@ -189,7 +189,7 @@ RatPoly* poly2(NSArray* polyTerms) {
 	[self testValueOf:@"0" :poly2(terms2(term(0, 4),term(0, 3)))]; 
 }
 
-//Test stringValue methods
+// Test stringValue methods
 -(void)testToString:(NSString*)target :(RatPoly*)actual{
 	STAssertEqualObjects(target, [actual stringValue], @"", @"");
 }
@@ -241,7 +241,7 @@ RatPoly* poly2(NSArray* polyTerms) {
 	[self testToString:@"0" :poly2(terms2(term(0, 4),term(0, 3)))]; 
 }
 
-//Test add method using stringValue and valueOf
+// Test add method using stringValue and valueOf
 -(void)testAddUsingStringValue{
 	STAssertEqualObjects(@"-3/5*x^4-3/5*x^3+2/3*x^2-1/2*x", [[poly2(terms2(term3(-3, 5, 4),term3(2, 3, 2))) add:poly2(terms2(term3(-3, 5, 3),term3(-2, 4, 1)))] stringValue], @"", @"");
   STAssertEqualObjects(@"-6/5*x^4+2/3*x^2-1/2*x", [[poly2(terms2(term3(-3, 5, 4),term3(2, 3, 2))) add:poly2(terms2(term3(-3, 5, 4),term3(-2, 4, 1)))] stringValue], @"", @"");
@@ -262,7 +262,7 @@ RatPoly* poly2(NSArray* polyTerms) {
   STAssertEqualObjects([RatPoly valueOf: @"NaN"], [poly2(terms2(nanTerm,term3(-8, 4, 1))) add: poly2(terms2(term3(4, 5, 3),term3(2, 4, 1)))], @"", @"");
 }
 
-//Test sub method using stringValue and valueOf
+// Test sub method using stringValue and valueOf
 -(void)testSubUsingStringValue{
 	STAssertEqualObjects(@"-3/5*x^4+3/5*x^3+2/3*x^2+1/2*x", [[poly2(terms2(term3(-3, 5, 4),term3(2, 3, 2))) sub: poly2(terms2(term3(-3, 5, 3),term3(-2, 4, 1)))] stringValue], @"", @"");
   STAssertEqualObjects(@"2/3*x^2-1/2*x", [[poly2(terms2(term3(-3, 5, 4),term3(2, 3, 2))) sub: poly2(terms2(term3(-3, 5, 4),term3(2, 4, 1)))] stringValue], @"", @"");
@@ -285,7 +285,7 @@ RatPoly* poly2(NSArray* polyTerms) {
   STAssertEqualObjects([RatPoly valueOf:@"NaN"], [poly2(terms2(nanTerm,term3(-8, 4, 1))) sub: poly2(terms2(term3(4, 5, 3),term3(2, 4, 1)))], @"", @"");
 }
 
-//Test mul method using stringValue and valueOf
+// Test mul method using stringValue and valueOf
 -(void)testMulUsingStringValue{
 	STAssertEqualObjects(@"9/25*x^7-1/10*x^5-1/3*x^3", [[poly2(terms2(term3(-3, 5, 4), term3(2, 3, 2))) mul: poly2(terms2(term3(-3, 5, 3),term3(-2, 4, 1)))]stringValue], @"", @"");
   STAssertEqualObjects(@"9/25*x^8-2/5*x^6-3/10*x^5+1/3*x^3", [[poly2(terms2(term3(-3, 5, 4), term3(2, 3, 2))) mul: poly2(terms2(term3(-3, 5, 4),term3(2, 4, 1)))]stringValue], @"", @"");
@@ -306,7 +306,7 @@ RatPoly* poly2(NSArray* polyTerms) {
   STAssertEqualObjects([RatPoly valueOf:@"NaN"], [poly2(terms2(nanTerm,term3(-8, 4, 1))) mul: poly2(terms2(term3(4, 5, 3),term3(2, 4, 1)))], @"", @"");
 }
 
-//Test div method using stringValue and valueOf
+// Test div method using stringValue and valueOf
 -(void)testDivUsingStringValue{
 	STAssertEqualObjects(@"1/3*x", [[[RatPoly valueOf:@"x^3-2*x+3"] div: poly(3, 1, 2)]stringValue], @"", @"");
   STAssertEqualObjects(@"0", [[[RatPoly valueOf:@"x^2+2*x+15"] div: poly(2, 1, 3)]stringValue], @"", @"");
@@ -331,7 +331,7 @@ RatPoly* poly2(NSArray* polyTerms) {
   STAssertEqualObjects([RatPoly valueOf:@"NaN"], [poly2(terms2(term3(4, 5, 3), nanTerm)) div: poly2(terms2(term3(4, 5 ,3),term3(2, 4, 1)))], @"", @"");
 }
 
-//Test the 4 basic operations on NaN polys
+// Test the 4 basic operations on NaN polys
 -(void)testOperationsOnNaN{
   STAssertEqualObjects(nanPoly, [nanPoly add:poly(2, 1, 3)], @"", @"");
 	STAssertEqualObjects(nanPoly, [poly(2, 1, 3) add:nanPoly], @"", @"");
@@ -351,7 +351,7 @@ RatPoly* poly2(NSArray* polyTerms) {
 	STAssertEqualObjects(nanPoly, [poly2(terms2(term3(-3, 5, 4),term3(2, 3, 2))) div:nanPoly], @"", @"");
 }
 
-//Test the 4 basic operations on zero polys
+// Test the 4 basic operations on zero polys
 -(void)testOperationsOnZero{
 	RatPoly *p = poly(2, 1, 3);
 	RatPoly *zero = poly(0, 1, 0);
