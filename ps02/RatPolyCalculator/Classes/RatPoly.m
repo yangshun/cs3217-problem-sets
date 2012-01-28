@@ -499,6 +499,7 @@
  set q = empty and r = empty
  if degree(u) < degree(v)
    q = empty and r = v
+// TA: q = 0
  else {
    while (degree(u) >= degree(v)) {
     set RatTerm qTerm to be the quotient of T(q,0) and T(v,0)
