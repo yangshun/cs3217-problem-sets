@@ -10,6 +10,7 @@
   // EFFECTS: returns the degree of this RatPoly object.
   int maxExpt = 0;
   
+  // TA: Add space after 'if' and before 'count'
   if([[self terms]count] == 0) {
     maxExpt = 0;
   } else {
@@ -26,6 +27,7 @@
   // forall i such that (0 <= i < length(p)), C(p,i) != 0 &&
   // forall i such that (0 <= i < length(p)), E(p,i) >= 0 &&
   // forall i such that (0 <= i < length(p) - 1), E(p,i) > E(p, i+1)
+  // // TA: No need the lines above. Comments should explain the logic only
   // In other words:
   // * The terms field always points to some usable object.
   // * No term in a RatPoly has a zero coefficient.
@@ -34,15 +36,24 @@
   // (It is implied that 'terms' does not contain any null elements by the
   // above
   // invariant.)	
+  //
+  // TA: Always Use
+  // if (..) {
+  //    ..
+  // } else {
+  //    ..
+  // }
   if (terms == nil)
     [NSException raise:@"ratpoly representation error" 
                 format:@"terms pointing to nil"];
   if ([self isNaN])
     return;
+  // TA: Add space before <
   for (int i = 0; i< [terms count]; i++) {
     RatTerm* curr = [terms objectAtIndex:i];
     // checkRep for RatTerm
     if ([curr coeff] == nil) {
+      // TA: ratpoly should be RatPoly
       [NSException raise:@"ratpoly representation error" 
                   format:@"a term has a coefficient that is nil"];
     }
@@ -91,6 +102,7 @@
   //             a zero polynomial remember to call checkRep to check for representation invariant
   self = [super init];
   
+  // TA: Space before 'init'
   if ([rt isZero]) {
     terms = [[NSArray alloc]init];
   } else {
@@ -117,6 +129,8 @@
   // REQUIRES: self != nil && ![self isNaN]
   // EFFECTS: returns the term associated with degree "deg". If no such term exists, return
   //            the zero RatTerm
+  //  TA: add space after 'for' and 'if', before 'expt', before and after <
+  //  -1pts.
   for(int i = 0; i<[terms count]; i++) {
     if([[terms objectAtIndex:i]expt] == deg) {
       return [terms objectAtIndex:i];
@@ -130,6 +144,7 @@
   // REQUIRES: self != nil
   // EFFECTS: returns YES if this RatPoly is NaN
   //             i.e. returns YES if and only if some coefficient = "NaN".
+  // TA: adding space properly pls.
   for (int i = 0; i < [terms count]; i++) {
     if ([[[terms objectAtIndex:i]coeff]isNaN]) {
       return YES;
@@ -186,6 +201,7 @@
     NSMutableArray* combinedTerms = [[NSMutableArray alloc]initWithCapacity:
                                      [[self terms]count]+[[p terms]count]];
     int selfIter = 0, pIter = 0;
+    // TA: Instead of maintaining a counter, you could maintain two RatTerm.
         
     // Repeatedly add RatTerm objects into the array based on exponent value
     while (selfIter != [[self terms]count] && pIter != [[p terms] count]) { 
@@ -301,6 +317,9 @@
   //     subtract s from existing u using polynomial subtraction algorithm
   //   set r = u
   // }
+  //
+  // TA: It's rather hard to read the code. Adding more spaces please
+  // -2pts.
   RatPoly* divisor = [p copyObject];
   RatPoly* dividend = [self copyObject];
   if ([dividend isNaN] || [divisor isNaN] || [[p terms] count] == 0) {
@@ -314,6 +333,7 @@
            [[dividend terms]count] != 0 && divisor != nil) {
       RatTerm* quotientTerm = (RatTerm*)[[[dividend terms]objectAtIndex:0] div:
                                   [[divisor terms]objectAtIndex:0]];
+      // TA: Should remove log in the final version. (Or consider using debugging flag)
       NSLog(@"%@", [quotientTerm stringValue]);
       [quotientTerms addObject:quotientTerm];
       RatPoly* s = [[[RatPoly alloc]initWithTerm: quotientTerm] mul:divisor];
@@ -390,6 +410,8 @@
     }
   }
     
+  // TA: Should return a NSString from the NSMutableString, instead of returning
+  // the actual NSMutableString
   return polyString;
 }
 
@@ -572,6 +594,9 @@
  1. checkRep
     - More complex in terms of clarity and execution efficiency.
     - Have to enforce the new requirement
+
+  // TA: Need to change initWithCoeff to handle the case where coeff is NaN
+  // but expt is not 0
  
  Question 3(d)
  ========
@@ -590,6 +615,8 @@
  Day 5 - Creating unit test cases + debugging
  
  In total I think I spent around 20 over hours. I worked on this problem set every single day and I find that debugging takes longer than the coding itself.
+
+ // TA: good practice to work on it everyday!
  
  
  (b) In retrospect, what could you have done better to reduce the time you spent solving this problem set?

@@ -91,6 +91,8 @@
   //            throws NSException if (self.expt != arg.expt) and neither argument is zero or NaN.
   RatTerm* new_RatTerm;
   
+  // TA: You should use newRatTerm. Don't mix _ (C style) with camelCase. (Java style).
+  // It's better to use the camelCase style.
   if ([self isNaN] || [arg isNaN]) {
     new_RatTerm = [RatTerm initNaN];
   } else if ((self.expt != arg.expt) && ![self isZero] && ![arg isZero]) {
@@ -116,6 +118,7 @@
   //            throws NSException if (self.expt != arg.expt) and neither argument is zero or NaN.
   RatTerm* new_RatTerm;
   
+  // TA: use [self add:[arg negate]]
   if ([self isNaN] || [arg isNaN]) {
     new_RatTerm = [RatTerm initNaN];
   } else if((self.expt != arg.expt) && ![self isZero] && ![arg isZero])
@@ -221,6 +224,7 @@
     NSArray* parts = [str componentsSeparatedByString:@"*"];
     
     if ([parts count] == 1) {
+      // TA: Good comments. But you could have indented the cases better.
       //An NSArray of size 1 is returned as there is no "*" in str. Possible cases:
       //(i) Integer. Eg: 1, 2, -3
       //(ii) Rational number. Eg: 1/2, -1/3

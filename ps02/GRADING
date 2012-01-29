@@ -22,9 +22,9 @@ Problem 3
 implementation     : 65/65
 Problem 3a         :  5/5
 Problem 3b         :  5/5
-Problem 3c         :  5/5
+Problem 3c         :  2/5
 Problem 3d         :  5/5
-Problem 3 subtotal : 85/85
+Problem 3 subtotal : 82/85
 
 Problem 4         : 75/75
 
@@ -32,21 +32,22 @@ Bonus             : 3/3
 
 Basic score : 200/200
 
-Coding Style Deduction: 0/60
+Coding Style Deduction: -3/60
 
-Final Score: 200/200
+Final Score: 197/200
 
 -----
 Autograder Test Results:
 
-
+Passed 29/29 tests.
 
 
 
 ------
 Comments by Tutor/TA:
 
-* 
+* After getting your code works correctly, consider spending a little time
+to improve your code (both style and implementation).
 
 * 
 
