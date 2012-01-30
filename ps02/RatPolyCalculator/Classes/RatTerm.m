@@ -19,6 +19,8 @@
 -(id)initWithCoeff:(RatNum*)c Exp:(int)e {
   // REQUIRES: (c, e) is a valid RatTerm
   // EFFECTS: returns a RatTerm with coefficient c and exponent e
+  // TA: should call [self init] and check nil
+  // -2pts.
     
   RatNum *ZERO = [RatNum initZERO];
   // if coefficient is 0, exponent must also be 0
@@ -93,6 +95,7 @@
   
   // TA: You should use newRatTerm. Don't mix _ (C style) with camelCase. (Java style).
   // It's better to use the camelCase style.
+  // -1pt
   if ([self isNaN] || [arg isNaN]) {
     new_RatTerm = [RatTerm initNaN];
   } else if ((self.expt != arg.expt) && ![self isZero] && ![arg isZero]) {
@@ -119,6 +122,7 @@
   RatTerm* new_RatTerm;
   
   // TA: use [self add:[arg negate]]
+  // -2pts.
   if ([self isNaN] || [arg isNaN]) {
     new_RatTerm = [RatTerm initNaN];
   } else if((self.expt != arg.expt) && ![self isZero] && ![arg isZero])

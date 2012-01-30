@@ -91,6 +91,7 @@
   // EFFECTS: constructs a polynomial with zero terms, which is effectively the zero polynomial
   //           remember to call checkRep to check for representation invariant
   self = [super init];
+  // TA: check nil.
   terms = [[NSArray alloc]init];
   [self checkRep];
   return self;
@@ -202,6 +203,8 @@
                                      [[self terms]count]+[[p terms]count]];
     int selfIter = 0, pIter = 0;
     // TA: Instead of maintaining a counter, you could maintain two RatTerm.
+    // You repeat [self terms]objectAtIndex:selfIter] too many times.
+    // -2pts.
         
     // Repeatedly add RatTerm objects into the array based on exponent value
     while (selfIter != [[self terms]count] && pIter != [[p terms] count]) { 
@@ -319,6 +322,7 @@
   // }
   //
   // TA: It's rather hard to read the code. Adding more spaces please
+  // Actually divisor and dividend are not good names. They looks too similar.
   // -2pts.
   RatPoly* divisor = [p copyObject];
   RatPoly* dividend = [self copyObject];
@@ -329,6 +333,9 @@
   } else {
     NSMutableArray* quotientTerms = [[NSMutableArray alloc]initWithCapacity:
                                      [[dividend terms]count]];
+    // TA: should use [divident isZero] instead of [[divident] terms] count]
+    // Shoul use getTerm instead of accessing [divident terms]
+    // -1pt.
     while ([dividend degree] >= [divisor degree] && 
            [[dividend terms]count] != 0 && divisor != nil) {
       RatTerm* quotientTerm = (RatTerm*)[[[dividend terms]objectAtIndex:0] div:

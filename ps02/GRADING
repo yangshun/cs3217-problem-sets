@@ -19,22 +19,22 @@ Problem 2d         :  5/5
 Problem 2 subtotal : 20/20
 
 Problem 3
-implementation     : 65/65
+implementation     : 61/65 -4
 Problem 3a         :  5/5
 Problem 3b         :  5/5
-Problem 3c         :  2/5
+Problem 3c         :  2/5  -3
 Problem 3d         :  5/5
-Problem 3 subtotal : 82/85
+Problem 3 subtotal : 78/85
 
 Problem 4         : 75/75
 
 Bonus             : 3/3
 
-Basic score : 200/200
+Basic score : 196/200
 
-Coding Style Deduction: -3/60
+Coding Style Deduction: -7/60
 
-Final Score: 197/200
+Final Score: 189/200
 
 -----
 Autograder Test Results:
