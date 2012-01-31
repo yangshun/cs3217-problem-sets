@@ -624,7 +624,8 @@
  In total I think I spent around 20 over hours. I worked on this problem set every single day and I find that debugging takes longer than the coding itself.
 
  // TA: good practice to work on it everyday!
- 
+ // Prof: Right. Debugging always takes up the most time, which is why you need to be thinking hard
+ // about the problem and design before you start. More thinking. Less coding -- or debugging will kill you. 
  
  (b) In retrospect, what could you have done better to reduce the time you spent solving this problem set?
  
@@ -641,5 +642,6 @@
  This problem set is extremely well set. I'm glad that the ambiguity is reduced as compared to problem set 1. It was a good thing to provide us with the implementation of RatNum, which kickstart-ed us in doing RatTerm followed by RatPoly. From this problem set, I see for myself how code is built up from small classes to bigger ones which consist of many smaller classes.
  
  All in all, I enjoyed this problem set. It is challenging and very rewarding.
+ // Prof: Good. :-)
  
  */
