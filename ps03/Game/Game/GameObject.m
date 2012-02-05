@@ -95,9 +95,9 @@
   }
   
   center.x += diffx;
-	center.y += diffy;
+  center.y += diffy;
   
-	self.view.center = center;
+  self.view.center = center;
   
   prevPanPoint = curr;
   
@@ -145,14 +145,17 @@
   // MODIFIES: self (game object)
   // REQUIRES: a pinch gesture to be recognized
   // EFFECTS: resizes a GameObject view by the specified finger positions
+  // TA: WHY NOT? It's a part of the requirement.
   // does not modify GameWolf and GamePig
+  // Besides, GameObject shouldn't know about its subclasses. It shouldn't care.
+  // if you intended to do this, you should override the method in the subclass.
   if ([self isKindOfClass: [GameWolf class]] || 
       [self isKindOfClass: [GamePig class]]) {
     return;
   }
   
-	if (gesture.state == UIGestureRecognizerStateBegan) {
-		prevPinchScale = 1.0;
+  if (gesture.state == UIGestureRecognizerStateBegan) {
+    prevPinchScale = 1.0;
   }
   
   float thisScale = 1 + (gesture.scale - prevPinchScale);

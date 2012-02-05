@@ -39,6 +39,7 @@
 
 - (UIImageView*)pigImageView:(CGRect)frame {
   // returns an UIImageView of this GameObject subclass at the specified position
+  // TA: No magic string.
   UIImage *pigImage = [UIImage imageNamed:@"pig.png"];
   UIImageView *gamePigImageView = [[UIImageView alloc]initWithImage:pigImage];
   gamePigImageView.frame = frame;
