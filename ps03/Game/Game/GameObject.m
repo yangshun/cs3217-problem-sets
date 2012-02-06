@@ -125,12 +125,7 @@
   // MODIFIES: self (game object)
   // REQUIRES: a rotation gesture to be recognized
   // EFFECTS: rotate a GameObject view by the specified finger positions
-  // does not modify GameWolf and GamePig
-  if ([self isKindOfClass: [GameWolf class]] || 
-      [self isKindOfClass: [GamePig class]]) {
-    return;
-  }
-  
+   
   if (gesture.state == UIGestureRecognizerStateBegan) {
     prevRotation = 0.0;
   } 
@@ -145,12 +140,7 @@
   // MODIFIES: self (game object)
   // REQUIRES: a pinch gesture to be recognized
   // EFFECTS: resizes a GameObject view by the specified finger positions
-  // does not modify GameWolf and GamePig
-  if ([self isKindOfClass: [GameWolf class]] || 
-      [self isKindOfClass: [GamePig class]]) {
-    return;
-  }
-  
+
 	if (gesture.state == UIGestureRecognizerStateBegan) {
 		prevPinchScale = 1.0;
   }

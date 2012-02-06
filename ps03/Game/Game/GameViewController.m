@@ -235,9 +235,14 @@
 - (void)proceedToSaveLevel {
   // MODIFIES: save data
   // EFFECTS: properties of all the GameObject controllers are saved in FileDataController object
+  
+  [wolfController customRotation:-wolfController.rotatedState];
   fileDataManager.wolfController = wolfController;
+  [wolfController customRotation:wolfController.rotatedState];
+  
+  [pigController customRotation:-pigController.rotatedState];
   fileDataManager.pigController = pigController;
-  fileDataManager.blockController = blockController;
+  [pigController customRotation:pigController.rotatedState];
   
   for (GameBlock* blockObj in blocksInGameArea) {
     [blockObj customRotation:-blockObj.rotatedState];

@@ -23,19 +23,26 @@
   return self;
 }
 
-- (id)initWithFrame:(CGRect)customFrame andState:(BOOL)state {
+- (id)initWithFrame:(CGRect)customFrame 
+        andRotation:(CGFloat)rotation 
+           andState:(BOOL)state {
   // custom initializer
-  // object will appear in gamearea at specified frame
+  // object will appear in gamearea at specified frame and rotation
   self = [super initWithObject:[self pigImageView:customFrame]];
   
   if (self) {
     objectType = kGameObjectPig;
     centerPointInPalette = CGPointMake(217.5, 77.5);
     insideGameArea = state;
+    if (insideGameArea) {
+      [self customRotation:rotation];
+    }
   }
   
   return self;
 }
+
+
 
 - (UIImageView*)pigImageView:(CGRect)frame {
   // returns an UIImageView of this GameObject subclass at the specified position
