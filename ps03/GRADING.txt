@@ -1,0 +1,123 @@
+CS3217 - Software Engineering on Modern Application Platforms
+Grading Report for Problem Set 3
+Student:
+
+-----
+Grading
+
+Problem 1          : 10/10
+
+Problem 2a         : 10/10
+Problem 2b         :  5/5
+Problem 2c         :  5/5
+Problem 2d         : 10/10
+Problem 2e         : 10/10
+Problem 2 subtotal : 40/40
+
+Problem 3
+Model              : 10/10
+View               : 20/20
+Controller         : 50/60  -10		// Cant resize / rotate wolf and pig. GameObject shouldn't know about its subclasses
+Problem 3 subtotal : 80/90
+
+Problem 4          : 50/50
+
+Problem 5          : 20/30  -10		// See below 
+
+Bonus              :  3/3
+
+Basic score : 203/220
+
+Coding Style Deduction: 5/60  -5	// Magic string and few small styling Error. Overall, your coding style is good.
+
+Final Score: 198/220
+
+------
+Bugs
+
+------
+UX Improvements
+
+
+------
+Comments by Tutor/TA
+
+Welldone! But you submitted late..
+
+Problem 5:
+
+Testing is not done quite right. You kind of misunderstood what's glassbox testing.
+Here is an example of how to write test cases:
+Blackbox testing:
+
+Test background loads ok and is scrollable
+	Still scrollable with game objects. 
+Test implementation of buttons
+	Save, load
+		Save/load empty screen
+		Save/load one object (try different types)
+		Save/load one object of each type
+		Save/load with many objects
+		Load with empty screen
+		Load with screen full of objects.
+		Load non-existent file
+	Reset
+		Clear empty screen
+		Clear screen with one object
+		Clear screen with one object of each type
+		Clear screen with many objects
+Test implementation of game objects (wolf, pig, obstacle):
+	Drag in palette
+		to game area
+		When gamearea is scrolled
+		When gamearea is not scrolled
+		to palette or button area 
+	Drag in gamearea
+		to game area
+		to palette
+	Rotate and resize in palette (nothing happens)
+		Rotate and resize in gamearea
+		Drag, Rotate, Resize then Move
+		Drag, Resize, Rotate then Move
+	Double tap in palette
+		After rotating and resizing in gamearea
+		Without rotating and resizing in gamearea
+	Double tap in gamearea
+	Single tap for obstacle in gamearea
+Test Compliance with Game Rules
+	Check that not more than one pig or wolf can be created
+	Check that multiple obstacles can be created
+
+Glass box testing (depends on the actual code)
+
+GameObject (gestures cannot be tested)
+	initwithImage:andFrame:andPalette:andScrollView:andObjectType:andController:andOriginalSize
+	init and test by calling count on array
+GameViewController
+	addObjectsToGame
+		add objects to the array using this method and test using count (count number of elements in the array)
+		add when array is empty
+		add when array is non-empty
+	removeObjectsFromGame
+		remove objects from the array and test using count (count number of elements in the array)
+		remove when the array is empty
+		remove when the array is non-empty
+	createNewBlock
+		call the method and test using count (count number of elements in the array)
+GameViewControllerExtension
+	Save, load, restart
+	When all objects are in the palette
+	When all objects are in the gamearea
+	When some objects are in the palette, and others in the gamearea
+	When more of GameBlocks are created in the gamearea
+GameWolf
+	initWolfWithPalette:andScrollView:andController
+	when no wolves are created
+	when 1 wolf is created already
+GamePig
+	initPigWithPalette:andScrollView:andController
+	when no pigs are created
+	when 1 pig is created already
+GameBlock
+	Set GameBlock enum to different values to test if images are appearing correctly
+
