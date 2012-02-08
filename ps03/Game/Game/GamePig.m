@@ -48,6 +48,7 @@
 
 - (CGRect)frameInGameArea:(CGPoint)point {
   return CGRectMake(point.x - 15, point.y + 10, 88, 88);
+  // Prof: magic numbers here. 
 }
 
 @end
