@@ -67,6 +67,8 @@
   // EFFECTS: rotate a GameObject view by a specified angle
   self.view.transform = CGAffineTransformRotate(self.view.transform, rotation);
   return;
+  // Prof: redundant return here. You only use return if you want to terminate execution in
+  // the middle of a block. 
 }
 
 - (void)translate:(UIPanGestureRecognizer *)gesture {
@@ -153,6 +155,9 @@
       [self isKindOfClass: [GamePig class]]) {
     return;
   }
+  
+  // Prof: this implementation is wrong. If you want to disable zoom for wolf and pig, you should
+  // override zoom in Wolf and pig instead. You shouldn't be hacking GameObject. :-( 
   
   if (gesture.state == UIGestureRecognizerStateBegan) {
     prevPinchScale = 1.0;
