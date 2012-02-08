@@ -131,4 +131,9 @@ Not to worry lah. You survive the next 2 problem sets, you will have levelled up
 year in ME will not leave you behind the better SoC students. Endure lah. What doesn't kill you will make you strong.
 The learning that you do in the midst of the suffering will stay with you. You die die also won't forget. :-)
 
+* You are not doing OOP properly. GameObject shouldn't need to know about the subclasses. Instead you should override 
+methods in the subclasses to achieve different behaviours. 
+
+* Be careful about magic numbers. 
+
 * You are actually doing well, notwithstanding the teething issues and delay. Should be better in PSs 4 and 5. 
