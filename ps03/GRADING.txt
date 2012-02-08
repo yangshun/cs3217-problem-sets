@@ -121,3 +121,14 @@ GamePig
 GameBlock
 	Set GameBlock enum to different values to test if images are appearing correctly
 
+------
+Comments by Prof:
+
+* Sorry you had to suffer, but this is the nature of my classes. The point here is to simulate real life learning 
+as closely as possible. We give you some guidance, but not a whole lot basically to give you space to learn. Your
+situation is a little unfortunate because you lack the experience that the other students have from previous classes.
+Not to worry lah. You survive the next 2 problem sets, you will have levelled up sufficiently so that your one
+year in ME will not leave you behind the better SoC students. Endure lah. What doesn't kill you will make you strong.
+The learning that you do in the midst of the suffering will stay with you. You die die also won't forget. :-)
+
+* You are actually doing well, notwithstanding the teething issues and delay. Should be better in PSs 4 and 5. 
