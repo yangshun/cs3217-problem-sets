@@ -20,10 +20,10 @@
 		6DDC136314E014ED0099B8DA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DDC134414E014ED0099B8DA /* Foundation.framework */; };
 		6DDC136B14E014ED0099B8DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6DDC136914E014ED0099B8DA /* InfoPlist.strings */; };
 		6DDC136E14E014ED0099B8DA /* FallingBricksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DDC136D14E014ED0099B8DA /* FallingBricksTests.m */; };
-		6DDC137914E0153C0099B8DA /* Rectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DDC137814E0153C0099B8DA /* Rectangle.m */; };
+		6DDC137914E0153C0099B8DA /* PhysicsRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DDC137814E0153C0099B8DA /* PhysicsRectangle.m */; };
 		6DDC137E14E015E70099B8DA /* Matrix2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DDC137B14E015E70099B8DA /* Matrix2D.m */; };
 		6DDC137F14E015E70099B8DA /* Vector2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DDC137D14E015E70099B8DA /* Vector2D.m */; };
-		6DDC138514E02F150099B8DA /* iron.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DDC138414E02F150099B8DA /* iron.png */; };
+		6DDC13BA14E38AA90099B8DA /* PhysicsWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DDC13B914E38AA80099B8DA /* PhysicsWorld.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,13 +56,14 @@
 		6DDC136A14E014ED0099B8DA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6DDC136C14E014ED0099B8DA /* FallingBricksTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FallingBricksTests.h; sourceTree = "<group>"; };
 		6DDC136D14E014ED0099B8DA /* FallingBricksTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FallingBricksTests.m; sourceTree = "<group>"; };
-		6DDC137714E0153C0099B8DA /* Rectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rectangle.h; sourceTree = "<group>"; };
-		6DDC137814E0153C0099B8DA /* Rectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rectangle.m; sourceTree = "<group>"; };
+		6DDC137714E0153C0099B8DA /* PhysicsRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsRectangle.h; sourceTree = "<group>"; };
+		6DDC137814E0153C0099B8DA /* PhysicsRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhysicsRectangle.m; sourceTree = "<group>"; };
 		6DDC137A14E015E70099B8DA /* Matrix2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix2D.h; sourceTree = "<group>"; };
 		6DDC137B14E015E70099B8DA /* Matrix2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Matrix2D.m; sourceTree = "<group>"; };
 		6DDC137C14E015E70099B8DA /* Vector2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector2D.h; sourceTree = "<group>"; };
 		6DDC137D14E015E70099B8DA /* Vector2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vector2D.m; sourceTree = "<group>"; };
-		6DDC138414E02F150099B8DA /* iron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iron.png; sourceTree = "<group>"; };
+		6DDC13B814E38AA80099B8DA /* PhysicsWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsWorld.h; sourceTree = "<group>"; };
+		6DDC13B914E38AA80099B8DA /* PhysicsWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhysicsWorld.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,9 +125,10 @@
 			children = (
 				6DDC135114E014ED0099B8DA /* AppDelegate.h */,
 				6DDC135214E014ED0099B8DA /* AppDelegate.m */,
-				6DDC137714E0153C0099B8DA /* Rectangle.h */,
-				6DDC137814E0153C0099B8DA /* Rectangle.m */,
-				6DDC138414E02F150099B8DA /* iron.png */,
+				6DDC137714E0153C0099B8DA /* PhysicsRectangle.h */,
+				6DDC137814E0153C0099B8DA /* PhysicsRectangle.m */,
+				6DDC13B814E38AA80099B8DA /* PhysicsWorld.h */,
+				6DDC13B914E38AA80099B8DA /* PhysicsWorld.m */,
 				6DDC137A14E015E70099B8DA /* Matrix2D.h */,
 				6DDC137B14E015E70099B8DA /* Matrix2D.m */,
 				6DDC137C14E015E70099B8DA /* Vector2D.h */,
@@ -242,7 +244,6 @@
 			files = (
 				6DDC134D14E014ED0099B8DA /* InfoPlist.strings in Resources */,
 				6DDC135914E014ED0099B8DA /* ViewController.xib in Resources */,
-				6DDC138514E02F150099B8DA /* iron.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,9 +281,10 @@
 				6DDC134F14E014ED0099B8DA /* main.m in Sources */,
 				6DDC135314E014ED0099B8DA /* AppDelegate.m in Sources */,
 				6DDC135614E014ED0099B8DA /* ViewController.m in Sources */,
-				6DDC137914E0153C0099B8DA /* Rectangle.m in Sources */,
+				6DDC137914E0153C0099B8DA /* PhysicsRectangle.m in Sources */,
 				6DDC137E14E015E70099B8DA /* Matrix2D.m in Sources */,
 				6DDC137F14E015E70099B8DA /* Vector2D.m in Sources */,
+				6DDC13BA14E38AA90099B8DA /* PhysicsWorld.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,6 +456,7 @@
 				6DDC137314E014ED0099B8DA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6DDC137414E014ED0099B8DA /* Build configuration list for PBXNativeTarget "FallingBricksTests" */ = {
 			isa = XCConfigurationList;
@@ -462,6 +465,7 @@
 				6DDC137614E014ED0099B8DA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

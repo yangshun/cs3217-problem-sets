@@ -7,16 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Rectangle.h"
+#import "PhysicsRectangle.h"
+#import "PhysicsWorld.h"
 
 @interface ViewController : UIViewController {
-  
-  Rectangle *testRect;
-  Rectangle *testRect2;
+
   NSTimer *timer;
   CGFloat timeStep;
+  NSArray *viewRectArray;
+  NSArray *phyRectArray;
+  NSArray *wallsArray;
+  
+  PhysicsWorld *world;
+  
 }
 
 - (void)initializeTimer;
+
+
 
 @end

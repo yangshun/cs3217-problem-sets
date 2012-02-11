@@ -16,24 +16,31 @@
 @synthesize v;
 @synthesize dt;
 @synthesize rotation;
+@synthesize fr;
 @synthesize hA;
 @synthesize pA;
 @synthesize rotA;
 @synthesize rotTA;
+@synthesize contactPoints;
 
-- (id)initWithImage {
+- (id)init {
   
   self = [super init];
   if (self) {
-    UIImage* ironImage = [UIImage imageNamed:@"iron.png"];
-    rect = [[UIImageView alloc] initWithImage:ironImage];
-    rect.frame = CGRectMake(360, 200, 30, 130);
-    self.view = rect;
-    m = 1;
+    CGRect newframe = CGRectMake(360, 200, 30, 130);
+    
+    self = [[Rectangle alloc] initWithFrame:newframe];
+    self.backgroundColor = [UIColor redColor];
+    
+    //rect.frame = CGRectMake(360, 200, 30, 130);
+    m = 100.0;
     v = [Vector2D vectorWith:0 y:0];
-    width = self.view.bounds.size.width;
-    height = self.view.bounds.size.height;
-    //rotation = 0.7;
+    center = CGPointMake(self.frame.origin.x + self.frame.size.width/2, 
+                         self.frame.origin.y + self.frame.size.height/2);
+    width = self.bounds.size.width;
+    height = self.bounds.size.height;
+    fr = 0.95;
+    rotation = 0;
     I = ((width * width) + (height * height)) * m / 12.0;
     contactPoints = [[NSMutableArray alloc] init];
     [self rotate:rotation];
@@ -50,12 +57,13 @@
 }
 
 - (void)translate:(Vector2D*)vector {
-  self.view.center = CGPointMake(self.view.center.x + vector.x, 
-                                 self.view.center.y + vector.y);
+  center = CGPointMake(center.x + vector.x, 
+                       center.y + vector.y);
+  self.center = center;
 }
 
 - (void)rotate:(CGFloat)angle {
-  self.view.transform = CGAffineTransformRotate(self.view.transform, angle);
+  self.transform = CGAffineTransformRotate(self.transform, angle);
 }
 
 - (void)updatePosition {
@@ -71,8 +79,7 @@
 - (void)initSelfVectorsAndMatricesQuantities {
   
   hA = [Vector2D vectorWith:width/2 y:height/2];
-  pA = [Vector2D vectorWith:self.view.center.x 
-                          y:self.view.center.y];
+  pA = [Vector2D vectorWith:center.x y:center.y];
   rotA = [Matrix2D matrixWithValues:cos(self.rotation) 
                                 and:sin(self.rotation)
                                 and:-sin(self.rotation)
@@ -96,34 +103,42 @@
   
   fA = [[[dA abs] subtract:hA] subtract:[[C abs] multiplyVector:hB]];
   fB = [[[dB abs] subtract:hB] subtract:[[CT abs] multiplyVector:hA]];
-  
-  fi[0] = fA.x;
-  fi[1] = fA.y;
-  fi[2] = fB.x;
-  fi[3] = fB.y;
-  
-  if (fA.x <= 0 && fA.y <= 0 && fB.x <= 0 && fB.y <= 0) {
-    return true;
+
+  fax = fA.x;
+  fay = fA.y;
+  fbx = fB.x;
+  fby = fB.y;
+  //NSLog(@"ax = %f, ay = %f, bx = %f, by = %f", fax, fay, fbx, fby);
+  if (fA.x < 0 && fA.y < 0 && fB.x < 0 && fB.y < 0) {
+    NSLog(@"OVERLAP!");
+    return YES;
   } else {
-    return false;
+    return NO;
   }
 }
 
 - (void)calculateContactPoints {
-
+  //NSLog(@"ax = %f, ay = %f, bx = %f, by = %f", fi[0], fi[1], fi[2], fi[3]);
   VectorDiffComponent index = ax;
-  CGFloat largestFi = fi[ax];
+  CGFloat largestFi;
 
-  for (int i = 1; i < 4; i++) {
-    if (fi[i] > fi[index]) {
-      index = i;
-      largestFi = fi[i];
-    }
+  largestFi = MAX(MAX(fax, fay), MAX(fbx, fby));
+  
+  if (largestFi == fax) {
+    index = ax;
+  } else if (largestFi == fay) {
+    index = ay;
+  } else if (largestFi == fbx) {
+    index = bx;
+  } else if (largestFi == fby) {
+    index = by;
   }
   
+  //NSLog(@"ccp: ax = %f, ay = %f, bx = %f, by = %f", fax, fay, fbx, fby);
   switch (index) {
     case ax:
-      if (dA.x > 0) {
+      // NSLog(@"ax");
+      if (dA.x >= 0) {
         ref = E1;
         n = rotA.col1;
       } else {
@@ -139,7 +154,8 @@
       break;
       
     case ay:
-      if (dA.y > 0) {
+      // NSLog(@"ay");
+      if (dA.y >= 0) {
         ref = E4;
         n = rotA.col2;
       } else {
@@ -155,7 +171,8 @@
       break;
       
     case bx:
-      if (dB.x > 0) {
+      // NSLog(@"bx");
+      if (dB.x >= 0) {
         ref = E3;
         n = rotB.col1;
       } else {
@@ -171,7 +188,8 @@
       break;
       
     case by:
-      if (dB.x > 0) {
+      // NSLog(@"by");
+      if (dB.x >= 0) {
         ref = E2;
         n = rotB.col2;
       } else {
@@ -198,17 +216,17 @@
     rot = rotA;
     h = hA;
   }
-  
-  if (([ni abs].x > [ni abs].y) && (ni.x > 0)) {
+ 
+  if ((ABS(ni.x) > ABS(ni.y)) && (ni.x > 0)) {
     v1 = [p add:[rot multiplyVector:[Vector2D vectorWith:h.x y:-h.y]]];
     v2 = [p add:[rot multiplyVector:[Vector2D vectorWith:h.x y:h.y]]];
-  } else if (([ni abs].x > [ni abs].y) && (ni.x <= 0)) {
+  } else if ((ABS(ni.x) > ABS(ni.y)) && (ni.x <= 0)) {
     v1 = [p add:[rot multiplyVector:[Vector2D vectorWith:-h.x y:h.y]]];
     v2 = [p add:[rot multiplyVector:[Vector2D vectorWith:-h.x y:-h.y]]];
-  } else if (([ni abs].x <= [ni abs].y) && (ni.y > 0)) {
+  } else if ((ABS(ni.x) <= ABS(ni.y)) && (ni.y > 0)) {
     v1 = [p add:[rot multiplyVector:[Vector2D vectorWith:h.x y:h.y]]];
     v2 = [p add:[rot multiplyVector:[Vector2D vectorWith:-h.x y:h.y]]];
-  } else if (([ni abs].x <= [ni abs].y) && (ni.x <= 0)) {
+  } else if ((ABS(ni.x) <= ABS(ni.y)) && (ni.y <= 0)) {
     v1 = [p add:[rot multiplyVector:[Vector2D vectorWith:-h.x y:-h.y]]];
     v2 = [p add:[rot multiplyVector:[Vector2D vectorWith:h.x y:-h.y]]];
   } 
@@ -216,7 +234,7 @@
   // First clipping
   CGFloat dist1 = [[ns negate] dot:v1] - Dneg;
   CGFloat dist2 = [[ns negate] dot:v2] - Dneg;
-  
+  //NSLog(@"dist1 = %f, dist2 = %f", dist1, dist2);
   if (dist1 < 0 && dist2 < 0) {
     v1 = v1;
     v2 = v2;
@@ -229,7 +247,7 @@
     v1 = v2;
     v2 = [v1 add:[[v2 subtract:v1] multiply:(dist1 / (dist1 - dist2))]];
   }
-  
+  //NSLog(@"2");
   // Second clipping
   dist1 = [ns dot:v1] - Dpos;
   dist2 = [ns dot:v2] - Dpos;
@@ -246,9 +264,10 @@
     v1 = v2;
     v2 = [v1 add:[[v2 subtract:v1] multiply:(dist1 / (dist1 - dist2))]];
   }
-  
+  //NSLog(@"3");
   CGFloat s1 = [nf dot:v1] - Df;
   c1 = [v1 subtract:[nf multiply:s1]];
+  [contactPoints removeAllObjects];
   
   if (s1 < 0) {
     [contactPoints addObject:c1];
@@ -262,7 +281,7 @@
     [contactPoints addObject:c2];
     separationDist[1] = s2;
   }
-  
+  NSLog(@"count = %d", [contactPoints count]);
 }
 
 - (void)applyImpulses {
@@ -270,6 +289,7 @@
     [self applyImpulsesAtContactPoints:[contactPoints objectAtIndex:i] 
                             separation:separationDist[i]];
   }
+
 }
 
 - (void)applyImpulsesAtContactPoints:(Vector2D*)c separation:(CGFloat)s {
@@ -293,6 +313,35 @@
                     + (([rA dot:rA] - [rA dot:t]*[rA dot:t]) / self.I)
                     + (([rB dot:rB] - [rB dot:t]*[rB dot:t]) / otherRect.I));
   
+  e = 0;
+  
+  Vector2D *pn = [n multiply:MIN(0, (mn * (1 + e) * un))]; 
+  CGFloat dPt = mt * ut;
+  
+  CGFloat ptmax = self.fr * otherRect.fr * pn.length;
+  
+  dPt = MAX(-ptmax, MIN(dPt, ptmax));
+  
+  Vector2D *pt = [t multiply:dPt];
+  
+  self.v = [self.v add:[[pn add:pt] multiply:(1 / self.m)]]; 
+  otherRect.v = [otherRect.v subtract:[[pn add:pt] multiply:(1 / otherRect.m)]]; 
+  
+  self.w = self.w + [[rA multiply:(1 / self.I)] cross:[pn add:pt]];
+  otherRect.w = otherRect.w - [[rB multiply:(1 / otherRect.I)] cross:[pn add:pt]];
+  
 }
+
+- (void)moveBodies {
+  self.center = CGPointMake(self.center.x + dt * v.x, 
+                            self.center.y + dt * v.y);
+  //NSLog(@"v.x = %lf, v.y = %lf", v.x, v.y);
+  CGFloat changeInAngularDist = w * dt;
+  rotation += changeInAngularDist;
+  //NSLog(@"%lf", changeInAngularDist);
+  [self rotate:changeInAngularDist];
+}
+
+
 
 @end
