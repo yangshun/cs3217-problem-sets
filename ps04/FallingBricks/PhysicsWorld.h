@@ -9,13 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "PhysicsRect.h"
 
-@interface PhysicsWorld : NSObject <UIAccelerometerDelegate> {
+@interface PhysicsWorld : NSObject {
   
   Vector2D *gravity;
   double timeStep;
   NSArray *blockArray;
   NSArray *wallArray;
-  UIViewController *vc;
   BOOL accelerometerActivated;
   
 }

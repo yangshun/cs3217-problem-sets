@@ -1,0 +1,93 @@
+Tay Yang Shun
+A0073063M
+Problem Set 4
+
+Problem 1: Design
+
+a. Draw a data model by identifying the data types and how they are related.
+
+There are two kinds of rectangles here, physics rectangles and view rectangles. 
+Physics rectangles contain the various physical attributes of the rectangle, such as mass, angular velocity, linear velocity, position, time step, moment of inertia and the various coefficients.
+View rectangles are UIView objects that appear on the user interface, they contain the position and the colour of the rectangle.
+ 
+b. Draw a module-dependency diagram (MDD) and describe what each module is used for. Ex- plain the rationale for your design over alternatives.
+
+The main view contains an array of view rectangles. The physics engine has a physics world object and in the world object there are many physics rectangles. When the timer starts, the world object repeatedly updates the state of the physics rectangles according to the gravity, external forces, external torques and collision between the rectangles. The physics engine then updates the main view controller which subsequently changes the state of the view rectangles.
+
+I chose this design as it conforms to apple's MVC pattern where the model and view communicate via the controller. The physics engine updates the model and the controller will in turn update the view. The view does not take in any response so there is only one way communication between the view and the model. 
+
+For more complex shapes, I will approximate the shape to be made up of smaller rectangles that form that complex shape. These rectangles will be bounded to each other, such that the when one of the rectangles experience a collision and moves, the others will follow suit. However, the mass that is used in the calculation will be the combined mass of the rectangles that make up the shape. A less accurate alternative will be to approximate a rectangular bounding box for the shape and apply the existing algorithm.
+
+
+Problem 3: Testing
+
+1. Black-box testing
+	- Test gravity
+		- Objects falls in the right direction for all orientations.
+		- Objects fall faster due to gravitational acceleration.
+		- Change the various properties of the block and make sure that they fall at the same speed.
+	- Test collisions between two objects
+		- Head-on collision between objects of the same size do not result in rotation.
+		- Collision at an angles between two objects result in a change in angular velocity.
+		- When an object of smaller mass hits an object of a larger mass, they exchange velocity.
+		- Overlap between two objects are minimal.
+		- Objects rest on each other at equilibrium.
+		- Final momentum is lesser than initial momentum.
+	- Test collisions between three objects
+		- The objects collide in a realistic fashion.
+		- Objects rest on each other at equilibrium.
+		- No visible lag in movements after collision between each pair of objects.
+		- Final momentum is lesser than initial momentum.
+	- Test collisions with wall
+		- Objects do not sink into wall.
+		- Objects rest properly on the wall after some time.
+		- Objects bounce off at a lower speed after colliding with the wall.
+		- Walls remain in the same position after collision with objects
+	- Test that friction works
+		- Objects take longer to settle down when friction is lower.
+	- Test the effect of restitution coefficient
+		- Objects bounce about longer when restitution coefficient is higher.
+	- Test accelerometer on/off switch
+		- Gravity depends on choice (preset value for each orientation OR accelerometer direction and magnitude).
+
+2. Glass Box Testing
+	- Test View Controller
+		- Rectangle views load properly.
+		- Physics rectangles are initialized properly.
+		- Change in gravity is triggered when orientation is changed.
+		- Timer loads properly and triggers the events after every assigned time interval.
+		- Accelerometer changes the magnitude and direction of gravity. 
+	- Physics World
+		- The Physics Rectangles (blocks and walls) are stored.
+		- Gravity is changed when orientation is changed.
+		- Test that iteration process is correct. 
+			- Rectangles collide with each other properly and they do not intersect much.
+			- Collision contact points are in the object and not outside.
+			- Rectangles settle down eventually.
+			- Momentum is decreased after each collision.
+			- The state of the walls do not change after every iteration.
+	- Physics Rectangle
+		- Blocks:
+			- Blocks initialize properly with parameters and default values.
+			- Blocks accelerate due to gravitational forces.
+			- Angular velocity changes if torque is applied.
+			- Overlap checking algorithm works.
+			- Upon collision between two blocks, impulses are applied to both objects.
+			- Linear and angular velocities are modified after each collision.
+			- The position (center and rotation) are modified after each collision.
+		- Walls:
+			- Walls initialize properly with parameters and default values.
+			- Walls do not accelerate due to gravitational forces.
+			- Angular velocity does not change if torque is applied.
+			- Overlap checking algorithm with blocks.
+			- Upon collision with blocks, impulses has no effect on itself.
+			- Linear and angular velocities are not modified after each collision.
+			- The position (center and rotation) are not modified after each collision.
+
+Bonus Problem: Reflection
+
+a. Around 30 hours. A lot of time is spent debugging the appendix formulas. I checked through around 5 times to make sure that the formulas were right.
+
+b. It would be good to discuss with each other as many of us faced the same bugs. Discuss and learn from each other mistakes (:
+
+c. I think equation 51 and 52 should be better phrased. Many of us thought that it was multiplication. Perhaps should differentiation between multiplication and crossing.

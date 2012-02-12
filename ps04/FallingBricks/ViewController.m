@@ -174,12 +174,12 @@
   
   timeStep = 1.0f/200.0f;
   
-  UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+  UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
   
   // initialize PhysicsWorld object with the arrays of PhysicRect as paramaters
   world = [[PhysicsWorld alloc] initWithObjects:blockRectArray
                                        andWalls:wallRectArray
-                                     andGravity:[self selectGravity:interfaceOrientation]
+                                     andGravity:[self selectGravity:orientation]
                                     andTimeStep:timeStep
                                     andObserver:self];
   
@@ -191,7 +191,7 @@
                                              object:nil];
   
   UIAccelerometer *accel = [UIAccelerometer sharedAccelerometer];
-	accel.delegate = world;
+	accel.delegate = self;
 	accel.updateInterval = timeStep;
   
   [self initializeTimer];
@@ -231,19 +231,19 @@
   if (world.accelerometerActivated) {
     return;
   }
-  UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-  world.gravity = [self selectGravity:interfaceOrientation];
+  UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+  world.gravity = [self selectGravity:orientation];
 }
 
-- (Vector2D*)selectGravity:(UIDeviceOrientation)interfaceOrientation {
+- (Vector2D*)selectGravity:(UIDeviceOrientation)orientation {
   // EFFECTS: returns a new gravity vector according to the orientation of the device
   Vector2D *gravity;
   
-  if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+  if (orientation == UIDeviceOrientationPortraitUpsideDown) {
     gravity = [Vector2D vectorWith:0 y:-kGravityMagnitude]; 
-  } else if (interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+  } else if (orientation == UIDeviceOrientationLandscapeLeft) {
     gravity = [Vector2D vectorWith:-kGravityMagnitude y:0]; 
-  } else if (interfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
+  } else if (orientation == UIDeviceOrientationLandscapeRight) {
     gravity = [Vector2D vectorWith:kGravityMagnitude y:0]; 
   } else {
     gravity = [Vector2D vectorWith:0 y:kGravityMagnitude]; 
@@ -257,8 +257,8 @@
   world.accelerometerActivated = sender.on;
   
   if (!sender.on) {
-    UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-    world.gravity = [self selectGravity:interfaceOrientation];
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    world.gravity = [self selectGravity:orientation];
   }
 }
 
@@ -274,7 +274,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   // EFFECTS: method overridden to prevent rotation of interface
-  return NO;
+  return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void)viewDidUnload

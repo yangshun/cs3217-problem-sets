@@ -104,14 +104,10 @@
   
   largestFi = MAX(MAX(fi[0], fi[1]), MAX(fi[2], fi[3]));
   
-  if (largestFi == fi[0]) {
-    index = ax;
-  } else if (largestFi == fi[1]) {
-    index = ay;
-  } else if (largestFi == fi[2]) {
-    index = bx;
-  } else if (largestFi == fi[3]) {
-    index = by;
+  for (int i = 0; i < 4; i++) {
+    if (largestFi == fi[i]) {
+      index = (VectorDiffComponent)i;
+    }
   }
   
   Vector2D *nf, *ns;

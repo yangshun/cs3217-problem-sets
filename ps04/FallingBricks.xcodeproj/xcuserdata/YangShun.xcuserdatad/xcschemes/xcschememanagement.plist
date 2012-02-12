@@ -9,9 +9,19 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>PhysicsRectTest.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>6D17EC5314E79EA80031F131</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>6DDC133D14E014ED0099B8DA</key>
 		<dict>
 			<key>primary</key>

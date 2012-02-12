@@ -10,7 +10,7 @@
 #import "PhysicsRect.h"
 #import "PhysicsWorld.h"
 
-@interface ViewController : UIViewController {
+@interface ViewController : UIViewController<UIAccelerometerDelegate> {
 
   NSTimer *timer;
   double timeStep;
