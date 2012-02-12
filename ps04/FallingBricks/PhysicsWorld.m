@@ -9,75 +9,76 @@
 #import "PhysicsWorld.h"
 
 @implementation PhysicsWorld
-@synthesize timeStep;
 @synthesize gravity;
+@synthesize timeStep;
+@synthesize accelerometerActivated;
 
 - (id)initWithObjects:(NSArray*)newObjects
              andWalls:(NSArray*)walls
            andGravity:(Vector2D*)g 
           andTimeStep:(double)dt 
           andObserver:(UIViewController*)worldObserver{
-  
+  // MODIFIES: PhysicsWorld object (state)
+  // REQUIRES: parameters to be non-nil
+  // EFFECTS: an array of PhysicsRect objects (blocks and walls) are stored
   self = [super init];
   
   if (self != nil) {
-    phyRectArray = newObjects;
+    blockArray = newObjects;
     gravity = g;
     timeStep = dt;
+    accelerometerActivated = NO;
     [[NSNotificationCenter defaultCenter] addObserver:worldObserver
                                              selector:@selector(updateViewRectPositions:) 
-                                                 name:@"move bodies"
+                                                 name:@"MoveBodies"
                                                object:nil];
     wallArray = walls;
     
-    for (PhysicsRectangle *phyRect in phyRectArray) {
-      phyRect.dt = timeStep;
+    for (PhysicsRect *blockRect in blockArray) {
+      blockRect.dt = timeStep;
     }
-    /*
-    ((PhysicsRectangle*)[phyRectArray objectAtIndex:0]).dt = timeStep;
-    ((PhysicsRectangle*)[phyRectArray objectAtIndex:1]).dt = timeStep;
-    ((PhysicsRectangle*)[phyRectArray objectAtIndex:2]).dt = timeStep;
-     */
-    
-    //[[phyRectArray objectAtIndex:1] updateVelocity:gravity withForce:[Vector2D vectorWith:0 y:-50]];
-    //[[phyRectArray objectAtIndex:2] updateVelocity:gravity withForce:[Vector2D vectorWith:0 y:50]];
   }
   return self;
 }
 
+
 - (void)updateBlocksState {
-  
-  for (int i = 0; i < [phyRectArray count]; i++) {
-  
-    PhysicsRectangle *rectA = [phyRectArray objectAtIndex:i];
+  // MODIFIES: position of the blocks based on inter-block collisions
+  // REQUIRES: timer to be started, timestep > 0
+  // EFFECTS: the position of each PhysicsRect object is updated
+  for (int i = 0; i < [blockArray count]; i++) {
+    // iterate through each block and initialize its velocities (linear and angular)
+    // based on external forces and torques acting on it
+    // in this context, the only external force acting is gravity
+    PhysicsRect *rectA = [blockArray objectAtIndex:i];
     [rectA updateVelocity:gravity withForce:[Vector2D vectorWith:0 y:0]];
-    //[rectA updatePosition];
+    [rectA updateAngularVelocity:0];
     
-    for (int j = 0; j < [phyRectArray count]; j++) {
+    for (int j = 0; j < [blockArray count]; j++) {
+      // test current rectangle for overlap with other rectangles
       if (i != j) {
-        PhysicsRectangle *rectB = [phyRectArray objectAtIndex:j]; 
+        PhysicsRect *rectB = [blockArray objectAtIndex:j]; 
         if ([rectA testOverlap:rectB]) {
-          [rectA applyImpulses];
-          [rectB applyImpulses];
+          // if overlapping, apply impulses to rectangles
+          for (int k = 0; k < 10; k++) {
+            [rectA applyImpulses];
+          }
         }
       }
     }
-  
-    for (int k = 0; k < [wallArray count]; k++) {
-      PhysicsRectangle *wallRect = [wallArray objectAtIndex:k];
+    
+    for (int m = 0; m < [wallArray count]; m++) {
+      // test current rectangle for overlap with walls
+      PhysicsRect *wallRect = [wallArray objectAtIndex:m];
       if ([rectA testOverlap:wallRect]) {
+        // if overlapping, apply impulses to rectangle
         [rectA applyImpulses];
       }
       [rectA moveBodies];
-      wallRect.v = [Vector2D vectorWith:0 y:0];
-      wallRect.w = 0;
-      NSLog(@"v.x = %f, v.y = %f, w = %f", wallRect.v.x, wallRect.v.y, wallRect.w);
     }
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"move bodies" object:rectA];
+    // notify the view to update the state of the rectangles in the view
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MoveBodies" object:rectA];
   }
-  
-  
 }
 
 @end

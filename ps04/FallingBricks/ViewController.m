@@ -12,193 +12,286 @@
 
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
-    // Release any cached data, images, etc that aren't in use.
+  [super didReceiveMemoryWarning];
+  // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - View lifecycle
+
+#define kIpadWidth 768
+#define kIpadHeight 1024
+#define kStatusBarThickness 20
+
+#define kWallWidth 100
+#define kWallFriction 1
+#define kWallRestitution 0.05
+
+#define kBlockFriction 0.2
+#define kBlockRestitution 0.05
+
+#define kGravityMagnitude 200
+#define kGravityMultiplier 1000
 
 - (void)viewDidLoad {
   
   [super viewDidLoad];
   
-  UIView *wallRect1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 1024)];
-  wallRect1.backgroundColor = [UIColor lightGrayColor];
-  [self.view addSubview:wallRect1];
+  // initialize the four walls 
+  PhysicsRect *wallRectLeft = [[PhysicsRect alloc] initWithOrigin:CGPointMake(-kWallWidth, 0)
+                                                         andWidth:kWallWidth
+                                                        andHeight:kIpadHeight
+                                                          andMass:INFINITY
+                                                      andRotation:0 
+                                                      andFriction:kWallFriction
+                                                   andRestitution:kWallRestitution
+                                                         andIndex:-1];
   
- 
-  PhysicsRectangle *wallRectLeft = [[PhysicsRectangle alloc] initWithOrigin:CGPointMake(0, 0)
-                                                                  andHeight:1024 
-                                                                   andWidth:50
-                                                                    andMass:INFINITY
-                                                                andRotation:0 
-                                                                andFriction:0.65
-                                                                   andIndex:6];
-
-  UIView *wallRect2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 768, 50)];
-  wallRect2.backgroundColor = [UIColor lightGrayColor];
-  [self.view addSubview:wallRect2];
+  PhysicsRect *wallRectTop = [[PhysicsRect alloc] initWithOrigin:CGPointMake(0, -kWallWidth)
+                                                        andWidth:kIpadWidth
+                                                       andHeight:kWallWidth
+                                                         andMass:INFINITY
+                                                     andRotation:0 
+                                                     andFriction:kWallFriction
+                                                  andRestitution:kWallRestitution
+                                                        andIndex:-1];
   
-  PhysicsRectangle *wallRectTop = [[PhysicsRectangle alloc] initWithOrigin:CGPointMake(0, 0)
-                                                                  andHeight:50 
-                                                                   andWidth:768
-                                                                    andMass:INFINITY
-                                                                andRotation:0 
-                                                                andFriction:0.65
-                                                                   andIndex:7];
-
-  UIView *wallRect3 = [[UIView alloc] initWithFrame:CGRectMake(718, 0, 50, 1024)];
-  wallRect3.backgroundColor = [UIColor lightGrayColor];
-  [self.view addSubview:wallRect3];
+  PhysicsRect *wallRectRight = [[PhysicsRect alloc] initWithOrigin:CGPointMake(kIpadWidth, 0)
+                                                          andWidth:100
+                                                         andHeight:kIpadHeight
+                                                           andMass:INFINITY
+                                                       andRotation:0 
+                                                       andFriction:kWallFriction
+                                                    andRestitution:kWallRestitution
+                                                          andIndex:-1];
   
-  PhysicsRectangle *wallRectRight = [[PhysicsRectangle alloc] initWithOrigin:CGPointMake(718, 0)
-                                                                  andHeight:1024 
-                                                                   andWidth:50
-                                                                     andMass:INFINITY
-                                                                andRotation:0 
-                                                                andFriction:0.65
-                                                                   andIndex:8];
-
+  PhysicsRect *wallRectBottom = [[PhysicsRect alloc] initWithOrigin:
+                                 CGPointMake(0, kIpadHeight - kStatusBarThickness)
+                                                           andWidth:kIpadWidth
+                                                          andHeight:100
+                                                            andMass:INFINITY
+                                                        andRotation:0 
+                                                        andFriction:kWallFriction
+                                                     andRestitution:kWallRestitution
+                                                           andIndex:-1];
   
-  
-  UIView *wallRect4 = [[UIView alloc] initWithFrame:CGRectMake(0, 954, 768, 50)];
-  wallRect4.backgroundColor = [UIColor lightGrayColor];
-  [self.view addSubview:wallRect4];
-  
-  PhysicsRectangle *wallRectBottom = [[PhysicsRectangle alloc] initWithOrigin:CGPointMake(0, 954)
-                                                                 andHeight:50 
-                                                                  andWidth:768
-                                                                   andMass:INFINITY
-                                                               andRotation:0 
-                                                               andFriction:0.65
-                                                                  andIndex:9];
-
-  
-  UIView *viewRect1 = [[UIView alloc] initWithFrame:CGRectMake(300, 300, 150, 50)];
+  // initialize the blocks (PhysicRect objects) in the view and in the PhysicsWorld
+  // initialize red block
+  UIView *viewRect1 = [[UIView alloc] initWithFrame:CGRectMake(290, 300, 250, 150)];
   viewRect1.backgroundColor = [UIColor redColor];
   [self.view addSubview:viewRect1];
+  PhysicsRect *blockRect1 = [[PhysicsRect alloc] initWithOrigin:CGPointMake(290, 300)
+                                                       andWidth:250
+                                                      andHeight:150 
+                                                        andMass:100
+                                                    andRotation:0 
+                                                    andFriction:kBlockFriction
+                                                 andRestitution:kBlockRestitution
+                                                       andIndex:0];
   
-  PhysicsRectangle *phyRect1 = [[PhysicsRectangle alloc] initWithOrigin:CGPointMake(300, 300)
-                                                          andHeight:50 
-                                                           andWidth:150
-                                                            andMass:1
-                                                        andRotation:0 
-                                                        andFriction:0.45
-                                                           andIndex:0];
-  
-  UIView *viewRect2 = [[UIView alloc] initWithFrame:CGRectMake(400, 400, 50, 150)];
-  viewRect2.backgroundColor = [UIColor greenColor];
+  // initialize maroon block
+  UIView *viewRect2 = [[UIView alloc] initWithFrame:CGRectMake(50, 50, 50, 150)];
+  viewRect2.backgroundColor = [UIColor colorWithRed:134.0 / 225.0 
+                                              green:13.0 / 225.0 
+                                               blue:64.0 / 225.0 
+                                              alpha:1.0];
   viewRect2.transform = CGAffineTransformRotate(viewRect2.transform, 0.755);
   [self.view addSubview:viewRect2];
-  PhysicsRectangle *phyRect2 = [[PhysicsRectangle alloc] initWithOrigin:CGPointMake(400, 400)
-                                                           andHeight:150 
-                                                            andWidth:50
-                                                             andMass:100
-                                                         andRotation:0.755 
-                                                         andFriction:0.45
-                                                            andIndex:1];
+  PhysicsRect *blockRect2 = [[PhysicsRect alloc] initWithOrigin:CGPointMake(50, 50)
+                                                       andWidth:50
+                                                      andHeight:150
+                                                        andMass:100
+                                                    andRotation:0.755 
+                                                    andFriction:kBlockFriction
+                                                 andRestitution:kBlockRestitution
+                                                       andIndex:1];
   
-  UIView *viewRect3 = [[UIView alloc] initWithFrame:CGRectMake(400, 100, 50, 150)];
-  viewRect3.backgroundColor = [UIColor blueColor];
+  // initialize brown block
+  UIView *viewRect3 = [[UIView alloc] initWithFrame:CGRectMake(400, 100, 50, 200)];
+  viewRect3.backgroundColor = [UIColor brownColor];
   viewRect3.transform = CGAffineTransformRotate(viewRect3.transform, 1.91);
   [self.view addSubview:viewRect3];
-  PhysicsRectangle *phyRect3 = [[PhysicsRectangle alloc] initWithOrigin:CGPointMake(400, 100)
-                                                              andHeight:150 
-                                                               andWidth:50
-                                                                andMass:100
-                                                            andRotation:1.91 
-                                                            andFriction:0.45
-                                                               andIndex:2];
+  PhysicsRect *blockRect3 = [[PhysicsRect alloc] initWithOrigin:CGPointMake(400, 100)
+                                                       andWidth:50
+                                                      andHeight:200 
+                                                        andMass:100
+                                                    andRotation:1.91 
+                                                    andFriction:kBlockFriction
+                                                 andRestitution:kBlockRestitution
+                                                       andIndex:2];
   
-  UIView *viewRect4 = [[UIView alloc] initWithFrame:CGRectMake(600, 100, 50, 150)];
+  // initialize yellow block
+  UIView *viewRect4 = [[UIView alloc] initWithFrame:CGRectMake(580, 100, 150, 150)];
   viewRect4.backgroundColor = [UIColor yellowColor];
   viewRect4.transform = CGAffineTransformRotate(viewRect4.transform, 2.71);
   [self.view addSubview:viewRect4];
-  PhysicsRectangle *phyRect4 = [[PhysicsRectangle alloc] initWithOrigin:CGPointMake(600, 100)
-                                                              andHeight:150 
-                                                               andWidth:50
-                                                                andMass:100
-                                                            andRotation:2.71 
-                                                            andFriction:0.45
-                                                               andIndex:3];
+  PhysicsRect *blockRect4 = [[PhysicsRect alloc] initWithOrigin:CGPointMake(580, 100)
+                                                       andWidth:150
+                                                      andHeight:150 
+                                                        andMass:100
+                                                    andRotation:2.71 
+                                                    andFriction:kBlockFriction
+                                                 andRestitution:kBlockRestitution
+                                                       andIndex:3];
   
-  UIView *viewRect5 = [[UIView alloc] initWithFrame:CGRectMake(600, 300, 50, 150)];
+  // initialize orange block
+  UIView *viewRect5 = [[UIView alloc] initWithFrame:CGRectMake(610, 300, 100, 200)];
   viewRect5.backgroundColor = [UIColor orangeColor];
   viewRect5.transform = CGAffineTransformRotate(viewRect5.transform, 0.71);
   [self.view addSubview:viewRect5];
-  PhysicsRectangle *phyRect5 = [[PhysicsRectangle alloc] initWithOrigin:CGPointMake(600, 300)
-                                                              andHeight:150 
-                                                               andWidth:50
-                                                                andMass:100
-                                                            andRotation:0.71 
-                                                            andFriction:0.45
-                                                               andIndex:4];
+  PhysicsRect *blockRect5 = [[PhysicsRect alloc] initWithOrigin:CGPointMake(610, 300)
+                                                       andWidth:100
+                                                      andHeight:200 
+                                                        andMass:100
+                                                    andRotation:0.71 
+                                                    andFriction:kBlockFriction
+                                                 andRestitution:kBlockRestitution
+                                                       andIndex:4];
   
-  UIView *viewRect6 = [[UIView alloc] initWithFrame:CGRectMake(120, 300, 50, 150)];
-  viewRect6.backgroundColor = [UIColor magentaColor];
+  // initialize pink block
+  UIView *viewRect6 = [[UIView alloc] initWithFrame:CGRectMake(50, 300, 200, 150)];
+  viewRect6.backgroundColor = [UIColor colorWithRed:222.0 / 225.0 
+                                              green:17.0 / 225.0 
+                                               blue:148.0 / 225.0 
+                                              alpha:1.0];
   viewRect6.transform = CGAffineTransformRotate(viewRect6.transform, 2.11);
   [self.view addSubview:viewRect6];
-  PhysicsRectangle *phyRect6 = [[PhysicsRectangle alloc] initWithOrigin:CGPointMake(120, 300)
-                                                              andHeight:150 
-                                                               andWidth:50
-                                                                andMass:100
-                                                            andRotation:2.11 
-                                                            andFriction:0.45
-                                                               andIndex:5];
+  PhysicsRect *blockRect6 = [[PhysicsRect alloc] initWithOrigin:CGPointMake(50, 300)
+                                                       andWidth:200
+                                                      andHeight:150
+                                                        andMass:100
+                                                    andRotation:2.11 
+                                                    andFriction:kBlockFriction
+                                                 andRestitution:kBlockRestitution
+                                                       andIndex:5];
   
-  viewRectArray = [[NSArray alloc] initWithObjects:viewRect1, viewRect2, viewRect3, viewRect4, viewRect5, viewRect6, nil];
-  phyRectArray = [[NSArray alloc] initWithObjects:phyRect1, phyRect2, phyRect3, phyRect4, phyRect5, phyRect6, nil];
-  wallsArray = [[NSArray alloc] initWithObjects: wallRectLeft, wallRectTop, wallRectRight, wallRectBottom, nil];
-                  
-  timeStep = 1.0f / 30.0f;
-  world = [[PhysicsWorld alloc] initWithObjects:phyRectArray
-                                       andWalls:wallsArray
-                                     andGravity:[Vector2D vectorWith:0 y:9.81] 
+  // initialize the array of block views, PhysicRect blocks and PhysicRect walls
+  viewRectArray = [[NSArray alloc] initWithObjects:viewRect1, viewRect2, 
+                   viewRect3, viewRect4, viewRect5, viewRect6, nil];
+  blockRectArray = [[NSArray alloc] initWithObjects:blockRect1, blockRect2, 
+                    blockRect3, blockRect4, blockRect5, blockRect6, nil];
+  wallRectArray = [[NSArray alloc] initWithObjects: wallRectLeft, 
+                   wallRectTop, wallRectRight, wallRectBottom, nil];
+  
+  timeStep = 1.0f/200.0f;
+  
+  UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+  
+  // initialize PhysicsWorld object with the arrays of PhysicRect as paramaters
+  world = [[PhysicsWorld alloc] initWithObjects:blockRectArray
+                                       andWalls:wallRectArray
+                                     andGravity:[self selectGravity:interfaceOrientation]
                                     andTimeStep:timeStep
                                     andObserver:self];
+  
+  // add observer to update gravity direction when device orientation changes
+  [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+  [[NSNotificationCenter defaultCenter] addObserver:self 
+                                           selector:@selector(rotateView:) 
+                                               name:UIDeviceOrientationDidChangeNotification 
+                                             object:nil];
+  
+  UIAccelerometer *accel = [UIAccelerometer sharedAccelerometer];
+	accel.delegate = world;
+	accel.updateInterval = timeStep;
+  
   [self initializeTimer];
 }
 
 - (void)initializeTimer {
-
+  // REQUIRES: PhysicsWorld object, blocks, walls to be created, timestep > 0
+  // EFFECTS: repeatedly trigger the updateBlocksState method of PhysicsWorld
   timer = [NSTimer scheduledTimerWithTimeInterval:timeStep 
                                            target:self 
-                                         selector:@selector(animateBlock) 
+                                         selector:@selector(updateWorldTime) 
                                          userInfo:nil 
                                           repeats:YES];
 }
 
-- (void)animateBlock {
+- (void)updateWorldTime {
+  // REQUIRES: PhysicsWorld object, blocks, walls to be created, timestep > 0
+  // EFFECTS: repeatedly trigger the updateBlocksState method of PhysicsWorld
   [world updateBlocksState];
-
 }
 
 - (void)updateViewRectPositions:(NSNotification*)notification {
+  // MODIFIES: gravity vector of PhysicsWorld object
+  // EFFECTS: changes the gravity vector according to the orientation of the device
+  PhysicsRect *block = [notification object];
   
-  PhysicsRectangle *block = [notification object];
-
   UIView* thisView = [viewRectArray objectAtIndex:block.tag];
   
   thisView.center = CGPointMake(block.center.x, block.center.y);
   thisView.transform = CGAffineTransformMakeRotation(block.rotation);
 }
 
+- (void)rotateView:(NSNotification*)notification {
+  // MODIFIES: gravity vector of PhysicsWorld object
+  // REQUIRES: device orientation to be changed
+  // EFFECTS: changes the gravity vector according to the orientation of the device
+  if (world.accelerometerActivated) {
+    return;
+  }
+  UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+  world.gravity = [self selectGravity:interfaceOrientation];
+}
+
+- (Vector2D*)selectGravity:(UIDeviceOrientation)interfaceOrientation {
+  // EFFECTS: returns a new gravity vector according to the orientation of the device
+  Vector2D *gravity;
+  
+  if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+    gravity = [Vector2D vectorWith:0 y:-kGravityMagnitude]; 
+  } else if (interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+    gravity = [Vector2D vectorWith:-kGravityMagnitude y:0]; 
+  } else if (interfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
+    gravity = [Vector2D vectorWith:kGravityMagnitude y:0]; 
+  } else {
+    gravity = [Vector2D vectorWith:0 y:kGravityMagnitude]; 
+  }
+  return gravity;
+}
+
+- (IBAction)accelerometerSwitch:(UISwitch*)sender {
+  // MODIFIES: gravity vector of PhysicsWorld object
+  // EFFECTS: changes the gravity mode of selection between orientation and accelerometer
+  world.accelerometerActivated = sender.on;
+  
+  if (!sender.on) {
+    UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+    world.gravity = [self selectGravity:interfaceOrientation];
+  }
+}
+
+- (void)accelerometer:(UIAccelerometer *)accelerometer 
+        didAccelerate:(UIAcceleration *)acceleration {
+  // MODIFIES: gravity vector of PhysicsWorld object
+  // EFFECTS: changes the gravity according to accelerometer's direction and magnitude
+  if (world.accelerometerActivated) {
+    world.gravity = [Vector2D vectorWith:acceleration.x * kGravityMultiplier 
+                                       y:-acceleration.y * kGravityMultiplier];
+  } 
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+  // EFFECTS: method overridden to prevent rotation of interface
+  return NO;
+}
 
 - (void)viewDidUnload
 {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+  [super viewDidUnload];
+  // Release any retained subviews of the main view.
+  // e.g. self.myOutlet = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+  [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+  [super viewDidAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -211,60 +304,5 @@
 	[super viewDidDisappear:animated];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-  if (interfaceOrientation == UIInterfaceOrientationPortrait) {
-    world.gravity = [Vector2D vectorWith:0 y:40]; 
-  } else if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-    world.gravity = [Vector2D vectorWith:0 y:-40]; 
-  } else if (interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-    world.gravity = [Vector2D vectorWith:-40 y:0]; 
-  } else if (interfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
-    world.gravity = [Vector2D vectorWith:40 y:0]; 
-  }
-  return NO;
-}
 
 @end
-
-/*
-Vector2D* gravity = [Vector2D vectorWith:0 y:0.25];
-Vector2D* force = [Vector2D vectorWith:0 y:0];
-testRect.dt = timeStep;
-testRect2.dt = timeStep;
-[testRect updateVelocity:gravity withForce:force];
-[testRect updateAngularVelocity:10];
-[testRect updatePosition];
-[testRect initSelfVectorsAndMatricesQuantities];
-[testRect2 initSelfVectorsAndMatricesQuantities];
-
-if([testRect testOverlap:testRect2]) {
-  [testRect calculateContactPoints];
-  CGRect square = CGRectMake(((Vector2D*)[testRect.contactPoints objectAtIndex:0]).x, ((Vector2D*)[testRect.contactPoints objectAtIndex:0]).y, 5, 5);
-  UIImageView *collision = [[UIImageView alloc] initWithFrame:square];
-  collision.backgroundColor = [UIColor greenColor];
-  [self.view addSubview:collision];
-  if ([testRect.contactPoints count] > 1) {
-    CGRect square2 = CGRectMake(((Vector2D*)[testRect.contactPoints objectAtIndex:1]).x, ((Vector2D*)[testRect.contactPoints objectAtIndex:1]).y, 5, 5);
-    UIImageView *collision2 = [[UIImageView alloc] initWithFrame:square2];
-    collision2.backgroundColor = [UIColor orangeColor];
-    [self.view addSubview:collision2];
-  }
-  
-  for (int i=0; i<15; i++) {
-    [testRect applyImpulses];
-    [testRect moveBodies];
-    [testRect2 moveBodies];
-  } 
-}
-if([testRect2 testOverlap:testRect]) {
-  [testRect2 calculateContactPoints];
-  for (int i=0; i<15; i++) {
-    [testRect2 applyImpulses];
-    [testRect moveBodies];
-    [testRect2 moveBodies];
-  } 
-}
-[testRect moveBodies];
-[testRect2 moveBodies];
- */
