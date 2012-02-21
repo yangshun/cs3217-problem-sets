@@ -27,9 +27,10 @@
   self = [super init];
   if (self) {
     wolfController = wolf;
+    pigController = pig;
     objectsInGameArea = blocks;
-    [objectsInGameArea addObject:wolf];
-    [objectsInGameArea addObject:pig];
+    [objectsInGameArea addObject:pigController];
+    [objectsInGameArea addObject:wolfController];
   }
 
   return self;
@@ -95,33 +96,20 @@
   
   for (GameObject *obj in objectsInGameArea) {
     [obj customRotation:-obj.rotatedState];
-    if ([obj isKindOfClass:[GameWolf class]] || [obj isKindOfClass:[GameBlock class]]) {
-      PhysicsRect *rectBlock = [[PhysicsRect alloc] initWithOrigin:obj.view.frame.origin
-                                                          andWidth:obj.view.frame.size.width
-                                                         andHeight:obj.view.frame.size.height
-                                                           andMass:100
-                                                       andRotation:obj.rotatedState
-                                                       andFriction:5
-                                                    andRestitution:0
-                                                           andView:nil];
-      [physicsObjectArray addObject: rectBlock];               
-    } else if ([obj isKindOfClass:[GamePig class]]) {
-      PhysicsCircle *circleBlock = [[PhysicsCircle alloc] initWithOrigin:obj.view.frame.origin
-                                                                andWidth:obj.view.frame.size.width
-                                                               andHeight:obj.view.frame.size.height
-                                                                 andMass:100
-                                                             andRotation:obj.rotatedState
-                                                             andFriction:5
-                                                          andRestitution:0
-                                                                 andView:nil];
-      [physicsObjectArray addObject: circleBlock];   
-    }
+    PhysicsRect *rectBlock = [[PhysicsRect alloc] initWithOrigin:obj.view.frame.origin
+                                                        andWidth:obj.view.frame.size.width
+                                                       andHeight:obj.view.frame.size.height
+                                                         andMass:100
+                                                     andRotation:obj.rotatedState
+                                                     andFriction:4
+                                                  andRestitution:0
+                                                         andView:nil];
+    [physicsObjectArray addObject:rectBlock];               
+    
     [obj customRotation:obj.rotatedState];
     [obj removeAllGestureRecognizers];
     [gamearea addSubview:obj.view];
   }
-  
-  [self setUpGamearea];
   
   PhysicsRect *wallGround = [[PhysicsRect alloc] initWithOrigin:ground.frame.origin
                                                        andWidth:groundWidth
@@ -140,6 +128,7 @@
                                             andTimeStep:gameareaTimeStep
                                             andObserver:self];
   [self initializeTimer];
+  [self performSelector:@selector(setUpGamearea) withObject:nil afterDelay:2];
 }
 
 - (void)setUpGamearea {
@@ -166,19 +155,26 @@
   fireButtonController.delegate = self;
   
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(objectPressed:) 
+                                           selector:@selector(fireButtonPressed) 
                                                name:@"FireButtonPressed"
                                              object:nil];
-  
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(toggleShootingGuide) 
                                                name:@"DisplayShootingGuide"
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(addBreatheProjectile) 
+                                               name:@"ShootProjectile"
+                                             object:nil];
+  // remove the wolf from the physics engine
+  [objectsInGameArea removeObjectAtIndex:[objectsInGameArea count] - 1];
+  [physicsObjectArray removeObjectAtIndex:[physicsObjectArray count] - 1];
   
   [gamearea addSubview:directionDegree];
   [gamearea addSubview:arrowController.view];
   [gamearea addSubview:barController.view];
   [gamearea addSubview:fireButtonController.view];
+  
 }
 
 - (void)initializeTimer {
@@ -189,7 +185,10 @@
                                                  selector:@selector(updateWorldTime) 
                                                  userInfo:nil 
                                                   repeats:YES];
+  [[NSRunLoop mainRunLoop] addTimer:gameareaTimer forMode:NSRunLoopCommonModes];
 }
+
+
 
 - (void)updateWorldTime {
   // REQUIRES: PhysicsWorld object, blocks, walls to be created, timestep > 0
@@ -197,22 +196,20 @@
   [gameareaWorld updateBlocksState];
 }
 
-- (void)updateViewRectPositions:(NSNotification*)notification {
+- (void)updateViewObjectPositions:(NSNotification*)notification {
   // MODIFIES: position of view objects
   // EFFECTS: changes the position of the object views according to its 
   //          position in the physics world
   NSArray *physicsWorldBlocks = [notification object];
-  
   for (int i = 0; i < [physicsWorldBlocks count]; i++) {
     PhysicsShape *thisBlock = [physicsWorldBlocks objectAtIndex:i];
     GameObject *thisObject = [objectsInGameArea objectAtIndex:i];
     thisObject.view.center = CGPointMake(thisBlock.center.x, thisBlock.center.y);
-    //thisObject.view.transform = CGAffineTransformMakeRotation(thisBlock.rotation);
     [thisObject customRotationByCollision:(thisBlock.rotation - thisObject.rotatedState)];
   }
 }
 
-- (void)objectPressed:(NSNotification*)notification {
+- (void)fireButtonPressed {
   [wolfController startWolfBlow];
   [self toggleShootingGuide];
 }
@@ -231,8 +228,42 @@
   }
 }
 
-- (void)showShootingGuide:(NSNotification*)notification {
-  arrowController.view.hidden = NO;
+- (void)addBreatheProjectile {
+  
+  [gameareaTimer invalidate];
+  gameareaWorld = nil;
+
+  CGRect breatheFrame = CGRectMake(arrowController.view.center.x, 
+                                   arrowController.view.center.y - 50, 113, 104);
+  breatheController = [[GameBreathe alloc] initWithFrame:breatheFrame];
+  breatheController.view = breatheController.gameObjView;
+  [gamearea addSubview:breatheController.view];
+  
+  PhysicsCircle *breatheBlock = [[PhysicsCircle alloc] initWithOrigin:breatheController.view.frame.origin
+                                                             andWidth:breatheController.view.frame.size.width
+                                                            andHeight:breatheController.view.frame.size.height
+                                                              andMass:1000
+                                                          andRotation:0
+                                                          andFriction:5
+                                                       andRestitution:0
+                                                              andView:nil]; 
+ 
+  double breatheMagnitude = barController.view.frame.size.width * 3;
+  breatheBlock.v = [Vector2D vectorWith:arrowController.view.transform.b * breatheMagnitude
+                                      y:-arrowController.view.transform.a * breatheMagnitude];
+
+  [physicsObjectArray addObject:breatheBlock];
+  [objectsInGameArea addObject:breatheController];
+  [breatheController removeAllGestureRecognizers];
+  [breatheController startBreathe];
+  
+  gameareaWorld = [[PhysicsWorld alloc] initWithObjects:physicsObjectArray
+                                               andWalls:wallRectArray 
+                                             andGravity:[Vector2D vectorWith:0 y:100]
+                                            andTimeStep:gameareaTimeStep
+                                            andObserver:self];
+   
+  [self initializeTimer];
 }
 
 - (void)viewDidUnload

@@ -16,8 +16,6 @@
   double timeStep;
   NSArray *blockArray;
   NSArray *wallArray;
-  BOOL accelerometerActivated;
-  
 }
 
 - (id)initWithObjects:(NSArray*)newObjects
@@ -36,7 +34,6 @@
 
 @property (nonatomic, strong, readwrite) Vector2D *gravity;
 @property (nonatomic, readwrite) double timeStep;
-@property (nonatomic, readwrite) BOOL accelerometerActivated;
 
 
 @end

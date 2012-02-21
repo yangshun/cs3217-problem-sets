@@ -18,9 +18,9 @@
   self = [super initWithObject:[self arrowImageView:customFrame]];
   
   if (self) {
-    insideGameArea = YES;
     selectedArrowImage = [UIImage imageNamed:@"direction-arrow-selected.png"];
     self.view.transform = CGAffineTransformMakeRotation(M_PI_4);
+    rotatedState = M_PI_4;
     [self.view removeGestureRecognizer:objDoubleTap];
     [self.view removeGestureRecognizer:objRotate];
     [self.view removeGestureRecognizer:objZoom];
@@ -45,6 +45,8 @@
   
   CGFloat rotationAngle = atan((curr.y - self.view.center.y) / 
                                (curr.x - self.view.center.x)) + M_PI_2;
+  
+  rotatedState += rotationAngle;
   
   if (rotationAngle < M_PI_4/4 || rotationAngle > M_PI * 3/4) {
     gameObjView.image = arrowImage;

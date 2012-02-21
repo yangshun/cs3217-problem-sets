@@ -12,14 +12,17 @@
 #import "GameBlock.h"
 #import "GameBar.h"
 #import "GameArrow.h"
+#import "GameBreathe.h"
 #import "GameFireButton.h"
 #import "PhysicsWorld.h"
 
 @interface PlayViewController : UIViewController {
   
   GameWolf *wolfController;
+  GamePig *pigController;
   GameArrow *arrowController;
   GameBar *barController;
+  GameBreathe *breatheController;
   UIImageView *directionDegree;
   GameFireButton *fireButtonController;
   NSMutableArray *objectsInGameArea;
@@ -40,6 +43,7 @@
 - (void)setUpGamearea;
 - (void)initializeTimer;
 - (void)toggleShootingGuide;
+- (void)addBreatheProjectile;
 
 @property (nonatomic, weak) IBOutlet UIScrollView *gamearea;
 

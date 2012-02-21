@@ -7,12 +7,10 @@
 //
 
 #import "GameObject.h"
-#import "GameArrow.h"
 
 @interface GameWolf : GameObject {
   UIImage *wolfImage;
   UIImage *wolfDieImage;
-	UIViewController *gameArrow;
   NSMutableArray *wolfSpriteBlow;
   NSMutableArray *wolfSpriteDie;
   int currentSpriteFrame;

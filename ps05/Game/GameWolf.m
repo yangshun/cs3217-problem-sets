@@ -20,6 +20,7 @@
   if (self) {
     objectType = kGameObjectWolf;
     centerPointInPalette = CGPointMake(95, 70);
+    currentSpriteFrame = 0;
   }
   return self;
 }
@@ -45,7 +46,7 @@
   wolfSpriteDie = [[NSMutableArray alloc] init];
   
   for (int i = 0; i < 15; i++) {
-    CGRect spriteFrame = CGRectMake(225 * (i % 5), 150 * floor(i / 5.0), 225, 150);
+    CGRect spriteFrame = CGRectMake(225 * (i % 5), 150 * (i / 5), 225, 150);
     CGImageRef wolfImageRef = CGImageCreateWithImageInRect([wolfImage CGImage], spriteFrame);
     UIImage *croppedWolf = [UIImage imageWithCGImage:wolfImageRef];
     [wolfSpriteBlow addObject:croppedWolf];
@@ -53,7 +54,7 @@
   
   wolfDieImage = [UIImage imageNamed:@"wolfdie.png"];
   for (int i = 0; i < 16; i++) {
-    CGRect spriteFrame = CGRectMake(225 * (i % 4), 150 * floor(i / 4.0), 225, 150);
+    CGRect spriteFrame = CGRectMake(225 * (i % 4), 150 * (i / 4), 225, 150);
     CGImageRef wolfImageRef = CGImageCreateWithImageInRect([wolfDieImage CGImage], spriteFrame);
     UIImage *croppedWolfDie = [UIImage imageWithCGImage:wolfImageRef];
     [wolfSpriteDie addObject:croppedWolfDie];
@@ -79,9 +80,16 @@
 - (void)wolfBlowAnimation {
   currentSpriteFrame++;
   currentSpriteFrame %= 15;
-  if (currentSpriteFrame == 0) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"DisplayShootingGuide" object:nil];
-    [wolfBreatheTimer invalidate];
+  switch (currentSpriteFrame) {
+    case 0:
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"DisplayShootingGuide" object:nil];
+      [wolfBreatheTimer invalidate];
+      break;
+    case 12:
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"ShootProjectile" object:nil];
+      break;
+    default:
+      break;
   }
   gameObjView.image = [wolfSpriteBlow objectAtIndex:currentSpriteFrame];
 }
