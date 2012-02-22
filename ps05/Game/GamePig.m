@@ -40,9 +40,44 @@
 - (UIImageView*)pigImageView:(CGRect)frame {
   // returns an UIImageView of this GameObject subclass at the specified position
   UIImage *pigImage = [UIImage imageNamed:@"pig.png"];
-  UIImageView *gamePigImageView = [[UIImageView alloc]initWithImage:pigImage];
+  UIImage *pigCryImage = [UIImage imageNamed:@"pig2.png"];
+  
+  pigSprite = [[NSMutableArray alloc] init];
+  
+  for (int i = 0; i < 10; i++) {
+    if (i % 2) {
+      [pigSprite addObject:pigCryImage];
+      [pigSprite addObject:pigCryImage];
+    } else {
+      [pigSprite addObject:pigImage];
+      [pigSprite addObject:pigImage];
+    }
+  }
+  
+  UIImage *smokeImage = [UIImage imageNamed:@"pig-die-smoke.png"];
+
+  for (int i = 0; i < 10; i++) {
+    CGRect spriteFrame = CGRectMake(80 * (i % 5), 80 * (i / 5), 80, 80);
+    CGImageRef pigImageRef = CGImageCreateWithImageInRect([smokeImage CGImage], spriteFrame);
+    UIImage *croppedSmoke = [UIImage imageWithCGImage:pigImageRef];
+    [pigSprite addObject:croppedSmoke];
+  }
+ 
+  
+  UIImageView *gamePigImageView = [[UIImageView alloc]initWithImage:[pigSprite objectAtIndex:0]];
+  gamePigImageView.animationImages = pigSprite;
+  gamePigImageView.animationDuration = 2;
+  gamePigImageView.animationRepeatCount = 0;
   gamePigImageView.frame = frame;
   return gamePigImageView;
+}
+
+- (void)pigDieAnimation {
+  if (alive) {
+    [self.gameObjView startAnimating];
+    [self performSelector:@selector(destroyObject) withObject:nil afterDelay:1.9];
+    alive = NO;
+  }
 }
 
 - (CGRect)frameInGameArea:(CGPoint)point {

@@ -137,6 +137,4 @@
   rotation += prevRotation;
 }
 
-
-
 @end

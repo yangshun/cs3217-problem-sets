@@ -8,10 +8,15 @@
 
 #import "GameObject.h"
 
-@interface GamePig : GameObject
+@interface GamePig : GameObject {
+  NSMutableArray *pigSprite;
+
+}
 
 - (id)initWithFrame:(CGRect)customFrame andState:(BOOL)state;
 - (UIImageView*)pigImageView:(CGRect)frame;
+- (void)pigDieAnimation;
 - (CGRect)frameInGameArea:(CGPoint)point;
+- (void)ouchDisplayAt:(CGPoint)location;
 
 @end

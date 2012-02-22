@@ -21,8 +21,7 @@
 - (id)initWithObjects:(NSArray*)newObjects
              andWalls:(NSArray*)walls
            andGravity:(Vector2D*)g 
-          andTimeStep:(double)dt 
-          andObserver:(UIViewController*)worldObserver;
+          andTimeStep:(double)dt;
   // MODIFIES: PhysicsWorld object (state)
   // REQUIRES: parameters to be non-nil
   // EFFECTS: an array of PhysicsRect objects (blocks and walls) are stored
@@ -31,6 +30,9 @@
   // MODIFIES: position of the blocks based on inter-block collisions
   // REQUIRES: timer to be started, timestep > 0
   // EFFECTS: the position of each PhysicsRect object is updated
+
+- (void)notifyViewForObjectCollisionsBetween:(int)index1 andObject:(int)index2;
+- (void)notifyViewForObjectCollisionsWithWall:(int)index1; 
 
 @property (nonatomic, strong, readwrite) Vector2D *gravity;
 @property (nonatomic, readwrite) double timeStep;

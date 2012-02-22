@@ -11,7 +11,13 @@
 @interface TextAnimation : UIImageView {
   
   UIImage *startText;
-  NSTimer *animationTimer;
+  NSTimer *textTimer;
 }
+
+- (void)flyInStartText;
+- (void)flyOutStartText;
+- (void)pauseTimer;
+- (void)endTimer;
+- (void)flyAcrossText;
 
 @end

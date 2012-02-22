@@ -25,7 +25,6 @@
       andRestitution:(double)coeff
              andView:(UIView*)viewObj;
 - (BOOL)testOverlap:(PhysicsRect*)other;
-- (BOOL)testOverlapCircle:(PhysicsCircle*)other;
 - (void)applyImpulses; 
   // MODIFIES: PhysicsCircle object (linear velocity and angular velocity)
   // REQUIRES: overlap between circle and rectangle

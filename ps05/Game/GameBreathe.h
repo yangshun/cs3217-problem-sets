@@ -20,7 +20,7 @@
 - (id)initWithFrame:(CGRect)customFrame;
 - (UIImageView*)breatheImageView:(CGRect)frame;
 - (void)startBreathe;
-- (void)breatheAnimation; 
+- (void)breatheTravelAnimation; 
 - (void)breatheDisperseAnimation;
 
 @property (nonatomic, strong) UIImage *breatheImage;

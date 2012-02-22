@@ -15,6 +15,7 @@
   NSMutableArray *wolfSpriteDie;
   int currentSpriteFrame;
   NSTimer *wolfBreatheTimer;
+  BOOL dead;
 }
 
 - (id)initWithFrame:(CGRect)customFrame andState:(BOOL)state;
@@ -22,6 +23,7 @@
 - (CGRect)frameInGameArea:(CGPoint)point;
 - (void)startWolfBlow;
 - (void)wolfBlowAnimation; 
+- (void)wolfDieAnimation;
 
 @property (nonatomic, strong) UIImage* wolfImage;
 

@@ -53,6 +53,8 @@
   UIImage* woodImage = [UIImage imageNamed:@"wood.png"];
   UIImage* ironImage = [UIImage imageNamed:@"iron.png"];
   UIImage* stoneImage = [UIImage imageNamed:@"stone.png"];
+  
+ 
   return [[NSArray alloc] initWithObjects:strawImage, 
            woodImage, ironImage, stoneImage, nil];
 }
@@ -61,6 +63,15 @@
   // returns a block image view of the correct position and type
   UIImageView *blockImageView = [[UIImageView alloc] 
                                  initWithImage:[gameBlocksArchive objectAtIndex: (int)type]];
+  
+  strawSpriteBreak = [[NSMutableArray alloc] init];
+  strawBreakImage = [UIImage imageNamed:@"straw-break.png"];
+  for (int i = 0; i < 5; i++) {
+    CGRect spriteFrame = CGRectMake(50 * i, 0, 50, 50);
+    CGImageRef strawImageRef = CGImageCreateWithImageInRect([strawBreakImage CGImage], spriteFrame);
+    UIImage *croppedStrawImage = [UIImage imageWithCGImage:strawImageRef];
+    [strawSpriteBreak addObject:croppedStrawImage];
+  } 
   blockImageView.frame = frame;
   return blockImageView;
 }
@@ -103,7 +114,21 @@
       blockType = kStrawBlockObject;
       break;
   }
-  gameObjView.image = [gameBlocksArchive objectAtIndex:blockType];
+  self.gameObjView.image = [gameBlocksArchive objectAtIndex:blockType];
+}
+
+- (void)strawBreakAnimation {
+  if (alive) {
+    self.gameObjView = [[UIImageView alloc] initWithImage:[strawSpriteBreak objectAtIndex:0]];
+    self.gameObjView.animationImages = strawSpriteBreak;
+    self.gameObjView.animationDuration = 1.0;
+    self.gameObjView.animationRepeatCount = 1;
+    
+    [self.gameObjView startAnimating];
+    self.view = self.gameObjView;
+    [self performSelector:@selector(destroyObject) withObject:nil afterDelay:1.0];
+    alive = NO;
+  }
 }
 
 - (CGRect)frameInGameArea:(CGPoint)point {

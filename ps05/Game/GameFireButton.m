@@ -19,7 +19,6 @@
   
   if (self) {
     insideGameArea = YES;
-    self.view.transform = CGAffineTransformMakeRotation(M_PI_2);
     [self.view removeGestureRecognizer:objDoubleTap];
     [self.view removeGestureRecognizer:objRotate];
     [self.view removeGestureRecognizer:objZoom];
@@ -35,7 +34,9 @@
 
 - (UIImageView*)buttonImageView:(CGRect)frame {
   // returns an UIImageView of this GameObject subclass at the specified position
-  buttonImage = [UIImage imageNamed:@"breath-bar.png"];
+  buttonImage = [UIImage imageNamed:@"fire-button.png"];
+  buttonImagePressed = [UIImage imageNamed:@"fire-button-pressed.png"];
+  
   UIImageView *buttonImageView = [[UIImageView alloc] initWithImage:buttonImage];
   buttonImageView.frame = frame;
   return buttonImageView;
@@ -43,7 +44,12 @@
 
 - (void)pressed:(UITapGestureRecognizer*)gesture {
   // EFFECTS: fires a projectile from the wolf's mouth
+  self.gameObjView.image = buttonImagePressed;
+  self.view = gameObjView;
   [[NSNotificationCenter defaultCenter] postNotificationName:@"FireButtonPressed" object:nil];
+  if (gesture.state == UIGestureRecognizerStateEnded) {
+    self.gameObjView.image = buttonImage;
+  }
 }
 
 @end

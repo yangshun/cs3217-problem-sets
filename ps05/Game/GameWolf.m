@@ -54,7 +54,7 @@
   
   wolfDieImage = [UIImage imageNamed:@"wolfdie.png"];
   for (int i = 0; i < 16; i++) {
-    CGRect spriteFrame = CGRectMake(225 * (i % 4), 150 * (i / 4), 225, 150);
+    CGRect spriteFrame = CGRectMake(237 * (i % 4), 185 * (i / 4), 237, 185);
     CGImageRef wolfImageRef = CGImageCreateWithImageInRect([wolfDieImage CGImage], spriteFrame);
     UIImage *croppedWolfDie = [UIImage imageWithCGImage:wolfImageRef];
     [wolfSpriteDie addObject:croppedWolfDie];
@@ -75,6 +75,7 @@
                                                     selector:@selector(wolfBlowAnimation) 
                                                     userInfo:nil 
                                                      repeats:YES];
+  [[NSRunLoop mainRunLoop] addTimer:wolfBreatheTimer forMode:NSRunLoopCommonModes];
 }
 
 - (void)wolfBlowAnimation {
@@ -82,7 +83,7 @@
   currentSpriteFrame %= 15;
   switch (currentSpriteFrame) {
     case 0:
-      [[NSNotificationCenter defaultCenter] postNotificationName:@"DisplayShootingGuide" object:nil];
+      [[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleShootingGuide" object:nil];
       [wolfBreatheTimer invalidate];
       break;
     case 12:
@@ -94,4 +95,20 @@
   gameObjView.image = [wolfSpriteBlow objectAtIndex:currentSpriteFrame];
 }
 
+- (void)wolfDieAnimation {
+  if(alive) {
+    self.view.transform = CGAffineTransformScale(self.view.transform, 1.2, 1.2);
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleShootingGuide" object:nil];
+    
+    self.gameObjView = [[UIImageView alloc] initWithImage:[wolfSpriteDie objectAtIndex:0]];
+    self.gameObjView.animationImages = wolfSpriteDie;
+    self.gameObjView.animationDuration = 3.0;
+    self.gameObjView.animationRepeatCount = 0;
+    self.view = self.gameObjView;
+    
+    [self.gameObjView startAnimating];
+    [self performSelector:@selector(destroyObject) withObject:nil afterDelay:3.0];
+    alive = NO;
+  }
+}
 @end

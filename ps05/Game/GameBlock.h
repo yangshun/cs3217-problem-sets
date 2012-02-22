@@ -15,8 +15,11 @@ typedef enum {kStrawBlockObject, kWoodBlockObject,
 
   NSArray *gameBlocksArchive;
   blockObjectType blockType;
+  UIImage *strawBreakImage;
+  NSMutableArray *strawSpriteBreak;
   
   UITapGestureRecognizer *objSingleTap;
+  BOOL destroyed;
 }
 
 - (id)initWithFrame:(CGRect)customFrame 
@@ -27,6 +30,7 @@ typedef enum {kStrawBlockObject, kWoodBlockObject,
 - (void)addSingleTapGesture;
 - (void)changeBlockType:(UITapGestureRecognizer*)gesture;
 - (CGRect)frameInGameArea:(CGPoint)point;
+- (void)strawBreakAnimation;
 
 @property (nonatomic, readonly) blockObjectType blockType;
 

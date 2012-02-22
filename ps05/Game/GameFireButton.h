@@ -11,6 +11,7 @@
 @interface GameFireButton : GameObject {
 
   UIImage *buttonImage;
+  UIImage *buttonImagePressed;
   UITapGestureRecognizer *objSingleTap;
 }
 

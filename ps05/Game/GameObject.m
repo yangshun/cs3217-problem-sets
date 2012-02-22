@@ -29,6 +29,7 @@
     self.gameObjView = objView;
     self.view = gameObjView;
     insideGameArea = NO;
+    alive = YES;
   
     objDrag = [[UIPanGestureRecognizer alloc]initWithTarget:self 
                                                      action:@selector(translate:)];
@@ -173,6 +174,10 @@
   if(insideGameArea && [delegate respondsToSelector:@selector(returnViewToPalette:)]) {
     [delegate returnViewToPalette:self];
   }
+}
+
+- (void)destroyObject {
+  [self.view removeFromSuperview];
 }
 
 @end

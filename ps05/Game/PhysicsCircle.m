@@ -97,32 +97,6 @@
   return YES;
 }
 
-- (BOOL)testOverlapCircle:(PhysicsCircle*)other {
-  // REQUIRES: other to be a PhysicsCircle
-  // EFFECTS: Tests whether this circle is overlapping with another circle  
-  Vector2D *pA = self.center;
-  
-  otherCircle = other;
-  Vector2D *pB = otherCircle.center;
-  
-  Vector2D *d = [pB subtract:pA];
-  
-  if ([d length] >= (self.radius + otherCircle.radius)) {
-    return NO;
-  } 
-  // unit normal vector calculated
-  n = [d multiply:(1 / [d length])];
- 
-  Vector2D *closestPtWorld = [pA add:[d multiply:0.5]];
-  
-  separationDist[0] = self.radius + otherCircle.radius - [d length];
-  
-  [contactPoints removeAllObjects];
-  [contactPoints addObject:closestPtWorld];
-  
-  return YES;
-}
-
 - (void)applyImpulses {
   // MODIFIES: PhysicsCircle object (linear velocity and angular velocity)
   // REQUIRES: overlap between circle and rectangle

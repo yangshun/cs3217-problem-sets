@@ -15,8 +15,7 @@
 - (id)initWithObjects:(NSArray*)newObjects
              andWalls:(NSArray*)walls
            andGravity:(Vector2D*)g 
-          andTimeStep:(double)dt 
-          andObserver:(UIViewController*)worldObserver{
+          andTimeStep:(double)dt {
   // MODIFIES: PhysicsWorld object (state)
   // REQUIRES: parameters to be non-nil
   // EFFECTS: an array of PhysicsRect objects (blocks and walls) are stored
@@ -26,10 +25,7 @@
     blockArray = newObjects;
     gravity = g;
     timeStep = dt;
-    [[NSNotificationCenter defaultCenter] addObserver:worldObserver
-                                             selector:@selector(updateViewObjectPositions:) 
-                                                 name:@"MoveBodies"
-                                               object:nil];
+
     wallArray = walls;
     for (PhysicsShape *block in blockArray) {
       // give a timestep to all blocks in the area
@@ -43,7 +39,6 @@
   // MODIFIES: position of the blocks based on inter-block collisions
   // REQUIRES: timer to be started, timestep > 0
   // EFFECTS: the position of each PhysicsShape object is updated
-  
   for (int i = 0; i < [blockArray count]; i++) {
     // iterate through each block and initialize its velocities (linear and angular)
     // based on external forces and torques acting on it
@@ -51,36 +46,23 @@
     PhysicsShape *shapeA = [blockArray objectAtIndex:i];
     [shapeA updateVelocity:gravity withForce:[Vector2D vectorWith:0 y:0]];
     [shapeA updateAngularVelocity:0];
-
-    for (int j = 0; j < [blockArray count]; j++) {
-      if (i != j) {
-        // test current shape for overlap with other shapes
-        PhysicsShape *shapeB = [blockArray objectAtIndex:j];
-        if ([shapeA isKindOfClass:[PhysicsCircle class]]) {
-          if ([shapeB isKindOfClass:[PhysicsCircle class]]) {
-            // circle-circle interaction
-            if ([(PhysicsCircle*)shapeA testOverlapCircle:(PhysicsCircle*)shapeB]) {
-              NSLog(@"circle-circle");
-              for (int k = 0; k < 5; k++) {
-                [shapeA applyImpulses];
-              }
-            }
-          } else {
-            // circle-rectangle interaction
-            if ([(PhysicsCircle*)shapeA testOverlap:(PhysicsRect*)shapeB]) {
-              NSLog(@"circle-rect");
-              for (int k = 0; k < 5; k++) {
-                [shapeA applyImpulses];
-              }
-            }
-          }
-        } else if (![shapeB isKindOfClass:[PhysicsCircle class]] && [shapeA testOverlap:shapeB]) {
-          // do not allow shapeB to be circles, hence rectangle-circle disallowed
-          // rectangle-rectangle interaction
-          NSLog(@"rect-rect");
+  
+    for (int j = i + 1; j < [blockArray count]; j++) {
+      // test current shape for overlap with other shapes
+      PhysicsShape *shapeB = [blockArray objectAtIndex:j];
+      if ([shapeB isKindOfClass:[PhysicsCircle class]]) {
+        if ([shapeB testOverlap:shapeA]) {
+          // circle-rectangle interaction
+          [self notifyViewForObjectCollisionsBetween:i andObject:j];
           for (int k = 0; k < 5; k++) {
-            [shapeA applyImpulses];
+            [shapeB applyImpulses];
           }
+        }
+      } else if ([shapeA testOverlap:shapeB]){
+        // rectangle-rectangle interaction
+        [self notifyViewForObjectCollisionsBetween:i andObject:j];
+        for (int k = 0; k < 5; k++) {
+          [shapeA applyImpulses];
         }
       }
     }
@@ -91,12 +73,28 @@
       if ([shapeA testOverlap:wallRect]) {
         // if overlapping, apply impulses to shape
         [shapeA applyImpulses];
+        [self notifyViewForObjectCollisionsWithWall:i];
       }
       [shapeA moveBodies];
     }
   }
   // notify the view to update the state of the rectangles in the view
   [[NSNotificationCenter defaultCenter] postNotificationName:@"MoveBodies" object:blockArray];
+}
+
+- (void)notifyViewForObjectCollisionsBetween:(int)index1 andObject:(int)index2 {
+  
+  NSNumber *indexOne = [[NSNumber alloc] initWithInt:index1];
+  NSNumber *indexTwo = [[NSNumber alloc] initWithInt:index2];
+  
+  NSArray *collisionIndices = [[NSArray alloc] initWithObjects:indexOne, indexTwo, nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"ObjectObjectCollision" object:collisionIndices];
+}
+
+- (void)notifyViewForObjectCollisionsWithWall:(int)index1 {
+  
+  NSNumber *index = [[NSNumber alloc] initWithInt:index1];
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"ObjectWallCollision" object:index];
 }
 
 @end

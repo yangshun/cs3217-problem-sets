@@ -28,6 +28,7 @@ typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
   CGFloat rotatedState;
   CGFloat prevRotatedState;
   BOOL insideGameArea;
+  BOOL alive;
   
   CGPoint prevPanPoint;
   CGFloat prevPinchScale;
@@ -66,5 +67,7 @@ typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
   // MODIFIES: object model (size)
   // REQUIRES: game in designer mode, object in game area
   // EFFECTS: the object is scaled up/down with a pinch gesture
+
+- (void)destroyObject;
 
 @end

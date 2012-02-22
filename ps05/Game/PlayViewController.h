@@ -15,6 +15,8 @@
 #import "GameBreathe.h"
 #import "GameFireButton.h"
 #import "PhysicsWorld.h"
+#import "TextAnimation.h"
+#import "TextBalloon.h"
 
 @interface PlayViewController : UIViewController {
   
@@ -24,8 +26,11 @@
   GameBar *barController;
   GameBreathe *breatheController;
   UIImageView *directionDegree;
+  UIImageView *powerBoard;
   GameFireButton *fireButtonController;
   NSMutableArray *objectsInGameArea;
+  
+  TextBalloon *balloon;
   
   PhysicsWorld *gameareaWorld;
   NSArray *wallRectArray;
@@ -44,6 +49,7 @@
 - (void)initializeTimer;
 - (void)toggleShootingGuide;
 - (void)addBreatheProjectile;
+- (void)removeGameObject:(GameObject*)obj;
 
 @property (nonatomic, weak) IBOutlet UIScrollView *gamearea;
 

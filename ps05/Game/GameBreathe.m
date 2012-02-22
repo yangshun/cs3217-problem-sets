@@ -20,6 +20,7 @@
   if (self) {
     [self removeAllGestureRecognizers];
     currentSpriteFrame = 0;
+    gameObjView.contentMode = UIViewContentModeScaleAspectFit;
   }
   return self;
 }
@@ -49,20 +50,28 @@
   UIImageView *breatheImageView = [[UIImageView alloc] initWithImage:[breatheSprite objectAtIndex:0]];
   breatheImageView.animationImages = breatheSprite;
   breatheImageView.animationDuration = 0.5;
-  breatheImageView.animationRepeatCount = 0;
+  breatheImageView.animationRepeatCount = 10;
   breatheImageView.frame = frame;
   return breatheImageView;
 }
 
-- (void)startBreathe {
+- (void)breatheTravelAnimation {
   [self.gameObjView startAnimating];
 }
 
-- (void)breatheAnimation {
-  currentSpriteFrame++;
-  currentSpriteFrame %= 4;
-  gameObjView.image = [breatheSprite objectAtIndex:currentSpriteFrame];
+- (void)breatheDisperseAnimation {
+  if (alive) {    
+    [self.gameObjView stopAnimating];
+    self.view.transform = CGAffineTransformScale(self.view.transform, 2, 2);
+    self.gameObjView = [[UIImageView alloc] initWithImage:[breatheSpriteDisperse objectAtIndex:0]];
+    self.gameObjView.animationImages = breatheSpriteDisperse;
+    self.gameObjView.animationDuration = 1.0;
+    self.gameObjView.animationRepeatCount = INFINITY;
+    self.view = self.gameObjView;
+    [self.gameObjView startAnimating];
+    [self performSelector:@selector(destroyObject) withObject:nil afterDelay:1.0];
+    alive = NO;
+  }
 }
-
 
 @end

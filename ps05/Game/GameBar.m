@@ -18,7 +18,6 @@
   
   if (self) {
     insideGameArea = YES;
-    self.view.transform = CGAffineTransformMakeRotation(M_PI_2);
     [self.view removeGestureRecognizer:objDoubleTap];
     [self.view removeGestureRecognizer:objRotate];
     [self.view removeGestureRecognizer:objZoom];
@@ -28,7 +27,7 @@
 
 - (UIImageView*)barImageView:(CGRect)frame {
   // returns an UIImageView of this GameObject subclass at the specified position
-  barImage = [UIImage imageNamed:@"breath-bar.png"];
+  barImage = [UIImage imageNamed:@"breath-bar-big.png"];
   UIImageView *barImageView = [[UIImageView alloc] initWithImage:barImage];
   barImageView.frame = frame;
   return barImageView;
@@ -41,11 +40,17 @@
   
   CGPoint curr = [gesture locationInView:self.view.superview];
   
+  if (curr.x > 396) {
+    curr.x = 396;
+  } else if (curr.x < 153) {
+    curr.x = 153;
+  }
+  
   self.view.frame = CGRectMake(self.view.frame.origin.x, 
                                self.view.frame.origin.y, 
                                curr.x - self.view.frame.origin.x, 
                                self.view.frame.size.height);
-    
+  
   if (gesture.state == UIGestureRecognizerStateBegan) {
     gameObjView.image = barImage;
   }
