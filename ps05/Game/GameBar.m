@@ -40,8 +40,8 @@
   
   CGPoint curr = [gesture locationInView:self.view.superview];
   
-  if (curr.x > 396) {
-    curr.x = 396;
+  if (curr.x > 395) {
+    curr.x = 395;
   } else if (curr.x < 153) {
     curr.x = 153;
   }

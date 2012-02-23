@@ -8,6 +8,8 @@
 
 // Constants for the three game objects to be implemented
 typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
+typedef enum {kPreGameStart, kGameAlive, kGameDead} GameObjectState;
+typedef enum {kAwaitingEvent, kEventOccurred} GameResponseState;
 
 @protocol mainViewControllerDelegate <NSObject>
 
@@ -28,7 +30,8 @@ typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
   CGFloat rotatedState;
   CGFloat prevRotatedState;
   BOOL insideGameArea;
-  BOOL alive;
+  GameObjectState objectState;
+  GameResponseState responseState;
   
   CGPoint prevPanPoint;
   CGFloat prevPinchScale;
@@ -41,6 +44,8 @@ typedef enum {kGameObjectWolf, kGameObjectPig, kGameObjectBlock} GameObjectType;
   id<mainViewControllerDelegate> delegate;
 }
 
+@property (nonatomic, readwrite) GameResponseState responseState;
+@property (nonatomic, readwrite) GameObjectState objectState;
 @property (nonatomic, readwrite) BOOL insideGameArea;
 @property (nonatomic, strong) UIImageView *gameObjView;
 @property (nonatomic, retain) id delegate;

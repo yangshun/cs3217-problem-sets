@@ -60,7 +60,7 @@
 }
 
 - (void)breatheDisperseAnimation {
-  if (alive) {    
+  if (objectState == kGameAlive) {    
     [self.gameObjView stopAnimating];
     self.view.transform = CGAffineTransformScale(self.view.transform, 2, 2);
     self.gameObjView = [[UIImageView alloc] initWithImage:[breatheSpriteDisperse objectAtIndex:0]];
@@ -70,7 +70,7 @@
     self.view = self.gameObjView;
     [self.gameObjView startAnimating];
     [self performSelector:@selector(destroyObject) withObject:nil afterDelay:1.0];
-    alive = NO;
+    objectState = kGameDead;
   }
 }
 

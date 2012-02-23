@@ -96,7 +96,7 @@
 }
 
 - (void)wolfDieAnimation {
-  if(alive) {
+  if(objectState == kGameAlive) {
     self.view.transform = CGAffineTransformScale(self.view.transform, 1.2, 1.2);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleShootingGuide" object:nil];
     
@@ -108,7 +108,7 @@
     
     [self.gameObjView startAnimating];
     [self performSelector:@selector(destroyObject) withObject:nil afterDelay:3.0];
-    alive = NO;
+    objectState = kGameDead;
   }
 }
 @end

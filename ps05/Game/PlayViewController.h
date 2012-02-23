@@ -17,6 +17,7 @@
 #import "PhysicsWorld.h"
 #import "TextAnimation.h"
 #import "TextBalloon.h"
+#import "CloudFactory.h"
 
 @interface PlayViewController : UIViewController {
   
@@ -31,6 +32,7 @@
   NSMutableArray *objectsInGameArea;
   
   TextBalloon *balloon;
+  CloudFactory *cloudGenerator;
   
   PhysicsWorld *gameareaWorld;
   NSArray *wallRectArray;
@@ -45,6 +47,7 @@
 - (id)initWithWolf:(GameWolf*)wolf 
                Pig:(GamePig*)pig 
             Blocks:(NSMutableArray*)blocks;
+- (PhysicsRect*)createPhysicsObjectFromGameObject:(GameObject*)obj;
 - (void)setUpGamearea;
 - (void)initializeTimer;
 - (void)toggleShootingGuide;

@@ -63,7 +63,6 @@
     [pigSprite addObject:croppedSmoke];
   }
  
-  
   UIImageView *gamePigImageView = [[UIImageView alloc]initWithImage:[pigSprite objectAtIndex:0]];
   gamePigImageView.animationImages = pigSprite;
   gamePigImageView.animationDuration = 2;
@@ -73,10 +72,10 @@
 }
 
 - (void)pigDieAnimation {
-  if (alive) {
+  if (objectState == kGameAlive) {
     [self.gameObjView startAnimating];
     [self performSelector:@selector(destroyObject) withObject:nil afterDelay:1.9];
-    alive = NO;
+    objectState = kGameDead;
   }
 }
 

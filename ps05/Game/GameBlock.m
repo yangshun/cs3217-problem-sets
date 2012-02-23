@@ -118,7 +118,7 @@
 }
 
 - (void)strawBreakAnimation {
-  if (alive) {
+  if (objectState == kGameAlive) {
     self.gameObjView = [[UIImageView alloc] initWithImage:[strawSpriteBreak objectAtIndex:0]];
     self.gameObjView.animationImages = strawSpriteBreak;
     self.gameObjView.animationDuration = 1.0;
@@ -127,7 +127,7 @@
     [self.gameObjView startAnimating];
     self.view = self.gameObjView;
     [self performSelector:@selector(destroyObject) withObject:nil afterDelay:1.0];
-    alive = NO;
+    objectState = kGameDead;
   }
 }
 

@@ -76,6 +76,9 @@
 		6DEB1AE614F4CB3900F5D700 /* fire-button-pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DEB1AE314F4CB3700F5D700 /* fire-button-pressed.png */; };
 		6DEB1AE714F4CB3900F5D700 /* fire-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DEB1AE414F4CB3800F5D700 /* fire-button.png */; };
 		6DEB1AF014F4D8C700F5D700 /* power-board.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DEB1AEF14F4D8C700F5D700 /* power-board.png */; };
+		6DEB1AF214F4F13300F5D700 /* straw-break.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DEB1AF114F4F13300F5D700 /* straw-break.png */; };
+		6DEB1AF514F5C7AC00F5D700 /* CloudFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DEB1AF414F5C7AB00F5D700 /* CloudFactory.m */; };
+		6DEB1AF814F5D33B00F5D700 /* CloudObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DEB1AF714F5D33A00F5D700 /* CloudObject.m */; };
 		6DF376DB14DA18C5009B2139 /* FileDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DF376DA14DA18C4009B2139 /* FileDataController.m */; };
 		6DF8EABC14F34EFD0027E0E6 /* huff-and-puff-away.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DF8EABB14F34EFD0027E0E6 /* huff-and-puff-away.png */; };
 		6DF8EAC014F352CE0027E0E6 /* TextAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DF8EABF14F352CE0027E0E6 /* TextAnimation.m */; };
@@ -184,6 +187,11 @@
 		6DEB1AE314F4CB3700F5D700 /* fire-button-pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fire-button-pressed.png"; sourceTree = "<group>"; };
 		6DEB1AE414F4CB3800F5D700 /* fire-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fire-button.png"; sourceTree = "<group>"; };
 		6DEB1AEF14F4D8C700F5D700 /* power-board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "power-board.png"; path = "../Images/power-board.png"; sourceTree = "<group>"; };
+		6DEB1AF114F4F13300F5D700 /* straw-break.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "straw-break.png"; path = "../Images/straw-break.png"; sourceTree = "<group>"; };
+		6DEB1AF314F5C7AA00F5D700 /* CloudFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudFactory.h; sourceTree = "<group>"; };
+		6DEB1AF414F5C7AB00F5D700 /* CloudFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudFactory.m; sourceTree = "<group>"; };
+		6DEB1AF614F5D33800F5D700 /* CloudObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudObject.h; sourceTree = "<group>"; };
+		6DEB1AF714F5D33A00F5D700 /* CloudObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudObject.m; sourceTree = "<group>"; };
 		6DF376D914DA18C4009B2139 /* FileDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileDataController.h; sourceTree = "<group>"; };
 		6DF376DA14DA18C4009B2139 /* FileDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileDataController.m; sourceTree = "<group>"; };
 		6DF8EABB14F34EFD0027E0E6 /* huff-and-puff-away.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "huff-and-puff-away.png"; sourceTree = "<group>"; };
@@ -248,6 +256,7 @@
 				6DEB1AEF14F4D8C700F5D700 /* power-board.png */,
 				6DB0023414ECB5DA004F36EC /* stone.png */,
 				6DB0023514ECB5DA004F36EC /* straw.png */,
+				6DEB1AF114F4F13300F5D700 /* straw-break.png */,
 				6DEB1ADE14F4C10D00F5D700 /* text-ahhh.png */,
 				6DEB1ADF14F4C11000F5D700 /* text-howl.png */,
 				6DEB1AD914F4A93200F5D700 /* text-ouch.png */,
@@ -298,6 +307,7 @@
 				6DDAADCA14F1369A004D3C3E /* Physics Engine */,
 				6DDAADC914F13672004D3C3E /* Math2D */,
 				6D2526AB14CDD8690094A022 /* Images */,
+				6DEB1AF914F5E06200F5D700 /* Cloud Maker */,
 				6DDAADCF14F137D0004D3C3E /* Game Objects */,
 				6DA8FE0914C5FA16009BD349 /* AppDelegate.h */,
 				6DA8FE0A14C5FA16009BD349 /* AppDelegate.m */,
@@ -381,23 +391,34 @@
 			children = (
 				6D79D04914D3C4DD005A6126 /* GameObject.h */,
 				6D79D04014D3A935005A6126 /* GameObject.m */,
-				6D79D0AF14D7EF13005A6126 /* GameBlock.h */,
-				6D79D0B014D7EF14005A6126 /* GameBlock.m */,
-				6DD7F49F14F27306001EE8EE /* GameBreathe.h */,
-				6DD7F4A014F27306001EE8EE /* GameBreathe.m */,
-				6D79D0AB14D7E1BB005A6126 /* GamePig.h */,
-				6D79D0AC14D7E1BC005A6126 /* GamePig.m */,
 				6DB0022B14ECB58B004F36EC /* GameArrow.h */,
 				6DB0022C14ECB58B004F36EC /* GameArrow.m */,
 				6DB0024C14ECF0AA004F36EC /* GameBar.h */,
 				6DB0024D14ECF0AA004F36EC /* GameBar.m */,
+				6D79D0AF14D7EF13005A6126 /* GameBlock.h */,
+				6D79D0B014D7EF14005A6126 /* GameBlock.m */,
+				6DD7F49F14F27306001EE8EE /* GameBreathe.h */,
+				6DD7F4A014F27306001EE8EE /* GameBreathe.m */,
 				6DDAADE014F23B8F004D3C3E /* GameFireButton.h */,
 				6DDAADE114F23B8F004D3C3E /* GameFireButton.m */,
+				6D79D0AB14D7E1BB005A6126 /* GamePig.h */,
+				6D79D0AC14D7E1BC005A6126 /* GamePig.m */,
 				6D79D05314D3CDB2005A6126 /* GameWolf.h */,
 				6D79D05414D3CDB2005A6126 /* GameWolf.m */,
 			);
 			name = "Game Objects";
 			path = images;
+			sourceTree = "<group>";
+		};
+		6DEB1AF914F5E06200F5D700 /* Cloud Maker */ = {
+			isa = PBXGroup;
+			children = (
+				6DEB1AF614F5D33800F5D700 /* CloudObject.h */,
+				6DEB1AF714F5D33A00F5D700 /* CloudObject.m */,
+				6DEB1AF314F5C7AA00F5D700 /* CloudFactory.h */,
+				6DEB1AF414F5C7AB00F5D700 /* CloudFactory.m */,
+			);
+			name = "Cloud Maker";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -514,6 +535,7 @@
 				6DEB1AE614F4CB3900F5D700 /* fire-button-pressed.png in Resources */,
 				6DEB1AE714F4CB3900F5D700 /* fire-button.png in Resources */,
 				6DEB1AF014F4D8C700F5D700 /* power-board.png in Resources */,
+				6DEB1AF214F4F13300F5D700 /* straw-break.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +591,8 @@
 				6DD7F4A114F27307001EE8EE /* GameBreathe.m in Sources */,
 				6DF8EAC014F352CE0027E0E6 /* TextAnimation.m in Sources */,
 				6DEB1ADD14F4AC0900F5D700 /* TextBalloon.m in Sources */,
+				6DEB1AF514F5C7AC00F5D700 /* CloudFactory.m in Sources */,
+				6DEB1AF814F5D33B00F5D700 /* CloudObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

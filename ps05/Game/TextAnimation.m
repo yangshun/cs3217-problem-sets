@@ -8,7 +8,7 @@
 
 #import "TextAnimation.h"
 
-#define kAnimationStep 76
+#define kAnimationStep 120
 
 @implementation TextAnimation
 

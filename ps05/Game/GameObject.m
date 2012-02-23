@@ -15,6 +15,8 @@
 
 @implementation GameObject
 
+@synthesize responseState;
+@synthesize objectState;
 @synthesize insideGameArea;
 @synthesize gameObjView;
 @synthesize delegate;
@@ -29,7 +31,7 @@
     self.gameObjView = objView;
     self.view = gameObjView;
     insideGameArea = NO;
-    alive = YES;
+    objectState = kGameAlive;
   
     objDrag = [[UIPanGestureRecognizer alloc]initWithTarget:self 
                                                      action:@selector(translate:)];
