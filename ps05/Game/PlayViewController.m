@@ -25,9 +25,30 @@
 {
   self = [super init];
   if (self) {
-    wolfController = wolf;
-    pigController = pig;
-    objectsInGameArea = blocks;
+    wolfController = [[GameWolf alloc] initWithFrame:wolf.view.frame 
+                                         andRotation:wolf.rotatedState 
+                                            andState:wolf.insideGameArea];
+    
+    pigController = [[GamePig alloc] initWithFrame:pig.view.frame
+                                       andRotation:pig.rotatedState
+                                          andState:pig.insideGameArea];
+   
+    objectsInGameArea = [[NSMutableArray alloc] init];
+    
+    for (GameBlock* block in blocks) {
+      [block customRotation:-block.rotatedState];   
+      CGRect tempBlockFrame = block.view.frame;
+      CGFloat tempBlockRotation = block.rotatedState;
+      blockObjectType tempBlockType = block.blockType;
+
+
+      GameBlock *tempBlock = [[GameBlock alloc] initWithFrame:tempBlockFrame 
+                                                  andRotation:tempBlockRotation 
+                                                 andBlockType:tempBlockType];
+      [block customRotation:block.rotatedState];
+      [objectsInGameArea addObject:tempBlock];
+    }
+    
     [objectsInGameArea addObject:pigController];
     [objectsInGameArea addObject:wolfController];
   }
@@ -45,10 +66,10 @@
 
 #pragma mark - View lifecycle
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+- (void)viewDidLoad {
+  
+  [super viewDidLoad];
+  // Do any additional setup after loading the view from its nib.
   
   // Do any additional setup after loading the view, typically from a nib.
   UIImage *bgImage = [UIImage imageNamed:@"background.png"];
@@ -84,6 +105,16 @@
   livesBoard = [[WolfLives alloc] initWithLives:1];
   [livesBoard displayLives];
   [scoreboard addSubview:livesBoard.view];
+  
+  miniBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
+  miniBackButton.frame = CGRectMake(25, 20, 80, 39);
+  [miniBackButton addTarget:self 
+                     action:@selector(backToLevelDesigner) 
+           forControlEvents:UIControlEventTouchUpInside];
+  miniBackButton.backgroundColor = [UIColor clearColor];
+  UIImage *miniBackButtonImage = [UIImage imageNamed:@"button-back.png"];
+  [miniBackButton setImage:miniBackButtonImage forState:UIControlStateNormal];
+  [scoreboard addSubview:miniBackButton];
   
   // Add these views as subviews of the gamearea.
   [gamearea addSubview:background];
@@ -122,7 +153,7 @@
                                                         andView:nil];
   wallRectArray = [[NSArray alloc] initWithObjects:wallGround, nil];
   
-  gameareaTimeStep = 1.0f/120.0f;
+  gameareaTimeStep = 1.0f / 120.0f;
   gameareaWorld = [[PhysicsWorld alloc] initWithObjects:physicsObjectArray
                                                andWalls:wallRectArray 
                                              andGravity:[Vector2D vectorWith:0 y:400]
@@ -162,6 +193,19 @@
 
   [self performSelector:@selector(setUpGamearea) withObject:nil afterDelay:2.0];
   outcome = kOutcomeUndetermined;
+  
+  backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+  backButton.frame = CGRectMake(0, 0, 200, 100);
+  [backButton addTarget:self 
+                 action:@selector(backToLevelDesigner) 
+       forControlEvents:UIControlEventTouchUpInside];
+  backButton.backgroundColor = [UIColor clearColor];
+  UIImage *backButtonImage = [UIImage imageNamed:@"button-back-pink.png"];
+  [backButton setImage:backButtonImage forState:UIControlStateNormal];
+  backButton.center = CGPointMake(512, 926);
+ 
+  NSLog(@"obj: %d", [objectsInGameArea count]);
+  NSLog(@"phy: %d", [physicsObjectArray count]);
 }
 
 - (PhysicsRect*)createPhysicsObjectFromGameObject:(GameObject*)obj {
@@ -512,7 +556,7 @@
     victoryTextView.frame = CGRectMake(-810, 375, 213, 28);
     [self.view addSubview:victoryTextView];
     [UIView animateWithDuration:1.0
-                          delay:0.0
+                          delay:1.0
                         options:UIViewAnimationOptionCurveEaseIn 
                      animations:^{ 
                        victoryTextView.center = CGPointMake(512, 389);
@@ -524,6 +568,15 @@
     [gamearea addSubview:textBalloon];
     [powerBoard removeFromSuperview];
     outcome = kOutcomeVictory;
+    
+    [self.view addSubview:backButton];
+    [UIView animateWithDuration:0.5
+                          delay:1.5
+                        options:UIViewAnimationOptionCurveEaseIn 
+                     animations:^{ 
+                       backButton.center = CGPointMake(512, 500);
+                     } 
+                     completion:^(BOOL finished){}];
   }
 }
 
@@ -550,7 +603,33 @@
     [gamearea addSubview:textBalloon];
     [powerBoard removeFromSuperview];
     outcome = kOutcomeLose;
+    
+    [self.view addSubview:backButton];
+    [UIView animateWithDuration:0.5
+                          delay:1.5
+                        options:UIViewAnimationOptionCurveEaseIn 
+                     animations:^{ 
+                       backButton.center = CGPointMake(512, 500);
+                     } 
+                     completion:^(BOOL finished){}];
   }
+}
+
+- (void)backToLevelDesigner {
+  wolfController = nil;
+  pigController = nil;
+  for (int i = 0; i < [objectsInGameArea count]; i++) {
+    [objectsInGameArea removeLastObject];
+  }
+  objectsInGameArea = nil;
+  for (int i = 0; i < [physicsObjectArray count]; i++) {
+    [physicsObjectArray removeLastObject];
+  }
+  physicsObjectArray = nil;
+  gameareaWorld = nil;
+  self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+  [self dismissViewControllerAnimated:YES completion:^(void){}];
+
 }
 
 - (void)viewDidUnload

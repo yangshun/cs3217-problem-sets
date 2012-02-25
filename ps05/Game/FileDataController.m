@@ -36,9 +36,11 @@
   NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] 
                                initForWritingWithMutableData:data];
   [archiver encodeCGRect:wolfController.view.frame forKey:@"wolfFrame"];
+  [archiver encodeFloat:wolfController.rotatedState forKey:@"wolfRot"];
   [archiver encodeBool:wolfController.insideGameArea forKey:@"wolfState"];
   
   [archiver encodeCGRect:pigController.view.frame forKey:@"pigFrame"];
+  [archiver encodeFloat:pigController.rotatedState forKey:@"pigRot"];
   [archiver encodeBool:pigController.insideGameArea forKey:@"pigState"];
   
   [archiver encodeInt:[blocksInGameArea count] forKey:@"blockCount"];
@@ -75,15 +77,19 @@
                                    initForReadingWithData:data];
   
   CGRect loadedWolfFrame = [unarchiver decodeCGRectForKey:@"wolfFrame"];
+  CGFloat loadedWolfRotation = [unarchiver decodeFloatForKey:@"wolfRot"];
   BOOL loadedWolfState = [unarchiver decodeBoolForKey:@"wolfState"];
   
   wolfController = [[GameWolf alloc] initWithFrame:loadedWolfFrame
+                                       andRotation:loadedWolfRotation 
                                           andState:loadedWolfState];
   
   CGRect loadedPigFrame = [unarchiver decodeCGRectForKey:@"pigFrame"];
+  CGFloat loadedPigRotation = [unarchiver decodeFloatForKey:@"pigRot"];
   BOOL loadedPigState = [unarchiver decodeBoolForKey:@"pigState"];
   
   pigController = [[GamePig alloc] initWithFrame:loadedPigFrame 
+                                     andRotation:loadedPigRotation 
                                         andState:loadedPigState];
   
   blockController = [[GameBlock alloc] init];

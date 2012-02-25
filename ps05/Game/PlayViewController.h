@@ -16,7 +16,6 @@
 #import "GameFireButton.h"
 #import "WolfLives.h"
 #import "PhysicsWorld.h"
-#import "TextAnimator.h"
 #import "TextBalloon.h"
 #import "CloudFactory.h"
 
@@ -26,6 +25,8 @@ typedef enum {kOutcomeUndetermined, kOutcomeVictory, kOutcomeLose} GameOutcome;
   
   UIImageView *scoreboard;
   WolfLives *livesBoard;
+  UIButton *backButton;
+  UIButton *miniBackButton;
   
   GameWolf *wolfController;
   GamePig *pigController;

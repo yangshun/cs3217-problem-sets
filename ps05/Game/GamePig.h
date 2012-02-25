@@ -13,7 +13,9 @@
 
 }
 
-- (id)initWithFrame:(CGRect)customFrame andState:(BOOL)state;
+- (id)initWithFrame:(CGRect)customFrame 
+        andRotation:(CGFloat)rotation 
+           andState:(BOOL)state; 
 - (UIImageView*)pigImageView:(CGRect)frame;
 - (void)pigDieAnimation;
 - (CGRect)frameInGameArea:(CGPoint)point;

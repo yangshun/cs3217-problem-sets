@@ -7,41 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GameObject.h"
-#import "GameWolf.h"
-#import "GamePig.h"
-#import "GameBlock.h"
+#import <AVFoundation/AVFoundation.h>
 
-#import "FileDataController.h"
-#import "PlayViewController.h"
+#import "CloudFactory.h"
+#import "DesignViewController.h"
 
-#define START 1
-#define SAVE 2
-#define LOAD 3
-#define RESET 4
-
-@interface GameViewController : UIViewController <UIAlertViewDelegate> {
+@interface GameViewController : UIViewController <UIAlertViewDelegate, 
+                                                  AVAudioPlayerDelegate> {
   
-  UIImageView* palette;
-
-  GameWolf *wolfController;
-  GamePig *pigController;
-  GameBlock *blockController;
-  
-  GameObject *newObject;
-  NSMutableArray *blocksInGameArea;
-  FileDataController *fileDataManager;
-  
-  PlayViewController *playView;
-  
+  CloudFactory *cloudGenerator;
+  UIImageView *gameLogo;
+  UIButton *startGameButton;
+  UIButton *designLevelButton;
+  AVAudioPlayer *audioPlayer;
 }
 
-- (IBAction)buttonPressed:(id)sender;
-- (void)dropView:(GameObject*)viewCall;
-- (void)setUpPalette;
+-(void)doVolumeFade;
 
-@property (nonatomic, weak) IBOutlet UITextField *levelName;
-@property (nonatomic, weak) IBOutlet UIScrollView *gamearea;
-@property (nonatomic, strong) IBOutlet UIImageView *palette;
 
 @end

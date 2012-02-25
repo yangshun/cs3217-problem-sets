@@ -25,15 +25,20 @@
   return self;
 }
    
-- (id)initWithFrame:(CGRect)customFrame andState:(BOOL)state {
+- (id)initWithFrame:(CGRect)customFrame 
+        andRotation:(CGFloat)rotation
+           andState:(BOOL)state {
   // custom initializer
-  // object will appear in gamearea at specified frame
+  // object will appear in gamearea at specified frame and rotation
   self = [super initWithObject:[self wolfImageView:customFrame]];
   
   if (self) {
     objectType = kGameObjectWolf;
     centerPointInPalette = CGPointMake(95, 70);
     insideGameArea = state;
+    if (insideGameArea) {
+      [self customRotation:rotation];
+    }
   }
   return self;
 }

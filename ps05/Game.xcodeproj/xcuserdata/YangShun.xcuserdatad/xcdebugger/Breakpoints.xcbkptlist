@@ -93,12 +93,26 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Game/PlayViewController.m"
-         timestampString = "351833096.95803"
+         timestampString = "351859566.612672"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "338"
-         endingLineNumber = "338"
+         startingLineNumber = "382"
+         endingLineNumber = "382"
          landmarkName = "-handleObjectObjectCollisions:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Game/DesignViewController.m"
+         timestampString = "351858026.941344"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "427"
+         endingLineNumber = "427"
+         landmarkName = "-resetLevel"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

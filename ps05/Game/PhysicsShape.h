@@ -77,6 +77,10 @@ typedef enum {ax, ay, bx, by} VectorDiffComponent;
 // REQUIRES: angular velocity != nil
 // EFFECTS: the angular velocity of the object is updated
 
+- (BOOL)testOverlap:(PhysicsShape*)other;
+// REQUIRES: other != nil
+// EFFECTS: tests whether this rectangle is overlapping with another rectangle
+
 - (void)applyImpulses;
 // MODIFIES: PhysicsShape object (linear velocity and angular velocity)
 // REQUIRES: at least one contact point

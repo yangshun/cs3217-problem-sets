@@ -18,7 +18,9 @@
   BOOL dead;
 }
 
-- (id)initWithFrame:(CGRect)customFrame andState:(BOOL)state;
+- (id)initWithFrame:(CGRect)customFrame 
+        andRotation:(CGFloat)rotation
+           andState:(BOOL)state; 
 - (UIImageView*)wolfImageView:(CGRect)frame;
 - (CGRect)frameInGameArea:(CGPoint)point;
 - (void)startWolfBlow;
