@@ -28,6 +28,8 @@
     gravity = g;
     timeStep = dt;
     accelerometerActivated = NO;
+    // TA: It should be the main view controller which add the observer
+    // for the notification.
     [[NSNotificationCenter defaultCenter] addObserver:worldObserver
                                              selector:@selector(updateViewRectPositions:) 
                                                  name:@"MoveBodies"
