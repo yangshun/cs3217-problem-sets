@@ -46,7 +46,6 @@
     [self.view addSubview:heartImageView];
     [livesCount addObject:heartImageView];
   }
-  
 }
 
 - (void)deductLife {
@@ -57,6 +56,8 @@
   } else {
     [[NSNotificationCenter defaultCenter] performSelector:@selector(postNotificationName:object:) withObject:@"GameOver" afterDelay:1.5];
   }
+  
+  NSLog(@"%d", lives);
 }
 
 - (void)didReceiveMemoryWarning

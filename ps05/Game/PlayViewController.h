@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
+
 #import "GameWolf.h"
 #import "GamePig.h"
 #import "GameBlock.h"
@@ -21,7 +23,7 @@
 
 typedef enum {kOutcomeUndetermined, kOutcomeVictory, kOutcomeLose} GameOutcome;
 
-@interface PlayViewController : UIViewController {
+@interface PlayViewController : UIViewController <AVAudioPlayerDelegate> {
   
   UIImageView *scoreboard;
   WolfLives *livesBoard;
@@ -51,6 +53,8 @@ typedef enum {kOutcomeUndetermined, kOutcomeVictory, kOutcomeLose} GameOutcome;
   
   NSTimer *breatheTimer;
   GameOutcome outcome;
+  
+  AVAudioPlayer *audioPlayer;
 }
 
 - (id)initWithWolf:(GameWolf*)wolf 
@@ -64,6 +68,7 @@ typedef enum {kOutcomeUndetermined, kOutcomeVictory, kOutcomeLose} GameOutcome;
 - (void)removeGameObject:(GameObject*)obj;
 - (void)victory;
 - (void)gameOver;
+- (void)fadeMusic;
 
 @property (nonatomic, weak) IBOutlet UIScrollView *gamearea;
 

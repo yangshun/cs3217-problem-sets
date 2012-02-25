@@ -18,13 +18,15 @@
   GamePig* pigController;
   GameBlock* blockController;
   NSMutableArray* blocksInGameArea;
+  FileDataController *savedLevelManager;
   
 }
 
 - (NSString*)dataFilePath:(NSString*)name;
 - (void)saveDataToArchivesWithLevelName:(NSString*)name;
 - (void)loadDataFromArchivesWithLevelName:(NSString*)name;
-
+- (void)loadSavedLevelWithFileName:(NSString*)name;
+- (void)unarchiveDataFromFilePath:(NSString*)filePath;
 
 @property (nonatomic, strong) GameWolf *wolfController;
 @property (nonatomic, strong) GamePig *pigController;

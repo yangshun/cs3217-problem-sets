@@ -60,7 +60,7 @@
 
   backButton = [UIButton buttonWithType:UIButtonTypeCustom];
   backButton.frame = CGRectMake(0, 0, 80, 39);
-  [backButton addTarget:self action:@selector(backToStartScreen) forControlEvents:UIControlEventTouchUpInside];
+  [backButton addTarget:self action:@selector(backToMainScreen) forControlEvents:UIControlEventTouchUpInside];
   backButton.backgroundColor = [UIColor clearColor];
   UIImage *backButtonImage = [UIImage imageNamed:@"button-back.png"];
   [backButton setImage:backButtonImage forState:UIControlStateNormal];
@@ -427,9 +427,9 @@
   [self setUpPalette];
 }
 
-- (void)backToStartScreen {
+- (void)backToMainScreen {
   self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-  [self dismissViewControllerAnimated:YES completion:^(void){}]; 
+  [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -451,7 +451,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  //[self resetLevel];
   playView = nil;
 }
 

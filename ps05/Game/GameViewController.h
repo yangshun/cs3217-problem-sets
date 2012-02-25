@@ -11,6 +11,7 @@
 
 #import "CloudFactory.h"
 #import "DesignViewController.h"
+#import "LevelSelectorViewController.h"
 
 @interface GameViewController : UIViewController <UIAlertViewDelegate, 
                                                   AVAudioPlayerDelegate> {
@@ -20,9 +21,10 @@
   UIButton *startGameButton;
   UIButton *designLevelButton;
   AVAudioPlayer *audioPlayer;
+  BOOL playAudioOnNextCall;
 }
 
--(void)doVolumeFade;
+-(void)toggleMusic;
 
 
 @end

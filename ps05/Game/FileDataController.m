@@ -62,12 +62,23 @@
                               toFile:[self dataFilePath:(NSString*)name]];
 }
 
--(void)loadDataFromArchivesWithLevelName:(NSString*)name {
+- (void)loadDataFromArchivesWithLevelName:(NSString*)name {
   // MODIFIES: GameViewController view
   // REQUIRES: file path to be valid
   // EFFECTS: modifies the state of the current GameObjects according to the saved state
-  NSMutableData *data;
   NSString *filePath = [self dataFilePath:name];
+  [self unarchiveDataFromFilePath:filePath]; 
+}
+
+- (void)loadSavedLevelWithFileName:(NSString*)name {
+  
+  NSString *filePath = [[NSBundle mainBundle] pathForResource:name ofType:@"txt"];
+  [self unarchiveDataFromFilePath:filePath]; 
+}
+
+- (void)unarchiveDataFromFilePath:(NSString*)filePath {
+    
+  NSMutableData *data;
   
   if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
     data = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
@@ -81,23 +92,21 @@
   BOOL loadedWolfState = [unarchiver decodeBoolForKey:@"wolfState"];
   
   wolfController = [[GameWolf alloc] initWithFrame:loadedWolfFrame
-                                       andRotation:loadedWolfRotation 
-                                          andState:loadedWolfState];
+                             andRotation:loadedWolfRotation 
+                                andState:loadedWolfState];
   
   CGRect loadedPigFrame = [unarchiver decodeCGRectForKey:@"pigFrame"];
   CGFloat loadedPigRotation = [unarchiver decodeFloatForKey:@"pigRot"];
   BOOL loadedPigState = [unarchiver decodeBoolForKey:@"pigState"];
   
   pigController = [[GamePig alloc] initWithFrame:loadedPigFrame 
-                                     andRotation:loadedPigRotation 
-                                        andState:loadedPigState];
-  
-  blockController = [[GameBlock alloc] init];
+                           andRotation:loadedPigRotation 
+                              andState:loadedPigState];
   
   int blocksCount = [unarchiver decodeIntForKey:@"blockCount"];
   
   blocksInGameArea = [[NSMutableArray alloc] initWithCapacity:blocksCount];
-
+  
   for (int i = 0; i < blocksCount; i++) {
     CGRect tempBlockFrame = [unarchiver decodeCGRectForKey:
                              [NSString stringWithFormat:@"blockObjFrame%d", i]];
@@ -112,6 +121,8 @@
   }
   
   [unarchiver finishDecoding];
+
+  
 }
 
 @end

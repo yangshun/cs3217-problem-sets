@@ -66,11 +66,27 @@
                    } 
                    completion:^(BOOL finished){}];
   
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(toggleMusic) 
+                                               name:@"ToggleMusic"
+                                             object:nil];
+  
+  NSString *filePath = [[NSBundle mainBundle] pathForResource:@"AcousticSunrise"
+                                                       ofType:@"caf"];
+  NSURL *url = [[NSURL alloc] initFileURLWithPath:filePath];
+  audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:url error:nil];
+  audioPlayer.delegate = self;
+  [audioPlayer prepareToPlay];
+  [audioPlayer setNumberOfLoops:INFINITY];
+  [audioPlayer play];
+  playAudioOnNextCall = NO;
+  
 }
 
 - (void)startGame {
-  
-  
+  LevelSelectorViewController *levelSelectorView = [[LevelSelectorViewController alloc] initWithNibName:nil bundle:nil];
+  levelSelectorView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+  [self presentViewController:levelSelectorView animated:YES completion:^(void){}];
 }
 
 - (void)designLevel {
@@ -88,27 +104,13 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
-  NSString *filePath = [[NSBundle mainBundle] pathForResource:@"AcousticSunrise"
-                                                       ofType:@"caf"];
-  NSURL *url = [[NSURL alloc] initFileURLWithPath:filePath];
-  audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:url error:nil];
-  audioPlayer.delegate = self;
-  [audioPlayer prepareToPlay];
-  [audioPlayer setNumberOfLoops:INFINITY];
-  [audioPlayer play];
-}
+-(void)toggleMusic { 
 
-- (void)viewDidDisappear:(BOOL)animated {
-  [super viewDidDisappear:animated];
-  [self doVolumeFade];
-}
-
--(void)doVolumeFade {  
-  if (audioPlayer.volume > 0.1) {
-    audioPlayer.volume = audioPlayer.volume - 0.1;
-    [self performSelector:@selector(doVolumeFade) withObject:nil afterDelay:0.1];           
+  if (!audioPlayer.playing) {
+    [audioPlayer play];
+  } else if (audioPlayer.volume >= 0.1) {
+    audioPlayer.volume -= 0.1;
+    [self performSelector:@selector(toggleMusic) withObject:nil afterDelay:0.1];           
   } else {
     // Stop and get the sound ready for playing again
     [audioPlayer stop];

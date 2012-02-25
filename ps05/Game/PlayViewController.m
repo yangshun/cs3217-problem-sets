@@ -102,7 +102,7 @@
   scoreboard.userInteractionEnabled = YES;
   [self.view addSubview:scoreboard];
   
-  livesBoard = [[WolfLives alloc] initWithLives:1];
+  livesBoard = [[WolfLives alloc] initWithLives:5];
   [livesBoard displayLives];
   [scoreboard addSubview:livesBoard.view];
   
@@ -203,9 +203,6 @@
   UIImage *backButtonImage = [UIImage imageNamed:@"button-back-pink.png"];
   [backButton setImage:backButtonImage forState:UIControlStateNormal];
   backButton.center = CGPointMake(512, 926);
- 
-  NSLog(@"obj: %d", [objectsInGameArea count]);
-  NSLog(@"phy: %d", [physicsObjectArray count]);
 }
 
 - (PhysicsRect*)createPhysicsObjectFromGameObject:(GameObject*)obj {
@@ -462,7 +459,7 @@
         [physicsObjectArray removeObjectAtIndex:i];
       }
     }
-    if (obj == breatheController) {
+    if ([obj isEqual:breatheController]) {
       [livesBoard deductLife];
       [fireButtonController changeState];
       breatheController = nil;
@@ -480,12 +477,12 @@
     [self toggleShootingGuide];
     
     windSuck.frame = CGRectMake(arrowController.view.center.x, 
-                                arrowController.view.center.y, 
+                                arrowController.view.center.y - 60, 
                                 150, 144);
     windSuck.animationDuration = 1.0;
     windSuck.animationRepeatCount = 0;
     [windSuck startAnimating];
-    [self.view addSubview:windSuck];
+    [gamearea addSubview:windSuck];
     [windSuck performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
   }
 }
@@ -512,7 +509,7 @@
   pigController.responseState = kAwaitingEvent;
   
   CGRect breatheFrame = CGRectMake(arrowController.view.center.x, 
-                                   arrowController.view.center.y - 50, 65, 65);
+                                   arrowController.view.center.y - 45, 65, 65);
   breatheController = [[GameBreathe alloc] initWithFrame:breatheFrame];
   breatheController.view = breatheController.gameObjView;
   [gamearea addSubview:breatheController.view];
@@ -630,6 +627,38 @@
   self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
   [self dismissViewControllerAnimated:YES completion:^(void){}];
 
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  NSString *filePath = [[NSBundle mainBundle] pathForResource:@"ForestEvening"
+                                                       ofType:@"caf"];
+  NSURL *url = [[NSURL alloc] initFileURLWithPath:filePath];
+  audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:url error:nil];
+  audioPlayer.delegate = self;
+  [audioPlayer prepareToPlay];
+  [audioPlayer setNumberOfLoops:INFINITY];
+  [audioPlayer play];
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleMusic" object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+  [super viewDidDisappear:animated];
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleMusic" object:nil];
+  [self fadeMusic];
+}
+
+-(void)fadeMusic {  
+  if (audioPlayer.volume > 0.1) {
+    audioPlayer.volume = audioPlayer.volume - 0.1;
+    [self performSelector:@selector(fadeMusic) withObject:nil afterDelay:0.1];           
+  } else {
+    // Stop and get the sound ready for playing again
+    [audioPlayer stop];
+    audioPlayer.currentTime = 0;
+    [audioPlayer prepareToPlay];
+    audioPlayer.volume = 1.0;
+  }
 }
 
 - (void)viewDidUnload
