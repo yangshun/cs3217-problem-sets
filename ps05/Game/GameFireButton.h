@@ -18,6 +18,7 @@
 - (id)initWithFrame:(CGRect)customFrame;
 - (UIImageView*)buttonImageView:(CGRect)frame;
 - (void)pressed:(UITapGestureRecognizer*)gesture;
+- (void)changeState;
 
 @property (nonatomic, strong) UIImage* buttonImage;
 

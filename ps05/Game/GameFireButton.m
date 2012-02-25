@@ -28,6 +28,7 @@
     objSingleTap.delegate = self;
     objSingleTap.numberOfTapsRequired = 1;
     [self.view addGestureRecognizer:objSingleTap];
+    self.responseState = kAwaitingEvent;
   }
   return self;
 }
@@ -44,12 +45,21 @@
 
 - (void)pressed:(UITapGestureRecognizer*)gesture {
   // EFFECTS: fires a projectile from the wolf's mouth
-  self.gameObjView.image = buttonImagePressed;
-  self.view = gameObjView;
-  [[NSNotificationCenter defaultCenter] postNotificationName:@"FireButtonPressed" object:nil];
-  if (gesture.state == UIGestureRecognizerStateEnded) {
+  if (responseState == kAwaitingEvent) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"FireButtonPressed" object:nil];
+    [self changeState];
+  }
+}
+
+- (void)changeState {
+  if(responseState == kAwaitingEvent) {
+    responseState = kEventOccurred;
+    self.gameObjView.image = buttonImagePressed;
+  } else {
+    responseState = kAwaitingEvent;
     self.gameObjView.image = buttonImage;
   }
 }
+
 
 @end

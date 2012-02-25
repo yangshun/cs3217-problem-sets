@@ -12,31 +12,50 @@
 
 @synthesize onScreen;
 
-- (id)initAtPoint:(CGPoint)location andType:(messageType)type {
+- (id)init {
   
-  CGRect frame = CGRectMake(location.x + 30, location.y - 180, 200, 133);
   self = [super init];
   if (self) {
-    switch (type) {
-      case kOuchMessage:
-        textImage = [UIImage imageNamed:@"text-ouch.png"];
-        break;
-      case kAhhhMessage:
-        textImage = [UIImage imageNamed:@"text-ahhh.png"];
-        break;
-      case kHowlMessage:
-        textImage = [UIImage imageNamed:@"text-howl.png"];
-        break;
-      default:
-        break;
-    }
-    
-    textImageView = [[UIImageView alloc] initWithImage:textImage];
-    textImageView.frame = frame;
-    self.view = textImageView;
-    onScreen = NO;
+    ouchImage = [UIImage imageNamed:@"text-ouch.png"];
+    ahhhImage = [UIImage imageNamed:@"text-ahhh.png"];
+    heeheeImage = [UIImage imageNamed:@"text-heehee.png"];
+    howlImage = [UIImage imageNamed:@"text-howl.png"];
+    mwhahaImage = [UIImage imageNamed:@"text-mwhaha.png"];
   }
   return self;
+}
+
+- (void)displayBalloonAtLocation:(CGPoint)location andType:(MessageType)type {
+  
+  CGRect frame = CGRectMake(location.x + 30, location.y - 180, 200, 133);
+  
+  UIImage *displayImage;
+  
+  switch (type) {
+    case kOuchMessage:
+      displayImage = ouchImage;
+      break;
+    case kAhhhMessage:
+      displayImage = ahhhImage;
+      break;
+    case kHeeheeMessage:
+      displayImage = heeheeImage;
+      break;
+    case kHowlMessage:
+      displayImage = howlImage;
+      break;
+    case kMwhahaMessage:
+      displayImage = mwhahaImage;
+    default:
+      break;
+  }
+  
+  self.image = displayImage;
+  self.frame = frame;
+}
+
+- (void)removeFromView {
+  [self removeFromSuperview];
 }
 
 @end

@@ -9,6 +9,8 @@
 #import "GameViewController.h"
 #import "GameViewControllerExtension.h"
 
+#define kIpadLandscapeHeight 768
+
 @implementation GameViewController
 @synthesize gamearea;
 @synthesize palette;
@@ -44,8 +46,8 @@
   
   CGFloat groundY = gamearea.frame.size.height - groundHeight;
   CGFloat backgroundY = groundY - backgroundHeight;
-  CGFloat paletteY = 768 - backgroundHeight - groundHeight - paletteHeight;
-
+  CGFloat paletteY = kIpadLandscapeHeight - backgroundHeight - groundHeight - paletteHeight;
+  
   // The frame property holds the position and size of the views
   // The CGRectMake methods arguments are : x position, y position, width,
   // height. origin at top left hand corner, with positive y-axis downwards

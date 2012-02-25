@@ -17,6 +17,5 @@
 - (UIImageView*)pigImageView:(CGRect)frame;
 - (void)pigDieAnimation;
 - (CGRect)frameInGameArea:(CGPoint)point;
-- (void)ouchDisplayAt:(CGPoint)location;
 
 @end

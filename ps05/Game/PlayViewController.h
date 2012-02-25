@@ -14,12 +14,18 @@
 #import "GameArrow.h"
 #import "GameBreathe.h"
 #import "GameFireButton.h"
+#import "WolfLives.h"
 #import "PhysicsWorld.h"
-#import "TextAnimation.h"
+#import "TextAnimator.h"
 #import "TextBalloon.h"
 #import "CloudFactory.h"
 
+typedef enum {kOutcomeUndetermined, kOutcomeVictory, kOutcomeLose} GameOutcome;
+
 @interface PlayViewController : UIViewController {
+  
+  UIImageView *scoreboard;
+  WolfLives *livesBoard;
   
   GameWolf *wolfController;
   GamePig *pigController;
@@ -29,9 +35,11 @@
   UIImageView *directionDegree;
   UIImageView *powerBoard;
   GameFireButton *fireButtonController;
+  UIImageView *windSuck;
+  NSMutableArray *windSuckSprite;
   NSMutableArray *objectsInGameArea;
   
-  TextBalloon *balloon;
+  TextBalloon *textBalloon;
   CloudFactory *cloudGenerator;
   
   PhysicsWorld *gameareaWorld;
@@ -41,7 +49,7 @@
   double gameareaTimeStep;
   
   NSTimer *breatheTimer;
-  
+  GameOutcome outcome;
 }
 
 - (id)initWithWolf:(GameWolf*)wolf 
@@ -53,6 +61,8 @@
 - (void)toggleShootingGuide;
 - (void)addBreatheProjectile;
 - (void)removeGameObject:(GameObject*)obj;
+- (void)victory;
+- (void)gameOver;
 
 @property (nonatomic, weak) IBOutlet UIScrollView *gamearea;
 

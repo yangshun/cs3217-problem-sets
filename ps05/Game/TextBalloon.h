@@ -8,16 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-typedef enum {kOuchMessage, kAhhhMessage, kHowlMessage} messageType;
+typedef enum {kOuchMessage, kAhhhMessage, kHeeheeMessage, 
+  kHowlMessage, kMwhahaMessage} MessageType;
 
-@interface TextBalloon : UIViewController {
+@interface TextBalloon : UIImageView {
   
-  UIImageView *textImageView;
-  UIImage *textImage;
-  BOOL onScreen;
+  UIImage *ouchImage;
+  UIImage *ahhhImage;
+  UIImage *heeheeImage;
+  UIImage *howlImage;
+  UIImage *mwhahaImage;
 }
 
-- (id)initAtPoint:(CGPoint)location andType:(messageType)type; 
+- (void)displayBalloonAtLocation:(CGPoint)location andType:(MessageType)type;
+- (void)removeFromView;
 
 @property (nonatomic, readwrite) BOOL onScreen;
 

@@ -14,6 +14,13 @@
 		6D79D05514D3CDB2005A6126 /* GameWolf.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D79D05414D3CDB2005A6126 /* GameWolf.m */; };
 		6D79D0AD14D7E1BC005A6126 /* GamePig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D79D0AC14D7E1BC005A6126 /* GamePig.m */; };
 		6D79D0B114D7EF17005A6126 /* GameBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D79D0B014D7EF14005A6126 /* GameBlock.m */; };
+		6D8E686F14F6322C00CBFB68 /* cloud4.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D8E686E14F6322C00CBFB68 /* cloud4.png */; };
+		6D8E687214F6486400CBFB68 /* scoreboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D8E687114F6486400CBFB68 /* scoreboard.png */; };
+		6D8E687514F64D0500CBFB68 /* WolfLives.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8E687414F64D0400CBFB68 /* WolfLives.m */; };
+		6D8E687714F65A7700CBFB68 /* text-victory.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D8E687614F65A7600CBFB68 /* text-victory.png */; };
+		6D8E687914F65B0F00CBFB68 /* text-game-over.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D8E687814F65B0E00CBFB68 /* text-game-over.png */; };
+		6D8E687C14F7F0AA00CBFB68 /* text-heehee.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D8E687A14F7F0A800CBFB68 /* text-heehee.png */; };
+		6D8E687D14F7F0AA00CBFB68 /* text-mwhaha.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D8E687B14F7F0A900CBFB68 /* text-mwhaha.png */; };
 		6DA8FDFB14C5FA16009BD349 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DA8FDFA14C5FA16009BD349 /* UIKit.framework */; };
 		6DA8FDFD14C5FA16009BD349 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DA8FDFC14C5FA16009BD349 /* Foundation.framework */; };
 		6DA8FDFF14C5FA16009BD349 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DA8FDFE14C5FA16009BD349 /* CoreGraphics.framework */; };
@@ -80,8 +87,8 @@
 		6DEB1AF514F5C7AC00F5D700 /* CloudFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DEB1AF414F5C7AB00F5D700 /* CloudFactory.m */; };
 		6DEB1AF814F5D33B00F5D700 /* CloudObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DEB1AF714F5D33A00F5D700 /* CloudObject.m */; };
 		6DF376DB14DA18C5009B2139 /* FileDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DF376DA14DA18C4009B2139 /* FileDataController.m */; };
-		6DF8EABC14F34EFD0027E0E6 /* huff-and-puff-away.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DF8EABB14F34EFD0027E0E6 /* huff-and-puff-away.png */; };
-		6DF8EAC014F352CE0027E0E6 /* TextAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DF8EABF14F352CE0027E0E6 /* TextAnimation.m */; };
+		6DF8EABC14F34EFD0027E0E6 /* text-huff-and-puff-away.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DF8EABB14F34EFD0027E0E6 /* text-huff-and-puff-away.png */; };
+		6DF8EAC014F352CE0027E0E6 /* TextAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DF8EABF14F352CE0027E0E6 /* TextAnimator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +114,14 @@
 		6D79D0AC14D7E1BC005A6126 /* GamePig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GamePig.m; path = ../GamePig.m; sourceTree = "<group>"; };
 		6D79D0AF14D7EF13005A6126 /* GameBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameBlock.h; path = ../GameBlock.h; sourceTree = "<group>"; };
 		6D79D0B014D7EF14005A6126 /* GameBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameBlock.m; path = ../GameBlock.m; sourceTree = "<group>"; };
+		6D8E686E14F6322C00CBFB68 /* cloud4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cloud4.png; path = ../Images/cloud4.png; sourceTree = "<group>"; };
+		6D8E687114F6486400CBFB68 /* scoreboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scoreboard.png; sourceTree = "<group>"; };
+		6D8E687314F64D0400CBFB68 /* WolfLives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WolfLives.h; path = Game/WolfLives.h; sourceTree = SOURCE_ROOT; };
+		6D8E687414F64D0400CBFB68 /* WolfLives.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WolfLives.m; path = Game/WolfLives.m; sourceTree = SOURCE_ROOT; };
+		6D8E687614F65A7600CBFB68 /* text-victory.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "text-victory.png"; path = "../text-victory.png"; sourceTree = "<group>"; };
+		6D8E687814F65B0E00CBFB68 /* text-game-over.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "text-game-over.png"; path = "../text-game-over.png"; sourceTree = "<group>"; };
+		6D8E687A14F7F0A800CBFB68 /* text-heehee.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "text-heehee.png"; sourceTree = "<group>"; };
+		6D8E687B14F7F0A900CBFB68 /* text-mwhaha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "text-mwhaha.png"; sourceTree = "<group>"; };
 		6DA8FDF614C5FA16009BD349 /* Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Game.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DA8FDFA14C5FA16009BD349 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6DA8FDFC14C5FA16009BD349 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -194,9 +209,9 @@
 		6DEB1AF714F5D33A00F5D700 /* CloudObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudObject.m; sourceTree = "<group>"; };
 		6DF376D914DA18C4009B2139 /* FileDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileDataController.h; sourceTree = "<group>"; };
 		6DF376DA14DA18C4009B2139 /* FileDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileDataController.m; sourceTree = "<group>"; };
-		6DF8EABB14F34EFD0027E0E6 /* huff-and-puff-away.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "huff-and-puff-away.png"; sourceTree = "<group>"; };
-		6DF8EABE14F352CE0027E0E6 /* TextAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextAnimation.h; sourceTree = "<group>"; };
-		6DF8EABF14F352CE0027E0E6 /* TextAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextAnimation.m; sourceTree = "<group>"; };
+		6DF8EABB14F34EFD0027E0E6 /* text-huff-and-puff-away.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "text-huff-and-puff-away.png"; sourceTree = "<group>"; };
+		6DF8EABE14F352CE0027E0E6 /* TextAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextAnimator.h; sourceTree = "<group>"; };
+		6DF8EABF14F352CE0027E0E6 /* TextAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextAnimator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,10 +245,10 @@
 				6DDAADF414F2492D004D3C3E /* cloud1.png */,
 				6DDAADF514F2492D004D3C3E /* cloud2.png */,
 				6DDAADF614F2492D004D3C3E /* cloud3.png */,
+				6D8E686E14F6322C00CBFB68 /* cloud4.png */,
 				6DDAADF714F2492D004D3C3E /* font.png */,
 				6DEB1AE314F4CB3700F5D700 /* fire-button-pressed.png */,
 				6DEB1AE414F4CB3800F5D700 /* fire-button.png */,
-				6DF8EABB14F34EFD0027E0E6 /* huff-and-puff-away.png */,
 				6DDAADF814F2492D004D3C3E /* heart.png */,
 				6DDAADFB14F2492D004D3C3E /* score.png */,
 				6DDAADFC14F2492D004D3C3E /* wind-disperse.png */,
@@ -250,6 +265,7 @@
 				6DB0023014ECB5D9004F36EC /* direction-arrow.png */,
 				6DB0023114ECB5D9004F36EC /* direction-degree.png */,
 				6DB0023214ECB5D9004F36EC /* iron.png */,
+				6D1FAC6314D335520040C631 /* palette.png */,
 				6DB0023314ECB5D9004F36EC /* pig.png */,
 				6DDAADFA14F2492D004D3C3E /* pig2.png */,
 				6DDAADF914F2492D004D3C3E /* pig-die-smoke.png */,
@@ -258,14 +274,19 @@
 				6DB0023514ECB5DA004F36EC /* straw.png */,
 				6DEB1AF114F4F13300F5D700 /* straw-break.png */,
 				6DEB1ADE14F4C10D00F5D700 /* text-ahhh.png */,
+				6D8E687A14F7F0A800CBFB68 /* text-heehee.png */,
 				6DEB1ADF14F4C11000F5D700 /* text-howl.png */,
+				6D8E687B14F7F0A900CBFB68 /* text-mwhaha.png */,
 				6DEB1AD914F4A93200F5D700 /* text-ouch.png */,
+				6DF8EABB14F34EFD0027E0E6 /* text-huff-and-puff-away.png */,
+				6D8E687614F65A7600CBFB68 /* text-victory.png */,
+				6D8E687814F65B0E00CBFB68 /* text-game-over.png */,
 				6DB0023714ECB5DA004F36EC /* wolfs.png */,
 				6DD7F49D14F249DE001EE8EE /* wolfdie.png */,
 				6DB0023814ECB5DB004F36EC /* wood.png */,
 				6D2526AC14CDD8690094A022 /* background.png */,
 				6D2526AD14CDD8690094A022 /* ground.png */,
-				6D1FAC6314D335520040C631 /* palette.png */,
+				6D8E687114F6486400CBFB68 /* scoreboard.png */,
 			);
 			name = Images;
 			path = images;
@@ -307,14 +328,16 @@
 				6DDAADCA14F1369A004D3C3E /* Physics Engine */,
 				6DDAADC914F13672004D3C3E /* Math2D */,
 				6D2526AB14CDD8690094A022 /* Images */,
-				6DEB1AF914F5E06200F5D700 /* Cloud Maker */,
+				6DEB1AF914F5E06200F5D700 /* Cloud Generator */,
 				6DDAADCF14F137D0004D3C3E /* Game Objects */,
 				6DA8FE0914C5FA16009BD349 /* AppDelegate.h */,
 				6DA8FE0A14C5FA16009BD349 /* AppDelegate.m */,
-				6DF8EABE14F352CE0027E0E6 /* TextAnimation.h */,
-				6DF8EABF14F352CE0027E0E6 /* TextAnimation.m */,
+				6DF8EABE14F352CE0027E0E6 /* TextAnimator.h */,
+				6DF8EABF14F352CE0027E0E6 /* TextAnimator.m */,
 				6DEB1ADB14F4AC0800F5D700 /* TextBalloon.h */,
 				6DEB1ADC14F4AC0800F5D700 /* TextBalloon.m */,
+				6D8E687314F64D0400CBFB68 /* WolfLives.h */,
+				6D8E687414F64D0400CBFB68 /* WolfLives.m */,
 				6DA8FE0C14C5FA16009BD349 /* MainStoryboard_iPhone.storyboard */,
 				6DA8FE0F14C5FA16009BD349 /* MainStoryboard_iPad.storyboard */,
 				6D79D04A14D3C4DD005A6126 /* GameViewControllerExtension.h */,
@@ -410,7 +433,7 @@
 			path = images;
 			sourceTree = "<group>";
 		};
-		6DEB1AF914F5E06200F5D700 /* Cloud Maker */ = {
+		6DEB1AF914F5E06200F5D700 /* Cloud Generator */ = {
 			isa = PBXGroup;
 			children = (
 				6DEB1AF614F5D33800F5D700 /* CloudObject.h */,
@@ -418,7 +441,7 @@
 				6DEB1AF314F5C7AA00F5D700 /* CloudFactory.h */,
 				6DEB1AF414F5C7AB00F5D700 /* CloudFactory.m */,
 			);
-			name = "Cloud Maker";
+			name = "Cloud Generator";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -527,7 +550,7 @@
 				6DDAAE1214F2492E004D3C3E /* windblow3.png in Resources */,
 				6DDAAE1314F2492E004D3C3E /* windsuck.png in Resources */,
 				6DD7F49E14F249DE001EE8EE /* wolfdie.png in Resources */,
-				6DF8EABC14F34EFD0027E0E6 /* huff-and-puff-away.png in Resources */,
+				6DF8EABC14F34EFD0027E0E6 /* text-huff-and-puff-away.png in Resources */,
 				6DEB1ADA14F4A93400F5D700 /* text-ouch.png in Resources */,
 				6DEB1AE014F4C11200F5D700 /* text-ahhh.png in Resources */,
 				6DEB1AE114F4C11200F5D700 /* text-howl.png in Resources */,
@@ -536,6 +559,12 @@
 				6DEB1AE714F4CB3900F5D700 /* fire-button.png in Resources */,
 				6DEB1AF014F4D8C700F5D700 /* power-board.png in Resources */,
 				6DEB1AF214F4F13300F5D700 /* straw-break.png in Resources */,
+				6D8E686F14F6322C00CBFB68 /* cloud4.png in Resources */,
+				6D8E687214F6486400CBFB68 /* scoreboard.png in Resources */,
+				6D8E687714F65A7700CBFB68 /* text-victory.png in Resources */,
+				6D8E687914F65B0F00CBFB68 /* text-game-over.png in Resources */,
+				6D8E687C14F7F0AA00CBFB68 /* text-heehee.png in Resources */,
+				6D8E687D14F7F0AA00CBFB68 /* text-mwhaha.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,10 +618,11 @@
 				6DDAADF214F248A5004D3C3E /* PhysicsShape.m in Sources */,
 				6DDAADF314F248A5004D3C3E /* PhysicsWorld.m in Sources */,
 				6DD7F4A114F27307001EE8EE /* GameBreathe.m in Sources */,
-				6DF8EAC014F352CE0027E0E6 /* TextAnimation.m in Sources */,
+				6DF8EAC014F352CE0027E0E6 /* TextAnimator.m in Sources */,
 				6DEB1ADD14F4AC0900F5D700 /* TextBalloon.m in Sources */,
 				6DEB1AF514F5C7AC00F5D700 /* CloudFactory.m in Sources */,
 				6DEB1AF814F5D33B00F5D700 /* CloudObject.m in Sources */,
+				6D8E687514F64D0500CBFB68 /* WolfLives.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

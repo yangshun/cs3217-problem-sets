@@ -12,7 +12,7 @@
 @synthesize speed;
 
 - (id)initWithImage:(UIImage*)cloudImage 
-           andSpeed:(int)cloudSpeed
+           andSpeed:(double)cloudSpeed
            andFrame:(CGRect)cloudFrame
            andScale:(double)scale {
   

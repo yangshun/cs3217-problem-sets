@@ -98,17 +98,20 @@
 - (void)wolfDieAnimation {
   if(objectState == kGameAlive) {
     self.view.transform = CGAffineTransformScale(self.view.transform, 1.2, 1.2);
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleShootingGuide" object:nil];
-    
+    self.view.transform = CGAffineTransformTranslate(self.view.transform, 0.0, -14);
     self.gameObjView = [[UIImageView alloc] initWithImage:[wolfSpriteDie objectAtIndex:0]];
+    self.view = self.gameObjView;
     self.gameObjView.animationImages = wolfSpriteDie;
     self.gameObjView.animationDuration = 3.0;
     self.gameObjView.animationRepeatCount = 0;
-    self.view = self.gameObjView;
-    
     [self.gameObjView startAnimating];
-    [self performSelector:@selector(destroyObject) withObject:nil afterDelay:3.0];
+    [self performSelector:@selector(wolfLieOnFloor) withObject:nil afterDelay:3.0];
     objectState = kGameDead;
   }
+}
+
+- (void)wolfLieOnFloor {
+  self.gameObjView = [[UIImageView alloc] initWithImage:[wolfSpriteDie objectAtIndex:15]];
+  self.view = self.gameObjView;
 }
 @end

@@ -40,10 +40,10 @@
   
   CGPoint curr = [gesture locationInView:self.view.superview];
   
-  if (curr.x > 395) {
-    curr.x = 395;
-  } else if (curr.x < 153) {
-    curr.x = 153;
+  if (curr.x > 380) {
+    curr.x = 380;
+  } else if (curr.x < 138) {
+    curr.x = 138;
   }
   
   self.view.frame = CGRectMake(self.view.frame.origin.x, 

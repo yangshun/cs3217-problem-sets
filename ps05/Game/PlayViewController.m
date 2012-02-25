@@ -53,33 +53,37 @@
   // Do any additional setup after loading the view, typically from a nib.
   UIImage *bgImage = [UIImage imageNamed:@"background.png"];
   UIImage *groundImage = [UIImage imageNamed:@"ground.png"];
-  //UIImage *paletteImage = [UIImage imageNamed:@"palette.png"];
+  UIImage *scoreboardImage = [UIImage imageNamed:@"scoreboard.png"];
   
   // Get the width and height of the two images
   CGFloat backgroundWidth = bgImage.size.width;
   CGFloat backgroundHeight = bgImage.size.height;
   CGFloat groundWidth = groundImage.size.width;
   CGFloat groundHeight = groundImage.size.height;
-  //CGFloat paletteWidth = paletteImage.size.width;
-  //CGFloat paletteHeight = paletteImage.size.height;
+  CGFloat scoreboardWidth = scoreboardImage.size.width;
+  CGFloat scoreboardHeight = scoreboardImage.size.height;
   
   // Place each of them in an UIImageView
   UIImageView *background = [[UIImageView alloc] initWithImage:bgImage];
   UIImageView *ground = [[UIImageView alloc] initWithImage:groundImage];
-  //palette = [[UIImageView alloc] initWithImage:paletteImage];
+  scoreboard = [[UIImageView alloc] initWithImage:scoreboardImage];
   
   CGFloat groundY = gamearea.frame.size.height - groundHeight;
   CGFloat backgroundY = groundY - backgroundHeight;
-  //CGFloat paletteY = 768 - backgroundHeight - groundHeight - paletteHeight;
+  CGFloat scoreboardY = 0;
   
   // The frame property holds the position and size of the views
   // The CGRectMake methods arguments are : x position, y position, width,
   // height. origin at top left hand corner, with positive y-axis downwards
   background.frame = CGRectMake(0, backgroundY, backgroundWidth, backgroundHeight);
   ground.frame = CGRectMake(0, groundY, groundWidth, groundHeight);
-  //palette.frame = CGRectMake(0, paletteY, paletteWidth, paletteHeight);
-  //palette.userInteractionEnabled = YES;
-  //[self.view addSubview:palette];
+  scoreboard.frame = CGRectMake(0, scoreboardY, scoreboardWidth, scoreboardHeight);
+  scoreboard.userInteractionEnabled = YES;
+  [self.view addSubview:scoreboard];
+  
+  livesBoard = [[WolfLives alloc] initWithLives:1];
+  [livesBoard displayLives];
+  [scoreboard addSubview:livesBoard.view];
   
   // Add these views as subviews of the gamearea.
   [gamearea addSubview:background];
@@ -92,9 +96,7 @@
   [gamearea setContentSize:CGSizeMake(gameareaWidth, gameareaHeight)];
   
   cloudGenerator = [[CloudFactory alloc] initCloudsWithTimeStep:0.02];
-  
   [gamearea addSubview:cloudGenerator.view];
-  
   [cloudGenerator startGeneratingClouds];
   
   physicsObjectArray = [[NSMutableArray alloc] init];
@@ -132,10 +134,34 @@
                                              object:nil];
   
   [self initializeTimer];
-  TextAnimation *startMessage = [[TextAnimation alloc] initWithFrame:CGRectMake(-900, 324, 477, 28)];
-  [self.view addSubview:startMessage];
-  [startMessage flyInStartText];
+  textBalloon = [[TextBalloon alloc] init];
+  
+  UIImage *startText = [UIImage imageNamed:@"text-huff-and-puff-away.png"];
+  UIImageView *startTextView = [[UIImageView alloc] initWithImage:startText];
+  
+  startTextView.frame = CGRectMake(-920, 375, 477, 28);
+  [self.view addSubview:startTextView];
+  
+  [UIView animateWithDuration:0.5
+                        delay:0.0
+                      options:UIViewAnimationOptionCurveEaseOut 
+                   animations:^{ 
+                     startTextView.center = CGPointMake(512, 389);
+                   } 
+                   completion:^(BOOL finished){
+                                        
+  [UIView animateWithDuration:0.5
+                        delay:1.0
+                      options:UIViewAnimationOptionCurveEaseIn 
+                   animations:^{ 
+                     startTextView.frame = CGRectMake(1024, 375, 477, 28);
+                   } 
+                  completion:^(BOOL finished){}];
+                     
+                   }];
+
   [self performSelector:@selector(setUpGamearea) withObject:nil afterDelay:2.0];
+  outcome = kOutcomeUndetermined;
 }
 
 - (PhysicsRect*)createPhysicsObjectFromGameObject:(GameObject*)obj {
@@ -203,18 +229,32 @@
                                      wolfController.view.center.y - 260,
                                      233, 408);
   
-  CGRect barFrame = CGRectMake(143, 667, 172, 26);
+  UIImage *powerBoardImage = [UIImage imageNamed:@"power-board.png"];
+  powerBoard = [[UIImageView alloc] initWithImage:powerBoardImage];
+  powerBoard.frame = CGRectMake(15, 650, 400, 86);
+  powerBoard.userInteractionEnabled = YES;
+  
+  CGRect barFrame = CGRectMake(128, 17, 172, 26);
   barController = [[GameBar alloc] initWithFrame:barFrame];
   barController.view = barController.gameObjView;
   
-  CGRect fireButtonFrame = CGRectMake(347, 698, 50, 25);
+  CGRect fireButtonFrame = CGRectMake(332, 48, 50, 25);
   fireButtonController = [[GameFireButton alloc] initWithFrame:fireButtonFrame];
   fireButtonController.view = fireButtonController.gameObjView;
   fireButtonController.delegate = self;
   
-  UIImage *powerBoardImage = [UIImage imageNamed:@"power-board.png"];
-  powerBoard = [[UIImageView alloc] initWithImage:powerBoardImage];
-  powerBoard.frame = CGRectMake(15, 650, 400, 86);
+  UIImage *windSuckImage = [UIImage imageNamed:@"windsuck.png"];
+  windSuckSprite = [[NSMutableArray alloc] init];
+  
+  for (int i = 0; i < 8; i++) {
+    CGRect spriteFrame = CGRectMake(150 * (i % 4), 144 * (i / 4), 150, 144);
+    CGImageRef windImageRef = CGImageCreateWithImageInRect([windSuckImage CGImage], spriteFrame);
+    UIImage *croppedWind = [UIImage imageWithCGImage:windImageRef];
+    [windSuckSprite addObject:croppedWind];
+  }
+  
+  windSuck = [[UIImageView alloc] initWithImage: [windSuckSprite objectAtIndex:0]];
+  windSuck.animationImages = windSuckSprite;
   
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(handleObjectObjectCollisions:) 
@@ -236,19 +276,20 @@
                                            selector:@selector(addBreatheProjectile) 
                                                name:@"ShootProjectile"
                                              object:nil];
-  
-  // remove the wolf from the physics engine
-  [objectsInGameArea removeObjectAtIndex:[objectsInGameArea count] - 1];
-  [physicsObjectArray removeObjectAtIndex:[physicsObjectArray count] - 1];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(gameOver) 
+                                               name:@"GameOver"
+                                             object:nil];
   
   pigController.objectState = kGameAlive;
   pigController.responseState = kAwaitingEvent;
+  wolfController.objectState = kGameAlive;
   
   [gamearea addSubview:directionDegree];
   [gamearea addSubview:arrowController.view];
   [self.view addSubview:powerBoard];
-  [self.view addSubview:barController.view];
-  [self.view addSubview:fireButtonController.view];
+  [powerBoard addSubview:barController.view];
+  [powerBoard addSubview:fireButtonController.view];
 }
 
 - (void)initializeTimer {
@@ -291,23 +332,26 @@
        [[objectsInGameArea objectAtIndex:index2] isKindOfClass:[GamePig class]]) ||
       ([[objectsInGameArea objectAtIndex:index2] isKindOfClass:[GameBreathe class]] &&
        [[objectsInGameArea objectAtIndex:index1] isKindOfClass:[GamePig class]])) {
-        if (!balloon || !balloon.onScreen) {
-          balloon = [[TextBalloon alloc] initAtPoint:pigController.view.center andType:kAhhhMessage];
-          [gamearea addSubview:balloon.view];
-          balloon.onScreen = YES;
-          [self performSelector:@selector(removeTextBalloon) withObject:balloon afterDelay:1];
+        if (pigController.objectState == kGameAlive) {
+          pigController.objectState = kGameDead;
+          [textBalloon displayBalloonAtLocation:pigController.view.center andType:kAhhhMessage];
+          [gamearea addSubview:textBalloon];
+          [textBalloon performSelector:@selector(removeFromView) 
+                            withObject:nil afterDelay:1];
+          [breatheController breatheDisperseAnimation];
+          [self performSelector:@selector(removeGameObject:) 
+                     withObject:breatheController afterDelay:1.5];
+          [pigController pigDieAnimation];
+          [self performSelector:@selector(victory) withObject:nil afterDelay:1.5];
+          return;
         }
-        [pigController pigDieAnimation];
-        [self performSelector:@selector(removeGameObject:) withObject:pigController afterDelay:1.5];
-        [breatheController breatheDisperseAnimation];
-        [self performSelector:@selector(removeGameObject:) withObject:breatheController afterDelay:1.5];
-        return;
       } 
   
   if ([[objectsInGameArea objectAtIndex:index2] isKindOfClass:[GameBreathe class]] &&
       [[objectsInGameArea objectAtIndex:index1] isKindOfClass:[GameBlock class]]) {
     if (((GameBlock*)[objectsInGameArea objectAtIndex:index1]).blockType == kStrawBlockObject) {
-      ((PhysicsCircle*)[physicsObjectArray objectAtIndex:index2]).v = [((PhysicsCircle*)[physicsObjectArray objectAtIndex:index2]).v multiply:0.5];
+      ((PhysicsCircle*)[physicsObjectArray objectAtIndex:index2]).v = 
+      [((PhysicsCircle*)[physicsObjectArray objectAtIndex:index2]).v multiply:0.5];
       [[objectsInGameArea objectAtIndex:index1] strawBreakAnimation];
       [self performSelector:@selector(removeGameObject:) 
                  withObject:[objectsInGameArea objectAtIndex:index1] 
@@ -323,24 +367,23 @@
        [[objectsInGameArea objectAtIndex:index2] isKindOfClass:[GamePig class]]) ||
       ([[objectsInGameArea objectAtIndex:index2] isKindOfClass:[GameBlock class]] &&
        [[objectsInGameArea objectAtIndex:index1] isKindOfClass:[GamePig class]])) {
-        if ([[objectsInGameArea objectAtIndex:index2] isKindOfClass:[GameBlock class]]) {
-          // to ensure index1 refers to GameBlock
-          int temp = index1;
-          index1 = index2;
-          index2 = temp;
-        }
-        if (((GameBlock*)[objectsInGameArea objectAtIndex:index1]).blockType != kStrawBlockObject) {
-          if (!balloon && !balloon.onScreen && pigController.responseState == kAwaitingEvent && 
-              [((PhysicsRect*)[physicsObjectArray objectAtIndex:index1]).v length] > 5) {
-            balloon = [[TextBalloon alloc] initAtPoint:pigController.view.center andType:kOuchMessage];
-            [gamearea addSubview:balloon.view];
-            balloon.onScreen = YES;
-            pigController.responseState = kEventOccurred;
-            [self performSelector:@selector(removeTextBalloon) withObject:balloon afterDelay:1];
-          }
-        }
-        return;
-      } 
+    if ([[objectsInGameArea objectAtIndex:index2] isKindOfClass:[GameBlock class]]) {
+      // to ensure index1 refers to GameBlock
+      int temp = index1;
+      index1 = index2;
+      index2 = temp;
+    }
+    if (((GameBlock*)[objectsInGameArea objectAtIndex:index1]).blockType != kStrawBlockObject) {
+      if (pigController.responseState == kAwaitingEvent && 
+        [((PhysicsRect*)[physicsObjectArray objectAtIndex:index1]).v length] > 5) {
+        [textBalloon displayBalloonAtLocation:pigController.view.center andType:kOuchMessage];
+        [gamearea addSubview:textBalloon];
+        pigController.responseState = kEventOccurred;
+        [textBalloon performSelector:@selector(removeFromView) withObject:nil afterDelay:1];
+      }
+    }
+    return;
+  } 
 }
 
 - (void)handleObjectWallCollisions:(NSNotification*)notification {
@@ -358,38 +401,49 @@
     if (pigController.objectState == kPreGameStart) {
       phyObj.v = [Vector2D vectorWith:0 y:0];
     } else if (pigController.objectState == kGameAlive && phyObj.v.y > 30) {
+      pigController.objectState = kGameDead;
       [pigController pigDieAnimation];
-      [self performSelector:@selector(removeGameObject:) withObject:pigController afterDelay:1.5];
+      [self performSelector:@selector(victory) withObject:nil afterDelay:1.5];
     }
     return;
   }
 }
 
 - (void)removeGameObject:(GameObject*)obj {
-  
-  for (int i = 0; i < [objectsInGameArea count]; i++) {
-    if ([[objectsInGameArea objectAtIndex:i] isEqual:obj]) {
-      [objectsInGameArea removeObjectAtIndex:i];
-      [physicsObjectArray removeObjectAtIndex:i];
+  if (obj) {
+    [obj destroyObject];
+    for (int i = 0; i < [objectsInGameArea count]; i++) {
+      if ([[objectsInGameArea objectAtIndex:i] isEqual:obj]) {
+        [objectsInGameArea removeObjectAtIndex:i];
+        [physicsObjectArray removeObjectAtIndex:i];
+      }
     }
+    if (obj == breatheController) {
+      [livesBoard deductLife];
+      [fireButtonController changeState];
+      breatheController = nil;
+    }
+    obj = nil;
   }
-  obj = nil;
-}
-
-- (void)removeTextBalloon {
-  [balloon.view removeFromSuperview];
-  balloon = nil;
 }
 
 - (void)fireButtonPressed {
-  [wolfController startWolfBlow];
-  if (!balloon && !balloon.onScreen) {
-    balloon = [[TextBalloon alloc] initAtPoint:wolfController.view.center andType:kHowlMessage];
-    [gamearea addSubview:balloon.view];
-    balloon.onScreen = YES;
-    [self performSelector:@selector(removeTextBalloon) withObject:balloon afterDelay:1];
+  if (fireButtonController.responseState == kAwaitingEvent) {
+    [wolfController startWolfBlow];
+    [textBalloon displayBalloonAtLocation:wolfController.view.center andType:kHowlMessage];
+    [gamearea addSubview:textBalloon];
+    [textBalloon performSelector:@selector(removeFromView) withObject:nil afterDelay:1.0];
+    [self toggleShootingGuide];
+    
+    windSuck.frame = CGRectMake(arrowController.view.center.x, 
+                                arrowController.view.center.y, 
+                                150, 144);
+    windSuck.animationDuration = 1.0;
+    windSuck.animationRepeatCount = 0;
+    [windSuck startAnimating];
+    [self.view addSubview:windSuck];
+    [windSuck performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
   }
-  [self toggleShootingGuide];
 }
 
 - (void)toggleShootingGuide {
@@ -419,14 +473,15 @@
   breatheController.view = breatheController.gameObjView;
   [gamearea addSubview:breatheController.view];
   
-  PhysicsCircle *breatheBlock = [[PhysicsCircle alloc] initWithOrigin:breatheController.view.frame.origin
-                                                             andWidth:breatheController.view.frame.size.width
-                                                            andHeight:breatheController.view.frame.size.height
-                                                              andMass:100
-                                                          andRotation:0
-                                                          andFriction:5
-                                                       andRestitution:0
-                                                              andView:nil]; 
+  PhysicsCircle *breatheBlock = [[PhysicsCircle alloc] 
+                                 initWithOrigin:breatheController.view.frame.origin
+                                 andWidth:breatheController.view.frame.size.width
+                                 andHeight:breatheController.view.frame.size.height
+                                 andMass:300
+                                 andRotation:0
+                                 andFriction:5
+                                 andRestitution:0
+                                 andView:nil]; 
  
   double breatheMagnitude = barController.view.frame.size.width * 2.5;
   breatheBlock.v = [Vector2D vectorWith:arrowController.view.transform.b * breatheMagnitude
@@ -441,9 +496,62 @@
                                                andWalls:wallRectArray 
                                              andGravity:[Vector2D vectorWith:0 y:200]
                                             andTimeStep:gameareaTimeStep];
+  [self performSelector:@selector(removeGameObject:) withObject:breatheController afterDelay:6.0];
+
   [self initializeTimer];
 }
 
+- (void)victory {
+  if (outcome == kOutcomeUndetermined) {
+    [fireButtonController changeState];
+    [self toggleShootingGuide];
+    
+    UIImage *victoryText = [UIImage imageNamed:@"text-victory.png"];
+    UIImageView *victoryTextView = [[UIImageView alloc] initWithImage:victoryText];
+    
+    victoryTextView.frame = CGRectMake(-810, 375, 213, 28);
+    [self.view addSubview:victoryTextView];
+    [UIView animateWithDuration:1.0
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseIn 
+                     animations:^{ 
+                       victoryTextView.center = CGPointMake(512, 389);
+                     } 
+                     completion:^(BOOL finished){}];
+    
+    [self performSelector:@selector(removeGameObject:) withObject:pigController afterDelay:2.0];
+    [textBalloon displayBalloonAtLocation:wolfController.view.center andType:kMwhahaMessage];
+    [gamearea addSubview:textBalloon];
+    [powerBoard removeFromSuperview];
+    outcome = kOutcomeVictory;
+  }
+}
+
+- (void)gameOver {
+  if (outcome == kOutcomeUndetermined) {
+    [fireButtonController changeState];
+    [wolfController wolfDieAnimation];
+    [self toggleShootingGuide];
+    
+    UIImage *gameoverText = [UIImage imageNamed:@"text-game-over.png"];
+    UIImageView *gameoverTextView = [[UIImageView alloc] initWithImage:gameoverText];
+    
+    gameoverTextView.frame = CGRectMake(-830, 375, 267, 28);
+    [self.view addSubview:gameoverTextView];
+    [UIView animateWithDuration:1.0
+                          delay:1.0
+                        options:UIViewAnimationOptionCurveEaseIn 
+                     animations:^{ 
+                       gameoverTextView.center = CGPointMake(512, 389);
+                     } 
+                     completion:^(BOOL finished){}];
+    
+    [textBalloon displayBalloonAtLocation:pigController.view.center andType:kHeeheeMessage];
+    [gamearea addSubview:textBalloon];
+    [powerBoard removeFromSuperview];
+    outcome = kOutcomeLose;
+  }
+}
 
 - (void)viewDidUnload
 {

@@ -28,6 +28,7 @@
     cloudImage1 = [UIImage imageNamed:@"cloud1.png"];
     cloudImage2 = [UIImage imageNamed:@"cloud2.png"];
     cloudImage3 = [UIImage imageNamed:@"cloud3.png"];
+    cloudImage4 = [UIImage imageNamed:@"cloud4.png"];
   }
   return self;
 }
@@ -36,11 +37,12 @@
   
   CloudObject *cloudImageView;
   
-  int cloudPositionY = (rand() % 7) * 20 + 30;
-  int speed = rand() % 2 + 1;
+  double cloudPositionY = (arc4random() % 7) * 20 + 30;
+  double speed = (arc4random() % 2) + 1;
   double scale = ((double)(rand() % 10)) / 20.0 + 0.5;
   UIImage *currentCloudImage;
   CGRect frame;
+  
   switch (type) {
     case kCloudType1:
       currentCloudImage = cloudImage1;
@@ -54,6 +56,9 @@
       currentCloudImage = cloudImage3;
       frame = CGRectMake(-500, cloudPositionY, 204, 135);
       break;
+    case kCloudType4:
+      currentCloudImage = cloudImage4;
+      frame = CGRectMake(-500, cloudPositionY, 300, 200);
     default:
       break;
   }
@@ -78,13 +83,12 @@
 
 - (void)generateClouds {
   
-  CloudType type = rand() % 500;
-  if (type < 3) {
+  CloudType type = arc4random() % 500;
+  if (type < 4) {
     [self addCloud:type];
   }
   
   [self moveClouds];
-  NSLog(@"%d", [clouds count]);
 }
 
 - (void)moveClouds {

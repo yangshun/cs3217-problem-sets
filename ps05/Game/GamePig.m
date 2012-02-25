@@ -72,11 +72,8 @@
 }
 
 - (void)pigDieAnimation {
-  if (objectState == kGameAlive) {
-    [self.gameObjView startAnimating];
-    [self performSelector:@selector(destroyObject) withObject:nil afterDelay:1.9];
-    objectState = kGameDead;
-  }
+  [self.gameObjView startAnimating];
+  [self performSelector:@selector(destroyObject) withObject:nil afterDelay:1.9];
 }
 
 - (CGRect)frameInGameArea:(CGPoint)point {

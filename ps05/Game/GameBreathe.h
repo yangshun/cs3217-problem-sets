@@ -19,7 +19,6 @@
 
 - (id)initWithFrame:(CGRect)customFrame;
 - (UIImageView*)breatheImageView:(CGRect)frame;
-- (void)startBreathe;
 - (void)breatheTravelAnimation; 
 - (void)breatheDisperseAnimation;
 

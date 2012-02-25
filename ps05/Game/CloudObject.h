@@ -8,18 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-
-
 @interface CloudObject : UIImageView {
-  
-  int speed;
+  double speed;
 }
 
 - (id)initWithImage:(UIImage*)cloudImage 
-           andSpeed:(int)cloudSpeed
+           andSpeed:(double)cloudSpeed
            andFrame:(CGRect)cloudFrame
            andScale:(double)scale;
 
-@property (nonatomic, readonly) int speed;
+@property (nonatomic, readonly) double speed;
 
 @end

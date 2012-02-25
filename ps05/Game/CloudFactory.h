@@ -9,13 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "CloudObject.h"
 
-typedef enum {kCloudType1, kCloudType2, kCloudType3} CloudType;
+typedef enum {kCloudType1, kCloudType2, kCloudType3, kCloudType4} CloudType;
 
 @interface CloudFactory : UIViewController {
   
   UIImage *cloudImage1;
   UIImage *cloudImage2;
   UIImage *cloudImage3;
+  UIImage *cloudImage4;
   
   NSMutableArray *clouds;
   
