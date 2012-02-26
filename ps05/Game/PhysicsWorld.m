@@ -83,7 +83,8 @@
 }
 
 - (void)notifyViewForObjectCollisionsBetween:(int)index1 andObject:(int)index2 {
-  
+  // REQUIRES: two objects to be overlapping with each other
+  // EFFECTS: the view controller is notified of the collision of these two objects
   NSNumber *indexOne = [[NSNumber alloc] initWithInt:index1];
   NSNumber *indexTwo = [[NSNumber alloc] initWithInt:index2];
   
@@ -92,7 +93,8 @@
 }
 
 - (void)notifyViewForObjectCollisionsWithWall:(int)index1 {
-  
+  // REQUIRES: an object to be overlapping with a wall
+  // EFFECTS: the view controller is notified of the collision of the wall and the object
   NSNumber *index = [[NSNumber alloc] initWithInt:index1];
   [[NSNotificationCenter defaultCenter] postNotificationName:@"ObjectWallCollision" object:index];
 }

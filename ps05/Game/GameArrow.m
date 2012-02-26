@@ -29,7 +29,7 @@
 }
 
 - (UIImageView*)arrowImageView:(CGRect)frame {
-  // returns an UIImageView of this GameObject subclass at the specified position
+  // returns a UIImageView of this GameObject subclass at the specified position
   arrowImage = [UIImage imageNamed:@"direction-arrow.png"];
   UIImageView *arrowImageView = [[UIImageView alloc] initWithImage:arrowImage];
   arrowImageView.frame = frame;
@@ -40,7 +40,6 @@
   // MODIFIES: self (game object)
   // REQUIRES: a pan gesture to be recognized
   // EFFECTS: modifies the angle of the arrow
- 
   CGPoint curr = [gesture locationInView:self.view.superview];
   
   CGFloat rotationAngle = atan((curr.y - self.view.center.y) / 
@@ -52,7 +51,7 @@
     gameObjView.image = arrowImage;
     return;
   }
-  
+  // changes the image of the arrow if it is being shifted around
   if (gesture.state == UIGestureRecognizerStateBegan) {
     gameObjView.image = selectedArrowImage;
   }

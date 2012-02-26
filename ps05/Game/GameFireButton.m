@@ -13,8 +13,7 @@
 @synthesize buttonImage;
 
 - (id)initWithFrame:(CGRect)customFrame {
-  // custom initializer
-  // object will appear at bottom at specified frame
+  // EFFECTS: object will appear at specified frame
   self = [super initWithObject:[self buttonImageView:customFrame]];
   
   if (self) {
@@ -34,7 +33,7 @@
 }
 
 - (UIImageView*)buttonImageView:(CGRect)frame {
-  // returns an UIImageView of this GameObject subclass at the specified position
+  // EFFECTS: returns an UIImageView of this GameObject subclass at the specified position
   buttonImage = [UIImage imageNamed:@"fire-button.png"];
   buttonImagePressed = [UIImage imageNamed:@"fire-button-pressed.png"];
   
@@ -44,6 +43,8 @@
 }
 
 - (void)pressed:(UITapGestureRecognizer*)gesture {
+  // MODIFIES: play view controller
+  // REQUIRES: the button to be pressed
   // EFFECTS: fires a projectile from the wolf's mouth
   if (responseState == kAwaitingEvent) {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"FireButtonPressed" object:nil];
@@ -52,6 +53,8 @@
 }
 
 - (void)changeState {
+  // MODIFIES: button image of self
+  // EFFECTS: changes the button image, according to the current state
   if(responseState == kAwaitingEvent) {
     responseState = kEventOccurred;
     self.gameObjView.image = buttonImagePressed;

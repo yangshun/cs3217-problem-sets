@@ -10,6 +10,9 @@
 #import "GamePig.h"
 #import "GameWolf.h"
 
+#define kGroundHeight 590
+#define kNudgeDistance 3
+
 @class GamePig;
 @class GameWolf;
 
@@ -66,6 +69,9 @@
 }
 
 - (void)removeAllGestureRecognizers {
+  // MODIFIES: self
+  // REQUIRES: self != nil
+  // EFFECTS: removes all the gesture recognizers added to this view controller
   [self.view removeGestureRecognizer:objDrag];
   [self.view removeGestureRecognizer:objRotate];
   [self.view removeGestureRecognizer:objZoom];
@@ -92,9 +98,10 @@
 	float diffy = curr.y - prevPanPoint.y;
   
 	CGPoint center = gameObjView.center;
-  
-  if (insideGameArea && (gameObjView.frame.origin.y + gameObjView.frame.size.height) > 600) {
-    center.y -= (diffy + 3);
+    
+  if (insideGameArea && 
+      (gameObjView.frame.origin.y + gameObjView.frame.size.height) > kGroundHeight) {
+    center.y -= (diffy + kNudgeDistance);
   }
   
   center.x += diffx;
@@ -126,15 +133,19 @@
 }
 
 - (void)customRotation:(CGFloat)rotation {
-  // MODIFIES: self (game object)
-  // EFFECTS: rotate a GameObject view by a specified angle
+  // MODIFIES: self
+  // REQUIRES: self != nil
+  // EFFECTS: rotates the view by the given rotation angle
+  //          does not update the rotatedState of the view controller
   self.view.transform = CGAffineTransformRotate(self.view.transform, rotation);
   return;
 }
 
 - (void)customRotationByCollision:(CGFloat)rotation {
-  // MODIFIES: self (game object)
-  // EFFECTS: rotate a GameObject view by a specified angle
+  // MODIFIES: self
+  // REQUIRES: self != nil
+  // EFFECTS: rotates the view by the given rotation angle
+  //          updates the rotatedState of the view controller
   rotatedState += rotation;
   [self customRotation:rotation];
   return;

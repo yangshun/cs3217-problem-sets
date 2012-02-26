@@ -40,7 +40,6 @@
   UIButton *saveButton;
 }
 
-- (IBAction)buttonPressed:(id)sender;
 - (void)dropView:(GameObject*)viewCall;
 - (void)setUpPalette;
 

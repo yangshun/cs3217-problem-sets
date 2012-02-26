@@ -19,12 +19,9 @@
     return self;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
+- (void)didReceiveMemoryWarning {
+  [super didReceiveMemoryWarning];
+  NSLog(@"level selector view sucks");
 }
 
 #pragma mark - View lifecycle
@@ -75,21 +72,25 @@
   [backButton setImage:backButtonImage forState:UIControlStateNormal];
   backButton.center = CGPointMake(512, 468);
   [self.view addSubview:backButton];
-  
-  savedLevelManager = [[FileDataController alloc] init];
+
 }
 
 - (void)loadLevel1 {
+  
+  savedLevelManager = [[FileDataController alloc] init];
   [savedLevelManager loadSavedLevelWithFileName:@"1"];
   [self startLoadedLevel];
 }
 
 - (void)loadLevel2 {
+  
+  savedLevelManager = [[FileDataController alloc] init];
   [savedLevelManager loadSavedLevelWithFileName:@"2"];
   [self startLoadedLevel];
 }
 
-- (void)loadLevel3 {
+- (void)loadLevel3 {  
+  savedLevelManager = [[FileDataController alloc] init];
   [savedLevelManager loadSavedLevelWithFileName:@"3"];
   [self startLoadedLevel];
 }
@@ -105,6 +106,7 @@
                                             Blocks:blocks];
   gameLevel.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
   [self presentViewController:gameLevel animated:YES completion:^(void){}];
+  savedLevelManager = nil;
 }
 
 - (void)backToMainScreen {

@@ -24,10 +24,30 @@ typedef enum {kCloudType1, kCloudType2, kCloudType3, kCloudType4} CloudType;
   double timeStep;
 }
 
-- (id)initCloudsWithTimeStep:(double)dt;
+- (id)initWithTimeStep:(double)dt;
+  // REQUIRES: dt to be non-nil
+  // EFFECTS: cloud images are loaded
+
 - (void)addCloud:(CloudType)type;
+  // MODIFIES: clouds array
+  // REQUIRES: self != nil
+  // EFFECTS: a cloud object is initialized and added into the clouds array
+
 - (void)startGeneratingClouds;
-- (void)generateClouds;
+  // MODIFIES: view
+  // REQUIRES: parameters to be non-nil
+  // EFFECTS: starts the timer for the cloud factory
+
+- (void)updateClouds;
+  // MODIFIES: number of clouds in clouds array
+  // REQUIRES: timer to have started
+  // EFFECTS: randomly adds clouds of random sizes into the cloud array and     
+  //          moves them
+
 - (void)moveClouds; 
+  // MODIFIES: position of clouds in clouds array
+  // REQUIRES: timer to have started
+  // EFFECTS: moves a cloud object by its speed given
+
 
 @end

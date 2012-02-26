@@ -8,16 +8,18 @@
 
 #import "GamePig.h"
 
+
 @implementation GamePig
 
 - (id)init {
-  // default initializer
-  // object will appear in palette
-  self = [super initWithObject:[self pigImageView:CGRectMake(190, 50, 55, 55)]];
-  
+  // EFFECTS: object will appear in palette with the thumbnail size
+  self = [super initWithObject:[self pigImageView:CGRectMake(kPigOriginPointInPaletteX,
+                                                             kPigOriginPointInPaletteY, 
+                                                             kPigThumbnailSize, 
+                                                             kPigThumbnailSize)]];
   if (self) {
     objectType = kGameObjectPig;
-    centerPointInPalette = CGPointMake(217.5, 77.5);
+    centerPointInPalette = CGPointMake(kPigCenterPointInPaletteX, kPigCenterPointInPaletteY);
   }
   
   return self;
@@ -26,25 +28,25 @@
 - (id)initWithFrame:(CGRect)customFrame 
         andRotation:(CGFloat)rotation 
            andState:(BOOL)state {
-  // custom initializer
-  // object will appear in gamearea at specified frame and rotation
+  // EFFECTS: object will appear in gamearea at specified frame and rotation
   self = [super initWithObject:[self pigImageView:customFrame]];
   
   if (self) {
     objectType = kGameObjectPig;
-    centerPointInPalette = CGPointMake(217.5, 77.5);
+    centerPointInPalette = CGPointMake(kPigCenterPointInPaletteX, kPigCenterPointInPaletteY);
     insideGameArea = state;
     if (insideGameArea) {
       [self customRotation:rotation];
     }
   }
-  
   return self;
 }
 
 
 - (UIImageView*)pigImageView:(CGRect)frame {
-  // returns an UIImageView of this GameObject subclass at the specified position
+  // MODIFIES: self
+  // EFFECTS: initializes the sprites for the pig animation and returns a 
+  //          UIImageView of this GameObject subclass at the specified position
   UIImage *pigImage = [UIImage imageNamed:@"pig.png"];
   UIImage *pigCryImage = [UIImage imageNamed:@"pig2.png"];
   
@@ -62,11 +64,14 @@
   
   UIImage *smokeImage = [UIImage imageNamed:@"pig-die-smoke.png"];
 
-  for (int i = 0; i < 10; i++) {
-    CGRect spriteFrame = CGRectMake(80 * (i % 5), 80 * (i / 5), 80, 80);
+  for (int i = 0; i < kPigNumberOfSpritesCry; i++) {
+    CGRect spriteFrame = CGRectMake(kPigSpriteCryWidth * (i % (kPigNumberOfSpritesCry / 2)),
+                                    kPigSpriteCryHeight * (i / (kPigNumberOfSpritesCry / 2)), 
+                                    kPigSpriteCryWidth, kPigSpriteCryHeight);
     CGImageRef pigImageRef = CGImageCreateWithImageInRect([smokeImage CGImage], spriteFrame);
     UIImage *croppedSmoke = [UIImage imageWithCGImage:pigImageRef];
     [pigSprite addObject:croppedSmoke];
+    CGImageRelease(pigImageRef);
   }
  
   UIImageView *gamePigImageView = [[UIImageView alloc]initWithImage:[pigSprite objectAtIndex:0]];
@@ -78,12 +83,18 @@
 }
 
 - (void)pigDieAnimation {
+  // MODIFIES: self view
+  // REQUIRES: pig to be hit by breathe / ground
+  // EFFECTS: shows the pig dying animation
   [self.gameObjView startAnimating];
   [self performSelector:@selector(destroyObject) withObject:nil afterDelay:1.9];
 }
 
 - (CGRect)frameInGameArea:(CGPoint)point {
-  return CGRectMake(point.x - 15, point.y + 10, 88, 88);
+  // EFFECTS: returns the size and position of the object in the gamearea
+  return CGRectMake(point.x + kPigGameareaOffsetX, 
+                    point.y + kPigGameareaOffsetY, 
+                    kPigWidth, kPigHeight);
 }
 
 @end

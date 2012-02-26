@@ -13,15 +13,17 @@
 @synthesize blockType;
 
 - (id)init {
-  // default initializer
-  // object will appear in palette
+  // EFFECTS: object will appear in palette with the thumbnail size
   blockType = kStrawBlockObject;
   gameBlocksArchive = [self initializeBlockImages];
-  self = [super initWithObject:[self blockImageView:CGRectMake(300, 50, 55, 55) 
+  self = [super initWithObject:[self blockImageView:CGRectMake(kBlockOriginPointInPaletteX,
+                                                               kBlockOriginPointInPaletteY,
+                                                               kBlockThumbnailSize,
+                                                               kBlockThumbnailSize) 
                                           withBlock:blockType]];
   if (self) {
     objectType = kGameObjectBlock;
-    centerPointInPalette = CGPointMake(327.5, 77.5);
+    centerPointInPalette = CGPointMake(kBlockCenterPointInPaletteX, kBlockCenterPointInPaletteY);
     [self addSingleTapGesture];
   }
   return self;
@@ -30,15 +32,14 @@
 - (id)initWithFrame:(CGRect)customFrame 
         andRotation:(CGFloat)rotation 
        andBlockType:(blockObjectType)type {
-  // custom initializer
-  // object will appear in gamearea at specified frame, rotatation and block type
+  // EFFECTS: initializes a GameBlock of the specified frame, rotation and type
   blockType = type;
   gameBlocksArchive = [self initializeBlockImages];
   self = [super initWithObject:[self blockImageView:customFrame withBlock:type]];
   
   if (self) {
     objectType = kGameObjectBlock;
-    centerPointInPalette = CGPointMake(327.5, 77.5);
+    centerPointInPalette = CGPointMake(kBlockCenterPointInPaletteX, kBlockCenterPointInPaletteY);
     insideGameArea = YES;
     rotatedState = rotation;
     [self addSingleTapGesture];
@@ -48,29 +49,34 @@
 }
 
 - (NSArray*)initializeBlockImages {
-  // creates an NSArray of block images to be used
+  // MODIFIES: self (GameBlock)
+  // EFFECTS: initializes the various images of the blocks
   UIImage* strawImage = [UIImage imageNamed:@"straw.png"];
   UIImage* woodImage = [UIImage imageNamed:@"wood.png"];
   UIImage* ironImage = [UIImage imageNamed:@"iron.png"];
   UIImage* stoneImage = [UIImage imageNamed:@"stone.png"];
   
- 
   return [[NSArray alloc] initWithObjects:strawImage, 
            woodImage, ironImage, stoneImage, nil];
 }
 
 - (UIImageView*)blockImageView:(CGRect)frame withBlock:(blockObjectType)type {
-  // returns a block image view of the correct position and type
+  // EFFECTS: returns a block image view of the correct position and type
   UIImageView *blockImageView = [[UIImageView alloc] 
                                  initWithImage:[gameBlocksArchive objectAtIndex: (int)type]];
   
   strawSpriteBreak = [[NSMutableArray alloc] init];
   strawBreakImage = [UIImage imageNamed:@"straw-break.png"];
-  for (int i = 0; i < 5; i++) {
-    CGRect spriteFrame = CGRectMake(50 * i, 0, 50, 50);
+  
+  CGFloat spriteWidth = strawBreakImage.size.width / 5;
+  CGFloat spriteHeight = strawBreakImage.size.height;
+  
+  for (int i = 0; i < kBlockNumberOfSpritesBreak; i++) {
+    CGRect spriteFrame = CGRectMake(spriteWidth * i, 0, spriteWidth, spriteHeight);
     CGImageRef strawImageRef = CGImageCreateWithImageInRect([strawBreakImage CGImage], spriteFrame);
     UIImage *croppedStrawImage = [UIImage imageWithCGImage:strawImageRef];
     [strawSpriteBreak addObject:croppedStrawImage];
+    CGImageRelease(strawImageRef);
   } 
   blockImageView.frame = frame;
   return blockImageView;
@@ -118,9 +124,14 @@
 }
 
 - (void)strawBreakAnimation {
+  // MODIFIES: self (GameBlock)
+  // REQUIRES: block to be hit by breathe
+  // EFFECTS: displays the straw breaking animation and removes self from superview
   if (objectState == kGameAlive) {
+    [self customRotation:-rotatedState];
     self.gameObjView = [[UIImageView alloc] initWithImage:[strawSpriteBreak objectAtIndex:0]];
     self.gameObjView.animationImages = strawSpriteBreak;
+    [self customRotation:rotatedState];
     self.gameObjView.animationDuration = 1.0;
     self.gameObjView.animationRepeatCount = 1;
     
@@ -132,7 +143,11 @@
 }
 
 - (CGRect)frameInGameArea:(CGPoint)point {
-  return CGRectMake(point.x + 10, point.y - 40, 30, 130);
+  // EFFECTS: returns the size and position of the object in the gamearea
+  return CGRectMake(point.x + kBlockGameareaOffsetX, 
+                    point.y + kBlockGameareaOffsetY,
+                    kBlockWidth,
+                    kBlockHeight);
 }
 
 

@@ -15,7 +15,6 @@
 
 @interface GameViewController : UIViewController <UIAlertViewDelegate, 
                                                   AVAudioPlayerDelegate> {
-  
   CloudFactory *cloudGenerator;
   UIImageView *gameLogo;
   UIButton *startGameButton;

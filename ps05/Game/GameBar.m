@@ -12,8 +12,7 @@
 @synthesize barImage;
 
 - (id)initWithFrame:(CGRect)customFrame {
-  // custom initializer
-  // object will appear at bottom at specified frame
+  // EFFECTS: object will appear at bottom at specified frame
   self = [super initWithObject:[self barImageView:customFrame]];
   
   if (self) {
@@ -26,7 +25,7 @@
 }
 
 - (UIImageView*)barImageView:(CGRect)frame {
-  // returns an UIImageView of this GameObject subclass at the specified position
+  // EFFECTS: returns a bar image view of the correct position and size
   barImage = [UIImage imageNamed:@"breath-bar-big.png"];
   UIImageView *barImageView = [[UIImageView alloc] initWithImage:barImage];
   barImageView.frame = frame;
@@ -37,13 +36,12 @@
   // MODIFIES: self (game object)
   // REQUIRES: a pan gesture to be recognized
   // EFFECTS: modifies the length of the bar
-  
   CGPoint curr = [gesture locationInView:self.view.superview];
   
-  if (curr.x > 380) {
-    curr.x = 380;
-  } else if (curr.x < 138) {
-    curr.x = 138;
+  if (curr.x > kMaxBarPosition) {
+    curr.x = kMaxBarPosition;
+  } else if (curr.x < kMinBarPosition) {
+    curr.x = kMinBarPosition;
   }
   
   self.view.frame = CGRectMake(self.view.frame.origin.x, 

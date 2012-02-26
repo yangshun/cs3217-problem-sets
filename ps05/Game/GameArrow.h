@@ -15,6 +15,10 @@
 
 - (id)initWithFrame:(CGRect)customFrame;
 - (UIImageView*)arrowImageView:(CGRect)frame;
+- (void)translate:(UIPanGestureRecognizer *)gesture;
+  // MODIFIES: self (game object)
+  // REQUIRES: a pan gesture to be recognized
+  // EFFECTS: modifies the angle of the arrow
 
 @property (nonatomic, strong) UIImage* arrowImage;
 

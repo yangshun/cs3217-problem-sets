@@ -55,8 +55,22 @@ typedef enum {kAwaitingEvent, kEventOccurred} GameResponseState;
 
 - (id)initWithObject:(UIImageView*)objView;
 - (void)removeAllGestureRecognizers;
+  // MODIFIES: self
+  // REQUIRES: self != nil
+  // EFFECTS: removes all the gesture recognizers added to this view controller
+
 - (void)customRotation:(CGFloat)rotation;
+  // MODIFIES: self
+  // REQUIRES: self != nil
+  // EFFECTS: rotates the view by the given rotation angle
+  //          does not update the rotatedState of the view controller
+
 - (void)customRotationByCollision:(CGFloat)rotation;
+  // MODIFIES: self
+  // REQUIRES: self != nil
+  // EFFECTS: rotates the view by the given rotation angle
+  //          updates the rotatedState of the view controller
+
 - (void)translate:(UIGestureRecognizer *)gesture;
   // MODIFIES: object model (coordinates)
   // REQUIRES: game in designer mode
@@ -74,5 +88,7 @@ typedef enum {kAwaitingEvent, kEventOccurred} GameResponseState;
   // EFFECTS: the object is scaled up/down with a pinch gesture
 
 - (void)destroyObject;
+// MODIFIES: self view
+// EFFECTS: view is removed from superview
 
 @end

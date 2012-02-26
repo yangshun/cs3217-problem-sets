@@ -20,6 +20,7 @@
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
+  NSLog(@"design view sucks");
   // Release any cached data, images, etc that aren't in use.
 }
 
@@ -175,6 +176,8 @@
       break;
     case kGameObjectBlock:
       newSize = [(GameBlock*)viewCaller frameInGameArea:newOrigin];
+      break;
+    default:
       break;
   }
   

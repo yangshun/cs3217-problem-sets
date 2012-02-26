@@ -25,6 +25,9 @@
       andRestitution:(double)coeff
              andView:(UIView*)viewObj;
 - (BOOL)testOverlap:(PhysicsRect*)other;
+  // REQUIRES: other != nil
+  // EFFECTS: tests whether this circle is overlapping with another rectangle
+
 - (void)applyImpulses; 
   // MODIFIES: PhysicsCircle object (linear velocity and angular velocity)
   // REQUIRES: overlap between circle and rectangle

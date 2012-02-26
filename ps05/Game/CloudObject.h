@@ -16,6 +16,7 @@
            andSpeed:(double)cloudSpeed
            andFrame:(CGRect)cloudFrame
            andScale:(double)scale;
+  // EFFECTS: a cloud object is initialized with the given attributes
 
 @property (nonatomic, readonly) double speed;
 

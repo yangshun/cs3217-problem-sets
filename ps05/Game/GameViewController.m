@@ -11,16 +11,16 @@
 @implementation GameViewController
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Release any cached data, images, etc that aren't in use.
+  [super didReceiveMemoryWarning];
+  NSLog(@"main screen view sucks");
 }
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  
-  cloudGenerator = [[CloudFactory alloc] initCloudsWithTimeStep:0.02];
+
+  cloudGenerator = [[CloudFactory alloc] initWithTimeStep:0.05];
   [self.view addSubview:cloudGenerator.view];
   [cloudGenerator startGeneratingClouds];
   [self.view addSubview:cloudGenerator.view];
@@ -90,22 +90,12 @@
 }
 
 - (void)designLevel {
-  DesignViewController *designView = [[DesignViewController alloc] initWithNibName:nil bundle:nil];
+  DesignViewController *designView = [[DesignViewController alloc] init];
   designView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
   [self presentViewController:designView animated:YES completion:^(void){}];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  // Return YES for supported orientations
-  if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-  } else {
-    return YES;
-  }
-}
-
 -(void)toggleMusic { 
-
   if (!audioPlayer.playing) {
     [audioPlayer play];
   } else if (audioPlayer.volume >= 0.1) {
@@ -119,5 +109,15 @@
     audioPlayer.volume = 1.0;
   }
 }
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+  // Return YES for supported orientations
+  if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+  } else {
+    return YES;
+  }
+}
+
 
 @end

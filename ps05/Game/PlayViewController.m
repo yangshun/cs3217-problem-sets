@@ -60,7 +60,7 @@
 {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
+      NSLog(@"play view sucks");
     // Release any cached data, images, etc that aren't in use.
 }
 
@@ -126,7 +126,7 @@
   CGFloat gameareaWidth = backgroundWidth;
   [gamearea setContentSize:CGSizeMake(gameareaWidth, gameareaHeight)];
   
-  cloudGenerator = [[CloudFactory alloc] initCloudsWithTimeStep:0.02];
+  cloudGenerator = [[CloudFactory alloc] initWithTimeStep:0.02];
   [gamearea addSubview:cloudGenerator.view];
   [cloudGenerator startGeneratingClouds];
   
@@ -153,7 +153,7 @@
                                                         andView:nil];
   wallRectArray = [[NSArray alloc] initWithObjects:wallGround, nil];
   
-  gameareaTimeStep = 1.0f / 120.0f;
+  gameareaTimeStep = 1.0f / 100.0f;
   gameareaWorld = [[PhysicsWorld alloc] initWithObjects:physicsObjectArray
                                                andWalls:wallRectArray 
                                              andGravity:[Vector2D vectorWith:0 y:400]
@@ -537,7 +537,7 @@
                                                andWalls:wallRectArray 
                                              andGravity:[Vector2D vectorWith:0 y:200]
                                             andTimeStep:gameareaTimeStep];
-  [self performSelector:@selector(removeGameObject:) withObject:breatheController afterDelay:6.0];
+  [self performSelector:@selector(removeGameObject:) withObject:breatheController afterDelay:8.0];
 
   [self initializeTimer];
 }

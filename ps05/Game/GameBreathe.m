@@ -13,38 +13,43 @@
 @synthesize breatheImage;
 
 - (id)initWithFrame:(CGRect)customFrame {
-  // custom initializer
-  // object will appear in gamearea at specified frame
+  // EFFECTS: object will appear in gamearea at specified frame
   self = [super initWithObject:[self breatheImageView:customFrame]];
   
   if (self) {
     [self removeAllGestureRecognizers];
-    currentSpriteFrame = 0;
     gameObjView.contentMode = UIViewContentModeScaleAspectFit;
   }
   return self;
 }
 
 - (UIImageView*)breatheImageView:(CGRect)frame {
-  // initializes the sprites for the travelling breathe and dispersing breathe
-  // returns an UIImageView of this GameObject subclass at the specified position
+  // EFFECTS: initializes the sprites for the travelling breathe and dispersing breathe
+  //          returns an UIImageView of this GameObject subclass at the specified position
   breatheImage = [UIImage imageNamed:@"windblow.png"];
   breatheSprite = [[NSMutableArray alloc] init];
   breatheSpriteDisperse = [[NSMutableArray alloc] init];
   
-  for (int i = 0; i < 4; i++) {
-    CGRect spriteFrame = CGRectMake(113 * i, 0, 113, 104);
+  for (int i = 0; i < kBreatheNumberOfSpritesTravel; i++) {
+    CGRect spriteFrame = CGRectMake(kBreatheWidth * i, 0, 
+                                    kBreatheWidth,
+                                    kBreatheHeight);
     CGImageRef breatheImageRef = CGImageCreateWithImageInRect([breatheImage CGImage], spriteFrame);
     UIImage *croppedBreathe = [UIImage imageWithCGImage:breatheImageRef];
     [breatheSprite addObject:croppedBreathe];
+    CGImageRelease(breatheImageRef);
   }
   
   breatheDisperseImage = [UIImage imageNamed:@"wind-disperse.png"];
-  for (int i = 0; i < 10; i++) {
-    CGRect spriteFrame = CGRectMake(253 * (i % 5), 259 * (i / 5), 253, 259);
+  for (int i = 0; i < kBreatheNumberOfSpritesDisperse; i++) {
+    CGRect spriteFrame = CGRectMake(kBreatheDisperseWidth * (i % (kBreatheNumberOfSpritesDisperse / 2)), 
+                                    kBreatheDisperseHeight * (i / (kBreatheNumberOfSpritesDisperse / 2)), 
+                                    kBreatheDisperseWidth, 
+                                    kBreatheDisperseHeight);
     CGImageRef breatheImageRef = CGImageCreateWithImageInRect([breatheDisperseImage CGImage], spriteFrame);
     UIImage *croppedBreatheDisperse = [UIImage imageWithCGImage:breatheImageRef];
     [breatheSpriteDisperse addObject:croppedBreatheDisperse];
+    CGImageRelease(breatheImageRef);
   }
   
   UIImageView *breatheImageView = [[UIImageView alloc] initWithImage:[breatheSprite objectAtIndex:0]];
@@ -56,10 +61,14 @@
 }
 
 - (void)breatheTravelAnimation {
+  // MODIFIES: self (GameBreathe)
+  // EFFECTS: the view will start animating
   [self.gameObjView startAnimating];
 }
 
 - (void)breatheDisperseAnimation {
+  // MODIFIES: self (GameBreathe)
+  // EFFECTS: the view will show the disperse animation and remove itself from subview
   if (objectState == kGameAlive) {    
     [self.gameObjView stopAnimating];
     self.view.transform = CGAffineTransformScale(self.view.transform, 2, 2);

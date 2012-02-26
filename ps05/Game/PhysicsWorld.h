@@ -32,7 +32,10 @@
   // EFFECTS: the position of each PhysicsRect object is updated
 
 - (void)notifyViewForObjectCollisionsBetween:(int)index1 andObject:(int)index2;
+
 - (void)notifyViewForObjectCollisionsWithWall:(int)index1; 
+  // REQUIRES: an object to be overlapping with a wall
+  // EFFECTS: the view controller is notified of the collision of the wall and the object
 
 @property (nonatomic, strong, readwrite) Vector2D *gravity;
 @property (nonatomic, readwrite) double timeStep;

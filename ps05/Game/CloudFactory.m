@@ -19,7 +19,7 @@
     return self;
 }
 
-- (id)initCloudsWithTimeStep:(double)dt {
+- (id)initWithTimeStep:(double)dt {
   
   self = [super init];
   if (self) {
@@ -37,28 +37,38 @@
   
   CloudObject *cloudImageView;
   
+  CGFloat startingPosition = -500;
+  CGFloat cloudWidth1 = cloudImage1.size.width;
+  CGFloat cloudHeight1 = cloudImage1.size.height;
+  CGFloat cloudWidth2 = cloudImage2.size.width;
+  CGFloat cloudHeight2 = cloudImage2.size.height;
+  CGFloat cloudWidth3 = cloudImage3.size.width;
+  CGFloat cloudHeight3 = cloudImage3.size.height;
+  CGFloat cloudWidth4 = cloudImage4.size.width;
+  CGFloat cloudHeight4 = cloudImage4.size.height;
+  
   double cloudPositionY = (arc4random() % 7) * 20 + 30;
   double speed = (arc4random() % 2) + 1;
   double scale = ((double)(rand() % 10)) / 20.0 + 0.5;
   UIImage *currentCloudImage;
   CGRect frame;
-  
+
   switch (type) {
     case kCloudType1:
       currentCloudImage = cloudImage1;
-      frame = CGRectMake(-500, cloudPositionY, 253, 159);
+      frame = CGRectMake(startingPosition, cloudPositionY, cloudWidth1, cloudHeight1);
       break;
     case kCloudType2:
       currentCloudImage = cloudImage2;
-      frame = CGRectMake(-500, cloudPositionY, 209, 115);
+      frame = CGRectMake(startingPosition, cloudPositionY, cloudWidth2, cloudHeight2);
       break;
     case kCloudType3:
       currentCloudImage = cloudImage3;
-      frame = CGRectMake(-500, cloudPositionY, 204, 135);
+      frame = CGRectMake(startingPosition, cloudPositionY, cloudWidth3, cloudHeight3);
       break;
     case kCloudType4:
       currentCloudImage = cloudImage4;
-      frame = CGRectMake(-500, cloudPositionY, 300, 200);
+      frame = CGRectMake(startingPosition, cloudPositionY, cloudWidth4, cloudHeight4);
     default:
       break;
   }
@@ -75,13 +85,13 @@
 - (void)startGeneratingClouds {
   cloudTimer = [NSTimer scheduledTimerWithTimeInterval:timeStep 
                                                 target:self 
-                                              selector:@selector(generateClouds) 
+                                              selector:@selector(updateClouds) 
                                               userInfo:nil 
                                                repeats:YES];
   [[NSRunLoop mainRunLoop] addTimer:cloudTimer forMode:NSRunLoopCommonModes];
 }
 
-- (void)generateClouds {
+- (void)updateClouds {
   
   CloudType type = arc4random() % 500;
   if (type < 4) {
@@ -97,10 +107,11 @@
     CloudObject *cloud = [clouds objectAtIndex:i];
     cloud.center = CGPointMake(cloud.center.x + cloud.speed, cloud.center.y);
     
-    if (cloud.frame.origin.x > 1600) {
-      [clouds removeObject:cloud];
+    CGFloat maxLimit = 1600;
+    
+    if (cloud.frame.origin.x > maxLimit) {
       [cloud removeFromSuperview];
-      cloud = nil;
+      [clouds removeObject:cloud];
     }
   }
 }
