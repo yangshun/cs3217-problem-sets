@@ -44,7 +44,7 @@ To adjust the power, the user can touch the end of the power bar and translate i
 To fire the breathe, simply press fire.
 
 c. Objective
---------------
+------------
 The objective of the game is to kill the pig. There are two ways of doing so:
 1. Make the pig hit the ground above a certain velocity.
 2. The breathe touches the pig directly.
@@ -76,76 +76,411 @@ To adjust the power, the user can touch the end of the power bar and translate i
 To fire the breathe, simply press fire button.
 The length of the power bar indicates the starting velocity of the breathe projectile when it is added into the physics engine. I used this method is straightforward and easy to implement.
 
+b.
+I implemented a new subclass of PhysicsShape called PhysicsCircle. Next, I referred to a book on Game Physics Engines to write the algorithm for circle-rectangle interaction. 
 
-Problem 3: Testing
+Also, I modified the loop in the Physics Engine which checks for overlapping. If one of the objects is a circle, the circle-rectangle overlapping algorithm will be used instead of the usual rectangle-rectangle algorithm.
+
+c. 
+Interaction 1: Pig and Breathe
+Pig will be killed and breathe will be destroyed. 
+
+Interaction 2: Breathe and Straw block
+Breathe velocity reduced and straw block destroyed.
+
+Interaction 3: Breathe and other blocks
+Breathe destroyed and impulse applied on block.
+
+Interaction 4: Block and Pig
+Pig displays "Ouch" message.
+
+Interaction 4: Breathe and ground
+Breathe destroyed.
+
+The physics engine should not take care of the object-object interaction as it only updates the position of the physics object model.
+
+Since the logic is in the Play view controller, the object-object interactions should be handled in there. The physics engine posts a notification when there is collision between two objects, the game view controller will receive the two objects and determine the kind of interaction. Next, it will respond with the necessary actions and modify the view accordingly.
+
+I used this strategy as it is not messy because the logic for ALL object-object interactions are handled by one single method. The method then decides the type of interactions that occurred. The decisions made are hidden from the physics engine. 
+
+d. 
+I chose NSTimer as the Physics Engine that I used in PS4 also ran on NSTimer. The timer in the game and in the physics engine ran on the same time step, which makes integration easy. 
+
+The advantage of timers is that it is easy to use and less confusing. However, it does not allow the concurrent execution of code. It blocks the execution of the rest of the application. 
+
+Using multiple NSThread objects allows the main thread of the application to run. Threads can also be used to divide a large job into several smaller jobs, which can lead to performance increases on multi-core computers.
+
+Central dispatch is useful but time is needed to learn it, and time is something I'm running out of.
+
+e.
+Refer to MDD.png
+
+******************************
+Problem 3: Integration Testing 
+******************************
 
 1. Black-box testing
-	- Test gravity
-		- Objects falls in the right direction for all orientations.
-		- Objects fall faster due to gravitational acceleration.
-		- Change the various properties of the block and make sure that they fall at the same speed.
-	- Test collisions between two objects
-		- Head-on collision between objects of the same size do not result in rotation.
-		- Collision at an angles between two objects result in a change in angular velocity.
-		- When an object of smaller mass hits an object of a larger mass, they exchange velocity.
-		- Overlap between two objects are minimal.
-		- Objects rest on each other at equilibrium.
-		- Final momentum is lesser than initial momentum.
-	- Test collisions between three objects
-		- The objects collide in a realistic fashion.
-		- Objects rest on each other at equilibrium.
-		- No visible lag in movements after collision between each pair of objects.
-		- Final momentum is lesser than initial momentum.
-	- Test collisions with wall
-		- Objects do not sink into wall.
-		- Objects rest properly on the wall after some time.
-		- Objects bounce off at a lower speed after colliding with the wall.
-		- Walls remain in the same position after collision with objects
-	- Test that friction works
-		- Objects take longer to settle down when friction is lower.
-	- Test the effect of restitution coefficient
-		- Objects bounce about longer when restitution coefficient is higher.
-	- Test accelerometer on/off switch
-		- Gravity depends on choice (preset value for each orientation OR accelerometer direction and magnitude).
 
-2. Glass Box Testing
-	- Test View Controller
-		- Rectangle views load properly.
-		- Physics rectangles are initialized properly.
-		- Change in gravity is triggered when orientation is changed.
-		- Timer loads properly and triggers the events after every assigned time interval.
-		- Accelerometer changes the magnitude and direction of gravity. 
-	- Physics World
-		- The Physics Rectangles (blocks and walls) are stored.
-		- Gravity is changed when orientation is changed.
-		- Test that iteration process is correct. 
-			- Rectangles collide with each other properly and they do not intersect much.
-			- Collision contact points are in the object and not outside.
-			- Rectangles settle down eventually.
-			- Momentum is decreased after each collision.
-			- The state of the walls do not change after every iteration.
-	- Physics Rectangle
-		- Blocks:
-			- Blocks initialize properly with parameters and default values.
-			- Blocks accelerate due to gravitational forces.
-			- Angular velocity changes if torque is applied.
-			- Overlap checking algorithm works.
-			- Upon collision between two blocks, impulses are applied to both objects.
-			- Linear and angular velocities are modified after each collision.
-			- The position (center and rotation) are modified after each collision.
-		- Walls:
-			- Walls initialize properly with parameters and default values.
-			- Walls do not accelerate due to gravitational forces.
-			- Angular velocity does not change if torque is applied.
-			- Overlap checking algorithm with blocks.
-			- Upon collision with blocks, impulses has no effect on itself.
-			- Linear and angular velocities are not modified after each collision.
-			- The position (center and rotation) are not modified after each collision.
+  - Test main screen
+      - Appearance and Sound
+          - Game logo and buttons load 
+          - Clouds appear and start moving
+          - Background music is played
+      - Test start game button
+          - Level selector screen brought up
+      - Test design level button
+          - Level designer screen brough up
+  
+  - Test level selector
+      - Appearance and sound
+          - 3 level buttons and 1 back button loaded
+          - Background music still playing
+      - Level 1
+          - Level 1 loaded
+      - Level 2
+          - Level 2 loaded
+      - Level 3
+          - Level 3 loaded
+      - Back
+          -  Returns to main screen
 
-Bonus Problem: Reflection
+	- Test level designer
+      - Test background loads ok and is scrollable
+          - Still scrollable with game objects. 
+      - Test implementation of buttons
+          - Back
+              - Return with empty screen
+              - Return with one object (try different types)
+              - Return with one object of each type
+              - Return with screen full of objects
+              - Return after saving/loading a screen
+          - Save/Load
+              - Save/load empty screen
+              - Save/load one object (try different types)
+              - Save/load one object of each type
+              - Save/load with many objects
+              - Load with empty screen
+              - Load with screen full of objects.
+              - Load non-existent file
+          - Reset
+              - Clear empty screen
+              - Clear screen with one object
+              - Clear screen with one object of each type
+              - Clear screen with many objects
+          - Start
+              - Start with empty screen
+              - Start with only wolf
+              - Start with only pig
+              - Start with one/many blocks
+              - Start with both wolf and pig
+              - Start with wolf, pig and blocks
+      - Test implementation of game objects (wolf, pig, obstacle):
+          - Drag in palette
+              - to game area
+              - When gamearea is scrolled
+              - When gamearea is not scrolled
+              - to palette or button area 
+          - Drag in gamearea
+              - to game area
+              - to palette
+          - Rotate and resize in palette (nothing happens)
+              - Rotate and resize in gamearea
+              - Drag, Rotate, Resize then Move
+              - Drag, Resize, Rotate then Move
+          - Double tap in palette
+              - After rotating and resizing in gamearea
+              - Without rotating and resizing in gamearea
+          - Double tap in gamearea
+          - Single tap for obstacle in gamearea
+      - Test Compliance with Game Rules
+          - Check that not more than one pig or wolf can be created
+          - Check that multiple obstacles can be created
 
-a. Around 30 hours. A lot of time is spent debugging the appendix formulas. I checked through around 5 times to make sure that the formulas were right.
+  - Test Playing screen
+      - Appearance and sound
+          - Background loaded
+          - Scoreboard loaded with 5 hearts
+          - Game objects appear properly
+          - Power board loaded
+          - Power bar loaded 
+          - Fire button loaded
+          - Shooting guide loaded
+          - Huff and Puff starting message appears
+      - Test back button
+          - After screen loads
+          - After firing a breathe
+          - After game outcome determined
+      - Test arrow
+          - Arrow responds to touches
+          - Arrow changes colour when moved
+      - Test power bar
+          - Bar responds to touches
+          - Minimum bar width when it is dragged all the way to the left
+          - Maximum bar width when it is dragged all the way to the right
+      - Test fire button
+          - After screen loads
+          - After adjusting power
+          - After adjusting arrow angle
+          - After adjusting arrow angle and power bar
+      - Test generic objects
+          - Objects fall to the ground when game is loaded due to gravity
+          - Objects interact with each other realistically
+      - Test wolf object
+          - Wolf fires breathe when fire button pressed
+          - Wolf displays blowing animation when firing breathe
+          - Wolf displays "howl" balloon when firing
+          - Wolf displays dying animation when all lives are used up
+          - Wolf displays "mwhaha" balloon when pig dies
+      - Test pig object
+          - Pig displays "ouch" balloon when block hits it
+          - Pig displays "ahhh" balloon when breathe hits it
+          - Pig displays dying smoke animation when breathe hits it
+      - Test block object
+          - Straw block gets destroyed when breathe hits it
+          - Other blocks do not get destroyed when breathe hits it
+      - Test breathe object
+          - Breathe is fired from the wolf's mouth
+          - Breathe displays travelling animation
+          - Breathe is destroyed when hits the ground/blocks except straw block/pig
+          - Breathe displays dispersing animation before it is destroyed
+          - Breathe is destroyed when it does not hit anything after 8.0 seconds
+          - Breathe projectile initially travels in the direction that the arrow is pointing in
+          - Breathe projectile's speed depends on length of bar when fire button is pressed
+      - Test compliance with game rules
+          - Check that a heart is removed after a breathe is fired
+          - Check that the fire button is disabled when a breathe is on screen
+          - Check that game outcome conforms with the logic of the game
+          - Check that back button that appears after the game ends works      
+          - Check that wolf dies after it fires a breathe with no lives left
+          - Check that pig dies after it falls to ground at a fast speed
+          - Check that pig dies after it gets hit by breathe
+          
+  - Test Physics Engine
+      - Test gravity
+          - Objects fall faster due to gravitational acceleration.
+          - Change the various properties of the block and make sure that they fall at the same speed.
+      - Test collisions between two general objects
+          - Head-on collision between objects of the same size do not result in rotation.
+          - Collision at an angles between two objects result in a change in angular velocity.
+          - When an object of smaller mass hits an object of a larger mass, they exchange velocity.
+          - Overlap between two objects are minimal.
+          - Objects rest on each other at equilibrium.
+          - Final momentum is lesser than initial momentum.
+          - Test Circle collision
+              - Circles collide with rectangle properly
+      - Test collisions between three objects
+          - The objects collide in a realistic fashion.
+          - Objects rest on each other at equilibrium.
+          - Final momentum is lesser than initial momentum.
+      - Test collisions with ground
+          - Objects do not sink into ground.
+          - Objects rest properly on the ground after some time.
+      - Test that friction works
+          - Objects take longer to settle down when friction is lower.
+      - Test the effect of restitution coefficient
+          - Objects bounce about longer when restitution coefficient is higher.
+      
 
-b. It would be good to discuss with each other as many of us faced the same bugs. Discuss and learn from each other mistakes (:
+2. Glass box testing (depends on the actual code)
 
-c. I think equation 51 and 52 should be better phrased. Many of us thought that it was multiplication. Perhaps should differentiation between multiplication and crossing.
+  - Main Screen
+      - viewDidLoad
+          - Clouds are loaded and moving across the screen
+          - Game logo and buttons load and animates into view
+          - Background music plays
+      - startGame
+          - Level selector view is brought out with dissolving animation
+      - designLevel
+          - Level designer view is brought out with dissolving animation
+      - toggleMusic
+          - Background music is turned on/off with fading effect
+  
+  - Level Selector screen
+      - viewDidLoad
+          - Level selector panel appears along with level buttons and back buttons
+      - loadLevel1/2/3
+          - Loads pre-saved level 1/2/3
+      - startLoadedLevel
+          - GameWolf, GamePig and GameBlocks are loaded from the FileDataController
+      - backToMainScreen
+          - Returns to the main screen with dissolving animation
+  
+  - Level Designer screen
+      - viewDidLoad
+          - palette view is loaded
+          - taskbar view is loaded with the buttons
+          - gamearea is loaded
+      - setUpPalette
+          - GameObjects appear in the palette in the size of the thumbnail 
+      - scrollViewDisabled
+          - Gamearea is not allowed to scroll when user is interacting with GameObject
+      - scrollViewEnabled
+          - Gamearea is allowed to scroll
+      - dropView
+          - GameObject is transferred from palette to gamearea
+          - For GameBlock, a new block is created in the palette
+      - returnViewToPalette
+          - GameObject is removed from gamearea and returned to palette correctly
+      - clearAllObjectsFromView
+          - All objects are removed from the gamearea and palette
+      - startLevel
+          - If wolf and pig in game area, the start screen is loaded view dissolving animation
+          - The game is unable to start if both the wolf and pig are not in the gamearea
+      - proceedToSaveLevel
+          - State of objects in screen are saved. Double confirmed when file is loaded
+      - saveLevel/loadLevel/resetLevel
+          - All objects are in palette
+          - All objects are in gamearea
+          - Some objects are in gamearea
+          - More than one GameBlocks are in the gamearea
+      - backToMainScreen
+          - Returns to main screen
+  
+  - GameObject
+      - initWithObject:
+          - Creates the specified object
+      - removeAllGestureRecognizers
+          - Test that GameObjects do not respond to gestures after this method is called
+      - translate
+          - Image's alpha is set to 0.5 when object in translation
+      - customRotation
+          - Image is rotated by angle (positive and negative)
+          - Test for different sizes
+      - customRotationByCollision
+          - Image is rotated by angle (positive and negative)
+          - Test for different sizes
+          - Use different objects to collide with it
+      - zoom
+          - Zoom in and then zoom out repeatedly
+          - Zoom after rotating and translating
+      - doubleTap
+          - Double tap after rotating, zooming, scaling
+          
+  - GameArrow
+      - translate
+          - Translate the arrow up and down repeatedly
+  - GameBar
+      - translate
+          - Translate the bar left and right repeatedly
+      
+  - GameBlock
+      - changeBlockType
+          - Change the block image repeatedly, test a few cycles
+          - Breaking animation displays properly
+  
+  - GameBreathe
+      - breatheTravelAnimation
+          - Breathe animation loops when breathe is travelling in the air
+      - breatheDisperseAnimation
+          - Breathe disperse animation plays once
+  
+  - GameFireButton
+      - pressed
+          - Button cannot be pressed when the image is the darker version
+      - changeState
+          - Button is unable to respond to touches when it is the darker version
+  
+  - GamePig
+      - pigDieAnimation
+          - Pig displays dying animation
+          
+  - GameWolf
+      - startWolfBlow
+          - Wolf triggers blowing animation when fire button is pressed
+      - wolfBlowAnimation
+          - Wolf displays blowing animation
+      - wolfLieOnFloor
+          - Wolf's image is changed to laying on the floor
+  
+  - Play screen
+      - initWithWolf:Pig:Blocks:
+          - GameObjects appear in gamearea properly at their specified positions and state
+      - viewDidLoad
+          - scoreBoard loaded
+          - miniBackButton loaded
+          - Hearts loaded
+      - createPhysicsObjectFromGameObject
+          - Print count of physics objects array after it is initialized
+      - setUpGamearea
+          - GameObjects loaded depending on state of GameObjects in designed level
+      - initializeTimer
+          - Print state of timer
+      - handleObjectObjectColllisions
+          - Shoot GameBreathe at GamePig
+          - Shoot GameBreathe at GameBlock
+            - Shoot at straw
+            - Shoot at non-straw
+          - Shoot GameBreathe at non-straw type GameBlock and let it fall on GamePig
+      - handleObjectWallCollisions
+          - Shoot GameBreathe at ground
+          - Let GamePig be resting on a single vertical straw block and destroy the straw block
+      - removeGameObject
+          - Shoot GameBreathe at GamePig
+          - Shoot GameBreathe at GameBlock
+          - Shoot GameBreathe at ground
+          - Let GamePig be resting on a single vertical straw block and destroy the straw block
+      - toggleShootingGuide
+          - Press fire button
+          - Wait for GameBreathe to be destroyed
+      - addBreatheProjectile
+          - Press fire button
+      - victory
+          - Kill GamePig
+              - Shoot GameBreathe at GamePig
+              - Let GamePig fall onto ground at high velocity
+      - gameOver
+          - Use up all the breathes
+      - backToPreviousScreen
+          - Press mini back button and back button
+      - fadeMusic
+          - Click back button to return to previous screen
+      
+*******************************
+Problem 4: The Bells & Whistles
+*******************************
+
+1. Self-made app icon
+
+2. Main Menu View:
+  - Random clouds moving at the back
+  - Self-designed game logo and two buttons
+  - Background music
+  - Self-designed game background
+
+3. Level Selector View:
+  - Self-designed level selection panel
+  - Level selection panel with 3 pre-set levels
+  - Saved-levels were designed using level designer and stored in app bundle
+
+4. Level Designer View:
+  - Self-designed taskbar at the top
+  - Modified night mode background
+  - Self-designed palette
+
+5. Play View:
+  - Entrance text of "Huff-and-Puff"
+  - Background music of jungle
+  - Self-designed scoreboard
+  - Lives counter
+  - Self-designed powerboard
+  - Power bar can be adjusted manually
+  - Comic balloons that pop up with the messages: "Howl", "Mwhaha", Ahhh", "Ouch"
+  - Modified pig dying animation
+  - Wolf inhaling exhaling animation
+  - End-game screen for victory and game over
+  - Windsuck animation
+  - Windblow animation
+  - Straw break animation
+
+***************************
+Problem 5: Final Reflection
+***************************
+
+a. The whole recess week was spent on this problem set. I spent 2 days figuring out the Physics Engine for circle-rectangle collision. I was done with the requirements by Wednesday, but I spent the rest of the days designing the game art and improving
+  the playing experience.
+
+b. I should have used an open-source physics engine. Its performance is way better than my self-written one. Too late to change though =/
+
+c. Nothing much, this problem set was the mosy enjoyable by far, as I was able to reaps the fruits of my labour. Although I spent alot of time designing the art and making it feel like a complete iOS game, I enjoyed the process and I treated it as training for the final project (:
+
+d. Yes they have helped tremendously. When a person spends almost everyday on something, he/she is bound to learn something right? This was a sadistically satisfying 6-week. I feel confident about learning new stuff independently and making my own app now. (:

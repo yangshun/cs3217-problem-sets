@@ -12,14 +12,12 @@
 #import "GamePig.h"
 #import "GameBlock.h"
 
-@interface FileDataController : UIViewController {
+@interface FileDataController : NSObject {
   
   GameWolf* wolfController;
   GamePig* pigController;
   GameBlock* blockController;
   NSMutableArray* blocksInGameArea;
-  FileDataController *savedLevelManager;
-  
 }
 
 - (NSString*)dataFilePath:(NSString*)name;

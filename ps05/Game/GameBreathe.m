@@ -82,7 +82,7 @@
     self.gameObjView = [[UIImageView alloc] initWithImage:[breatheSpriteDisperse objectAtIndex:0]];
     self.gameObjView.animationImages = breatheSpriteDisperse;
     self.gameObjView.animationDuration = 1.0;
-    self.gameObjView.animationRepeatCount = INFINITY;
+    self.gameObjView.animationRepeatCount = 1;
     self.view = self.gameObjView;
     [self.gameObjView startAnimating];
     [self performSelector:@selector(destroyObject) withObject:nil afterDelay:1.0];

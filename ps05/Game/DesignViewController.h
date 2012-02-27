@@ -72,6 +72,10 @@
 - (void)backToMainScreen;
   // EFFECTS: returns to the level designer
 
+- (void)proceedToSaveLevel;
+  // MODIFIES: save data
+  // EFFECTS: properties of all the GameObject controllers are saved in FileDataController object
+
 @property (nonatomic, weak) IBOutlet UIImageView *taskbar;
 @property (nonatomic, weak) IBOutlet UITextField *levelName;
 @property (nonatomic, weak) IBOutlet UIScrollView *gamearea;

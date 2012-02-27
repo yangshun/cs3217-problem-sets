@@ -21,8 +21,8 @@
     heeheeImage = [UIImage imageNamed:@"text-heehee.png"];
     howlImage = [UIImage imageNamed:@"text-howl.png"];
     mwhahaImage = [UIImage imageNamed:@"text-mwhaha.png"];
-    imageWidth = ouchImage.size.width;
-    imageHeight = ouchImage.size.height;
+    imageWidth = ouchImage.size.width * 0.75;
+    imageHeight = ouchImage.size.height * 0.75;
   }
   return self;
 }

@@ -139,7 +139,7 @@
                                                         andView:nil];
   wallRectArray = [[NSArray alloc] initWithObjects:wallGround, nil];
   
-  gameareaTimeStep = 1.0f / 100.0f;
+  gameareaTimeStep = 1.0f / 120.0f;
   gameareaWorld = [[PhysicsWorld alloc] initWithObjects:physicsObjectArray
                                                andWalls:wallRectArray 
                                              andGravity:[Vector2D vectorWith:0 y:400]
