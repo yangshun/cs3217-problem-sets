@@ -5,7 +5,7 @@ Problem Set 5
 **************************************
 Problem 1: What is YOUR game gonna be?
 **************************************
-
+===========
 MAIN SCREEN
 ===========
 
@@ -19,6 +19,7 @@ b. Design Level
 ---------------
 - Takes the user to the level designer where the user can design their own level and play it subsequently
 
+==================
 THE GAME EXPLAINED
 ==================
 
@@ -481,6 +482,6 @@ a. The whole recess week was spent on this problem set. I spent 2 days figuring 
 
 b. I should have used an open-source physics engine. Its performance is way better than my self-written one. Too late to change though =/
 
-c. Nothing much, this problem set was the mosy enjoyable by far, as I was able to reaps the fruits of my labour. Although I spent alot of time designing the art and making it feel like a complete iOS game, I enjoyed the process and I treated it as training for the final project (:
+c. I enjoyed this problem set was the most enjoyable by far because there is the creativity component and I was able to reaps the fruits of my labour. Maybe in the first few Ps-Es, there can be creativity components too! Although I spent alot of time designing the art and making it feel like a complete iOS game, I enjoyed the process and I treated it as training for the final project. 
 
 d. Yes they have helped tremendously. When a person spends almost everyday on something, he/she is bound to learn something right? This was a sadistically satisfying 6-week. I feel confident about learning new stuff independently and making my own app now. (:
