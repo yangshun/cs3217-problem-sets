@@ -30,22 +30,29 @@
   breatheSprite = [[NSMutableArray alloc] init];
   breatheSpriteDisperse = [[NSMutableArray alloc] init];
   
+  CGFloat breatheImageWidth = breatheImage.size.width / 4;
+  CGFloat breatheImageHeight = breatheImage.size.height;
+  
   for (int i = 0; i < kBreatheNumberOfSpritesTravel; i++) {
-    CGRect spriteFrame = CGRectMake(kBreatheWidth * i, 0, 
-                                    kBreatheWidth,
-                                    kBreatheHeight);
+    CGRect spriteFrame = CGRectMake(breatheImageWidth * i, 0, 
+                                    breatheImageWidth,
+                                    breatheImageHeight);
     CGImageRef breatheImageRef = CGImageCreateWithImageInRect([breatheImage CGImage], spriteFrame);
     UIImage *croppedBreathe = [UIImage imageWithCGImage:breatheImageRef];
     [breatheSprite addObject:croppedBreathe];
     CGImageRelease(breatheImageRef);
   }
-  
+
   breatheDisperseImage = [UIImage imageNamed:@"wind-disperse.png"];
+  
+  CGFloat breatheDisperseImageWidth = breatheDisperseImage.size.width / 5;
+  CGFloat breatheDisperseImageHeight = breatheDisperseImage.size.height / 2;
+  
   for (int i = 0; i < kBreatheNumberOfSpritesDisperse; i++) {
-    CGRect spriteFrame = CGRectMake(kBreatheDisperseWidth * (i % (kBreatheNumberOfSpritesDisperse / 2)), 
-                                    kBreatheDisperseHeight * (i / (kBreatheNumberOfSpritesDisperse / 2)), 
-                                    kBreatheDisperseWidth, 
-                                    kBreatheDisperseHeight);
+    CGRect spriteFrame = CGRectMake(breatheDisperseImageWidth * (i % (kBreatheNumberOfSpritesDisperse / 2)), 
+                                    breatheDisperseImageHeight * (i / (kBreatheNumberOfSpritesDisperse / 2)), 
+                                    breatheDisperseImageWidth, 
+                                    breatheDisperseImageWidth);
     CGImageRef breatheImageRef = CGImageCreateWithImageInRect([breatheDisperseImage CGImage], spriteFrame);
     UIImage *croppedBreatheDisperse = [UIImage imageWithCGImage:breatheImageRef];
     [breatheSpriteDisperse addObject:croppedBreatheDisperse];
@@ -55,7 +62,7 @@
   UIImageView *breatheImageView = [[UIImageView alloc] initWithImage:[breatheSprite objectAtIndex:0]];
   breatheImageView.animationImages = breatheSprite;
   breatheImageView.animationDuration = 0.5;
-  breatheImageView.animationRepeatCount = 10;
+  breatheImageView.animationRepeatCount = INFINITY;
   breatheImageView.frame = frame;
   return breatheImageView;
 }

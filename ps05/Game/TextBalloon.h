@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#define kOffsetX 30
+#define kOffsetY -180
+
 typedef enum {kOuchMessage, kAhhhMessage, kHeeheeMessage, 
   kHowlMessage, kMwhahaMessage} MessageType;
 
@@ -18,10 +21,18 @@ typedef enum {kOuchMessage, kAhhhMessage, kHeeheeMessage,
   UIImage *heeheeImage;
   UIImage *howlImage;
   UIImage *mwhahaImage;
+  CGFloat imageWidth;
+  CGFloat imageHeight;
 }
 
 - (void)displayBalloonAtLocation:(CGPoint)location andType:(MessageType)type;
+  // MODIFIES: view controller containing this view
+  // REQUIRIES: type != nil
+  // EFFECTS: a popup balloon image containing a message is displayed
+
 - (void)removeFromView;
+  // MODIFIES: view controller containing this view
+  // EFFECTS: removes the text balloon from its superview
 
 @property (nonatomic, readwrite) BOOL onScreen;
 

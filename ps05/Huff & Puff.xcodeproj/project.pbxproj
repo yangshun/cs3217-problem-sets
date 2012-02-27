@@ -399,16 +399,16 @@
 		6DA8FE0014C5FA16009BD349 /* Game */ = {
 			isa = PBXGroup;
 			children = (
-				6DDAADCA14F1369A004D3C3E /* Physics Engine */,
-				6DDAADC914F13672004D3C3E /* Math2D */,
-				6D2526AB14CDD8690094A022 /* Images */,
-				6DEB1AF914F5E06200F5D700 /* Cloud Generator */,
-				6DFD671A14F8F4F700E50EBA /* Music */,
-				6DDAADCF14F137D0004D3C3E /* Game Objects */,
 				6DA8FE0914C5FA16009BD349 /* AppDelegate.h */,
 				6DA8FE0A14C5FA16009BD349 /* AppDelegate.m */,
+				6D2526AB14CDD8690094A022 /* Images */,
+				6DFD671A14F8F4F700E50EBA /* Music */,
+				6DDAADCA14F1369A004D3C3E /* Physics Engine */,
+				6DDAADC914F13672004D3C3E /* Math2D */,
+				6DFD672614F9283E00E50EBA /* Game Utilities */,
+				6DEB1AF914F5E06200F5D700 /* Cloud Generator */,
+				6DDAADCF14F137D0004D3C3E /* Game Objects */,
 				6DFD672714F9286A00E50EBA /* View Controllers */,
-				6DFD672614F9283E00E50EBA /* Utilities */,
 				6DA8FE0114C5FA16009BD349 /* Supporting Files */,
 			);
 			path = Game;
@@ -518,7 +518,7 @@
 			name = Music;
 			sourceTree = "<group>";
 		};
-		6DFD672614F9283E00E50EBA /* Utilities */ = {
+		6DFD672614F9283E00E50EBA /* Game Utilities */ = {
 			isa = PBXGroup;
 			children = (
 				6DF376D914DA18C4009B2139 /* FileDataController.h */,
@@ -528,7 +528,7 @@
 				6D8E687314F64D0400CBFB68 /* WolfLives.h */,
 				6D8E687414F64D0400CBFB68 /* WolfLives.m */,
 			);
-			name = Utilities;
+			name = "Game Utilities";
 			sourceTree = "<group>";
 		};
 		6DFD672714F9286A00E50EBA /* View Controllers */ = {

@@ -10,37 +10,29 @@
 
 @implementation WolfLives
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-
 - (id)initWithLives:(int)number {
-  
+  // EFFECTS: initializes the lives of the wolf depending on the parameter value
   self = [super init];
   
   if (self) {
-    
     lives = number;
-    livesCount = [[NSMutableArray alloc] initWithCapacity:number];
+    livesCount = [[NSMutableArray alloc] init];
     heartImage = [UIImage imageNamed:@"heart.png"];
-
   }
   return self; 
 }
 
 - (void)displayLives {
-  
+  // MODIFIES: view
+  // EFFECTS: view to display the number of hearts corresponding to the number of lives left
   CGFloat heartWidth = heartImage.size.width;
   CGFloat heartHeight = heartImage.size.height;
   
   for (int i = 0; i < lives; i++) {
-    CGRect frame = CGRectMake(218 + i * (36 + 10), 131, heartWidth, heartHeight);
+    CGRect frame = CGRectMake(kHeartStartingPositionX + i * (heartWidth + kDistanceBetweenHearts), 
+                              kHeartStartingPositionY, 
+                              heartWidth, 
+                              heartHeight);
     UIImageView *heartImageView = [[UIImageView alloc] initWithImage:heartImage];
     heartImageView.frame = frame;
     [self.view addSubview:heartImageView];
@@ -49,23 +41,24 @@
 }
 
 - (void)deductLife {
+  // MODIFIES: self (number of lives)
+  // REQUIRIES: wolf to have shot a breathe
+  // EFFECTS: number of lives of wolf is reduced by one
   if (lives > 0) {
-    lives--;
+    lives = lives - 1;
     [[livesCount objectAtIndex:lives] removeFromSuperview];
     [livesCount removeObjectAtIndex:lives];
   } else {
-    [[NSNotificationCenter defaultCenter] performSelector:@selector(postNotificationName:object:) withObject:@"GameOver" afterDelay:1.5];
+    [[NSNotificationCenter defaultCenter] performSelector:@selector(postNotificationName:object:) 
+                                               withObject:@"GameOver" afterDelay:1.5];
   }
-  
-  NSLog(@"%d", lives);
 }
 
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
+- (void)didReceiveMemoryWarning {
+  // Releases the view if it doesn't have a superview.
+  [super didReceiveMemoryWarning];
+  NSLog(@"wolf lives board received memory warnings");
+  // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - View lifecycle

@@ -190,6 +190,11 @@
 }
 
 - (void)destroyObject {
+  // MODIFIES: self (view)
+  // EFFECTS: view is removed from superview
+  if ([self.gameObjView respondsToSelector:@selector(stopAnimating)]) {
+    [self.gameObjView stopAnimating];
+  }
   [self.view removeFromSuperview];
 }
 

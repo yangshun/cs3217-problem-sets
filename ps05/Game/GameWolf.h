@@ -14,8 +14,6 @@
 #define kWolfThumbnailHeight 100
 #define kWolfNumberOfSpritesBlow 15
 #define kWolfNumberOfSpritesDie 16
-#define kWolfSpriteDieWidth 237
-#define kWolfSpriteDieHeight 185
 #define kWolfCenterPointInPaletteX 95
 #define kWolfCenterPointInPaletteY 70
 #define kWolfGameareaOffsetX -35

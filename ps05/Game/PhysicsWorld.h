@@ -32,6 +32,8 @@
   // EFFECTS: the position of each PhysicsRect object is updated
 
 - (void)notifyViewForObjectCollisionsBetween:(int)index1 andObject:(int)index2;
+  // REQUIRES: two objects to be overlapping with each other
+  // EFFECTS: the view controller is notified of the collision of these two objects
 
 - (void)notifyViewForObjectCollisionsWithWall:(int)index1; 
   // REQUIRES: an object to be overlapping with a wall

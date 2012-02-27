@@ -20,7 +20,7 @@
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
-  NSLog(@"design view sucks");
+  NSLog(@"design view received memory warning");
   // Release any cached data, images, etc that aren't in use.
 }
 
@@ -431,6 +431,7 @@
 }
 
 - (void)backToMainScreen {
+  // EFFECTS: returns to the level designer
   self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
   [self dismissViewControllerAnimated:YES completion:^(void){}];
 }

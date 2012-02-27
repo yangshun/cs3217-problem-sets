@@ -10,10 +10,6 @@
 
 #define kBreatheNumberOfSpritesTravel 4
 #define kBreatheNumberOfSpritesDisperse 10
-#define kBreatheWidth 113
-#define kBreatheHeight 104
-#define kBreatheDisperseWidth 253
-#define kBreatheDisperseHeight 259
 
 @interface GameBreathe : GameObject {
   UIImage *breatheImage;

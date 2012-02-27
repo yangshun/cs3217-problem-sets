@@ -12,17 +12,8 @@
 
 @synthesize gamearea;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-      
-    }
-    return self;
-}
-
-- (id)initWithWolf:(GameWolf*)wolf Pig:(GamePig*)pig Blocks:(NSMutableArray*)blocks
-{
+- (id)initWithWolf:(GameWolf*)wolf Pig:(GamePig*)pig Blocks:(NSMutableArray*)blocks {
+  // EFFECTS: initializes the view controller with the wolf, pig and blocks
   self = [super init];
   if (self) {
     wolfController = [[GameWolf alloc] initWithFrame:wolf.view.frame 
@@ -56,11 +47,10 @@
   return self;
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-      NSLog(@"play view sucks");
+      NSLog(@"play view received memory warning");
     // Release any cached data, images, etc that aren't in use.
 }
 
@@ -109,7 +99,7 @@
   miniBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
   miniBackButton.frame = CGRectMake(25, 20, 80, 39);
   [miniBackButton addTarget:self 
-                     action:@selector(backToLevelDesigner) 
+                     action:@selector(backToPreviousScreen) 
            forControlEvents:UIControlEventTouchUpInside];
   miniBackButton.backgroundColor = [UIColor clearColor];
   UIImage *miniBackButtonImage = [UIImage imageNamed:@"button-back.png"];
@@ -125,11 +115,7 @@
   CGFloat gameareaHeight = backgroundHeight + groundHeight;
   CGFloat gameareaWidth = backgroundWidth;
   [gamearea setContentSize:CGSizeMake(gameareaWidth, gameareaHeight)];
-  
-  cloudGenerator = [[CloudFactory alloc] initWithTimeStep:0.02];
-  [gamearea addSubview:cloudGenerator.view];
-  [cloudGenerator startGeneratingClouds];
-  
+ 
   physicsObjectArray = [[NSMutableArray alloc] init];
   
   for (GameObject *obj in objectsInGameArea) {
@@ -197,7 +183,7 @@
   backButton = [UIButton buttonWithType:UIButtonTypeCustom];
   backButton.frame = CGRectMake(0, 0, 200, 100);
   [backButton addTarget:self 
-                 action:@selector(backToLevelDesigner) 
+                 action:@selector(backToPreviousScreen) 
        forControlEvents:UIControlEventTouchUpInside];
   backButton.backgroundColor = [UIColor clearColor];
   UIImage *backButtonImage = [UIImage imageNamed:@"button-back-pink.png"];
@@ -206,7 +192,8 @@
 }
 
 - (PhysicsRect*)createPhysicsObjectFromGameObject:(GameObject*)obj {
-  
+  // REQUIRES: obj = nil
+  // EFFECTS: returns a physics model of the game object
   double mass = 0, friction = 0, restitution = 0;
   
   switch (obj.objectType) {
@@ -257,7 +244,9 @@
 }
 
 - (void)setUpGamearea {
-  
+  // MODIFIES: self (game area)
+  // REQUIRES: view to be loaded
+  // EFFECTS: the game area is set up with the necessary buttons and views
   CGRect arrowFrame = CGRectMake(wolfController.view.center.x + 60, 
                                  wolfController.view.center.y - 260,
                                  74, 430);
@@ -335,16 +324,17 @@
 
 - (void)initializeTimer {
   // REQUIRES: PhysicsWorld object, blocks, walls to be created, timestep > 0
-  // EFFECTS: repeatedly trigger the updateBlocksState method of PhysicsWorld
+  // EFFECTS: repeatedly trigger the updateWorldTime method of PhysicsWorld
   gameareaTimer = [NSTimer scheduledTimerWithTimeInterval:gameareaTimeStep 
                                                    target:self 
                                                  selector:@selector(updateWorldTime) 
                                                  userInfo:nil 
                                                   repeats:YES];
-  [[NSRunLoop mainRunLoop] addTimer:gameareaTimer forMode:NSRunLoopCommonModes];
+  //[[NSRunLoop mainRunLoop] addTimer:gameareaTimer forMode:NSRunLoopCommonModes];
 }
 
 - (void)updateWorldTime {
+  // MODIFIES: state of the objects in the PhysicsWorld
   // REQUIRES: PhysicsWorld object, blocks, walls to be created, timestep > 0
   // EFFECTS: repeatedly trigger the updateBlocksState method of PhysicsWorld
   [gameareaWorld updateBlocksState];
@@ -352,6 +342,7 @@
 
 - (void)updateViewObjectPositions:(NSNotification*)notification {
   // MODIFIES: position of view objects
+  // REQUIRES: the PhysicsWorld to be initialized
   // EFFECTS: changes the position of the object views according to its 
   //          position in the physics world
   NSArray *physicsWorldBlocks = [notification object];
@@ -364,11 +355,14 @@
 }
 
 - (void)handleObjectObjectCollisions:(NSNotification*)notification {
-  
+  // MODIFIES: state of objects in the view
+  // REQUIRES: objects in the physics world to have collided
+  // EFFECTS: takes the necessary actions for collision of certain objects
   NSArray *objectIndices = [notification object];
   int index1 = [[objectIndices objectAtIndex:0] intValue];
   int index2 = [[objectIndices objectAtIndex:1] intValue];
   
+  // collision between breathe and pig: pig dies and wolf wins
   if (([[objectsInGameArea objectAtIndex:index1] isKindOfClass:[GameBreathe class]] &&
        [[objectsInGameArea objectAtIndex:index2] isKindOfClass:[GamePig class]]) ||
       ([[objectsInGameArea objectAtIndex:index2] isKindOfClass:[GameBreathe class]] &&
@@ -388,6 +382,9 @@
         }
       } 
   
+  // collision between breathe and block
+  // if block is of straw type, the block will break and velocity of breathe reduced
+  // if block is of other type, the breathe will disperse
   if ([[objectsInGameArea objectAtIndex:index2] isKindOfClass:[GameBreathe class]] &&
       [[objectsInGameArea objectAtIndex:index1] isKindOfClass:[GameBlock class]]) {
     if (((GameBlock*)[objectsInGameArea objectAtIndex:index1]).blockType == kStrawBlockObject) {
@@ -399,11 +396,13 @@
                  afterDelay:1.5];
     } else {
       [breatheController breatheDisperseAnimation];
-      [self performSelector:@selector(removeGameObject:) withObject:breatheController afterDelay:1.5];
+      [self performSelector:@selector(removeGameObject:) withObject:breatheController afterDelay:1.0];
     }
     return;
   }
   
+  // collision between pig and blocks
+  // pig will display ouch message
   if (([[objectsInGameArea objectAtIndex:index1] isKindOfClass:[GameBlock class]] &&
        [[objectsInGameArea objectAtIndex:index2] isKindOfClass:[GamePig class]]) ||
       ([[objectsInGameArea objectAtIndex:index2] isKindOfClass:[GameBlock class]] &&
@@ -414,30 +413,34 @@
       index1 = index2;
       index2 = temp;
     }
-    if (((GameBlock*)[objectsInGameArea objectAtIndex:index1]).blockType != kStrawBlockObject) {
-      if (pigController.responseState == kAwaitingEvent && 
-        [((PhysicsRect*)[physicsObjectArray objectAtIndex:index1]).v length] > 5) {
-        [textBalloon displayBalloonAtLocation:pigController.view.center andType:kOuchMessage];
-        [gamearea addSubview:textBalloon];
-        pigController.responseState = kEventOccurred;
-        [textBalloon performSelector:@selector(removeFromView) withObject:nil afterDelay:1];
-      }
+    if (pigController.responseState == kAwaitingEvent && 
+      [((PhysicsRect*)[physicsObjectArray objectAtIndex:index1]).v length] > 5) {
+      [textBalloon displayBalloonAtLocation:pigController.view.center andType:kOuchMessage];
+      [gamearea addSubview:textBalloon];
+      pigController.responseState = kEventOccurred;
+      [textBalloon performSelector:@selector(removeFromView) withObject:nil afterDelay:1];
     }
+    
     return;
   } 
 }
 
 - (void)handleObjectWallCollisions:(NSNotification*)notification {
-  
+  // MODIFIES: state of objects colliding with ground
+  // REQUIRES: object to have collided with ground
+  // EFFECTS: takes the necessary actions for collision of certain objects
   int index = [[notification object] intValue];
   GameObject *obj = [objectsInGameArea objectAtIndex:index];
   PhysicsRect *phyObj = [physicsObjectArray objectAtIndex:index];
   
+  // breathe will disperse
   if ([obj isKindOfClass:[GameBreathe class]]) {
       [breatheController breatheDisperseAnimation];
       [self performSelector:@selector(removeGameObject:) withObject:breatheController afterDelay:0.8];
     return;
     }
+  
+  // pig will die if vertical velocity exceeds a certain amount
   if ([obj isKindOfClass:[GamePig class]]) {
     if (pigController.objectState == kPreGameStart) {
       phyObj.v = [Vector2D vectorWith:0 y:0];
@@ -451,7 +454,9 @@
 }
 
 - (void)removeGameObject:(GameObject*)obj {
-  if (obj) {
+  // MODIFIES: game object
+  // EFFECTS: game object (physics and view) is removed from the view controller
+  if (obj != nil) {
     [obj destroyObject];
     for (int i = 0; i < [objectsInGameArea count]; i++) {
       if ([[objectsInGameArea objectAtIndex:i] isEqual:obj]) {
@@ -469,6 +474,9 @@
 }
 
 - (void)fireButtonPressed {
+  // MODIFIES: view
+  // EFFECTS: button image changed
+  //          wolf shoots projectile
   if (fireButtonController.responseState == kAwaitingEvent) {
     [wolfController startWolfBlow];
     [textBalloon displayBalloonAtLocation:wolfController.view.center andType:kHowlMessage];
@@ -488,6 +496,8 @@
 }
 
 - (void)toggleShootingGuide {
+  // MODIFIES: view of arrow and direction degree
+  // EFFECTS: makes it appear/hidden
   if (arrowController.view.hidden) {
     arrowController.view.hidden = NO;
   } else {
@@ -502,7 +512,8 @@
 }
 
 - (void)addBreatheProjectile {
-  
+  // MODIFIES: view
+  // EFFECTS: GameBreathe object is created and shot out from the wolf's mouth
   [gameareaTimer invalidate];
   gameareaWorld = nil;
   
@@ -524,7 +535,7 @@
                                  andRestitution:0
                                  andView:nil]; 
  
-  double breatheMagnitude = barController.view.frame.size.width * 2.5;
+  double breatheMagnitude = barController.view.frame.size.width * 7.5;
   breatheBlock.v = [Vector2D vectorWith:arrowController.view.transform.b * breatheMagnitude
                                       y:-arrowController.view.transform.a * breatheMagnitude];
 
@@ -543,6 +554,8 @@
 }
 
 - (void)victory {
+  // EFFECTS: victory message displayed
+  //          the powerboard is removed and user can go back to the previous screen
   if (outcome == kOutcomeUndetermined) {
     [fireButtonController changeState];
     [self toggleShootingGuide];
@@ -578,6 +591,8 @@
 }
 
 - (void)gameOver {
+  // EFFECTS: game over message displayed
+  //          the powerboard is removed and user can go back to the previous screen
   if (outcome == kOutcomeUndetermined) {
     [fireButtonController changeState];
     [wolfController wolfDieAnimation];
@@ -612,7 +627,8 @@
   }
 }
 
-- (void)backToLevelDesigner {
+- (void)backToPreviousScreen {
+  // EFFECTS: returns to the view before this view was loaded
   wolfController = nil;
   pigController = nil;
   for (int i = 0; i < [objectsInGameArea count]; i++) {
@@ -624,9 +640,10 @@
   }
   physicsObjectArray = nil;
   gameareaWorld = nil;
+  scoreboard = nil;
+  livesBoard = nil;
   self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
   [self dismissViewControllerAnimated:YES completion:^(void){}];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -642,13 +659,10 @@
   [[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleMusic" object:nil];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-  [super viewDidDisappear:animated];
-  [[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleMusic" object:nil];
-  [self fadeMusic];
-}
-
 -(void)fadeMusic {  
+  // MODIFIES: background music
+  // REQUIRES: view to be removed
+  // EFFECTS: background music volume lowered
   if (audioPlayer.volume > 0.1) {
     audioPlayer.volume = audioPlayer.volume - 0.1;
     [self performSelector:@selector(fadeMusic) withObject:nil afterDelay:0.1];           
@@ -659,6 +673,19 @@
     [audioPlayer prepareToPlay];
     audioPlayer.volume = 1.0;
   }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+  [super viewDidDisappear:animated];
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"ToggleMusic" object:nil];
+  scoreboard = nil;
+  livesBoard = nil;
+  wolfController = nil;
+  pigController = nil;
+  objectsInGameArea = nil;
+  breatheController = nil;
+  barController = nil;
+  [self fadeMusic];
 }
 
 - (void)viewDidUnload

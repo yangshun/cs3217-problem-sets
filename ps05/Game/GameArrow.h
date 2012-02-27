@@ -14,7 +14,11 @@
 }
 
 - (id)initWithFrame:(CGRect)customFrame;
+  // EFFECTS: object will appear on wolf at specified frame
+
 - (UIImageView*)arrowImageView:(CGRect)frame;
+  // EFFECTS: returns a UIImageView of this GameObject subclass at the specified position
+
 - (void)translate:(UIPanGestureRecognizer *)gesture;
   // MODIFIES: self (game object)
   // REQUIRES: a pan gesture to be recognized

@@ -50,10 +50,13 @@
   wolfSpriteBlow = [[NSMutableArray alloc] init];
   wolfSpriteDie = [[NSMutableArray alloc] init];
   
+  CGFloat wolfBlowImageWidth = wolfImage.size.width / 5;
+  CGFloat wolfBlowImageHeight = wolfImage.size.height / 3;
+  
   for (int i = 0; i < kWolfNumberOfSpritesBlow; i++) {
-    CGRect spriteFrame = CGRectMake(kWolfWidth * (i % (kWolfNumberOfSpritesBlow / 3)), 
-                                    kWolfHeight * (i / (kWolfNumberOfSpritesBlow / 3)), 
-                                    kWolfWidth, kWolfHeight);
+    CGRect spriteFrame = CGRectMake(wolfBlowImageWidth * (i % (kWolfNumberOfSpritesBlow / 3)), 
+                                    wolfBlowImageHeight * (i / (kWolfNumberOfSpritesBlow / 3)), 
+                                    wolfBlowImageWidth, wolfBlowImageHeight);
     CGImageRef wolfImageRef = CGImageCreateWithImageInRect([wolfImage CGImage], spriteFrame);
     UIImage *croppedWolf = [UIImage imageWithCGImage:wolfImageRef];
     [wolfSpriteBlow addObject:croppedWolf];
@@ -61,10 +64,14 @@
   }
   
   wolfDieImage = [UIImage imageNamed:@"wolfdie.png"];
+  
+  CGFloat wolfDieImageWidth = wolfDieImage.size.width / 4;
+  CGFloat wolfDieImageHeight = wolfDieImage.size.height / 4;
+  
   for (int i = 0; i < kWolfNumberOfSpritesDie; i++) {
-    CGRect spriteFrame = CGRectMake(kWolfSpriteDieWidth * (i % (kWolfNumberOfSpritesDie / 4)),
-                                    kWolfThumbnailHeight * (i / (kWolfNumberOfSpritesDie / 4)), 
-                                    kWolfSpriteDieWidth, kWolfSpriteDieHeight);
+    CGRect spriteFrame = CGRectMake(wolfDieImageWidth * (i % (kWolfNumberOfSpritesDie / 4)),
+                                    wolfDieImageHeight * (i / (kWolfNumberOfSpritesDie / 4)), 
+                                    wolfDieImageWidth, wolfDieImageHeight);
     CGImageRef wolfImageRef = CGImageCreateWithImageInRect([wolfDieImage CGImage], spriteFrame);
     UIImage *croppedWolfDie = [UIImage imageWithCGImage:wolfImageRef];
     [wolfSpriteDie addObject:croppedWolfDie];
@@ -85,7 +92,7 @@
                                                     selector:@selector(wolfBlowAnimation) 
                                                     userInfo:nil 
                                                      repeats:YES];
-  [[NSRunLoop mainRunLoop] addTimer:wolfBreatheTimer forMode:NSRunLoopCommonModes];
+  //[[NSRunLoop mainRunLoop] addTimer:wolfBreatheTimer forMode:NSRunLoopCommonModes];
 }
 
 - (void)wolfBlowAnimation {

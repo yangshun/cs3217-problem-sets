@@ -13,8 +13,7 @@
 @synthesize arrowImage;
 
 - (id)initWithFrame:(CGRect)customFrame {
-  // custom initializer
-  // object will appear on wolf at specified frame
+  // EFFECTS: object will appear on wolf at specified frame
   self = [super initWithObject:[self arrowImageView:customFrame]];
   
   if (self) {
@@ -29,7 +28,7 @@
 }
 
 - (UIImageView*)arrowImageView:(CGRect)frame {
-  // returns a UIImageView of this GameObject subclass at the specified position
+  // EFFECTS: returns a UIImageView of this GameObject subclass at the specified position
   arrowImage = [UIImage imageNamed:@"direction-arrow.png"];
   UIImageView *arrowImageView = [[UIImageView alloc] initWithImage:arrowImage];
   arrowImageView.frame = frame;

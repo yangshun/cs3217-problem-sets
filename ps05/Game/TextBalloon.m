@@ -21,13 +21,20 @@
     heeheeImage = [UIImage imageNamed:@"text-heehee.png"];
     howlImage = [UIImage imageNamed:@"text-howl.png"];
     mwhahaImage = [UIImage imageNamed:@"text-mwhaha.png"];
+    imageWidth = ouchImage.size.width;
+    imageHeight = ouchImage.size.height;
   }
   return self;
 }
 
 - (void)displayBalloonAtLocation:(CGPoint)location andType:(MessageType)type {
-  
-  CGRect frame = CGRectMake(location.x + 30, location.y - 180, 200, 133);
+  // MODIFIES: view controller containing this view
+  // REQUIRIES: type != nil
+  // EFFECTS: a popup balloon image containing a message is displayed
+  CGRect frame = CGRectMake(location.x + kOffsetX, 
+                            location.y + kOffsetY, 
+                            imageWidth, 
+                            imageHeight);
   
   UIImage *displayImage;
   
@@ -55,6 +62,8 @@
 }
 
 - (void)removeFromView {
+  // MODIFIES: view controller containing this view
+  // EFFECTS: removes the text balloon from its superview
   [self removeFromSuperview];
 }
 

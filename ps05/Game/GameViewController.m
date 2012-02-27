@@ -12,57 +12,68 @@
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
-  NSLog(@"main screen view sucks");
+  NSLog(@"main screen received memory warning");
 }
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
+  
   [super viewDidLoad];
 
   cloudGenerator = [[CloudFactory alloc] initWithTimeStep:0.05];
   [self.view addSubview:cloudGenerator.view];
-  [cloudGenerator startGeneratingClouds];
-  [self.view addSubview:cloudGenerator.view];
   
   UIImage *gameLogoImage = [UIImage imageNamed:@"game-logo.png"];
   gameLogo = [[UIImageView alloc] initWithImage:gameLogoImage];
-  gameLogo.center = CGPointMake(512, -195);
+  gameLogo.center = CGPointMake(kIpadMiddlePointX, kGameLogoStartPointY);
   [self.view addSubview:gameLogo];
   
-  startGameButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  startGameButton.frame = CGRectMake(0, 0, 400, 100);
-  [startGameButton addTarget:self action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
-  startGameButton.backgroundColor = [UIColor clearColor];
   UIImage *startGameButtonImage = [UIImage imageNamed:@"button-start-game.png"];
+  startGameButton = [UIButton buttonWithType:UIButtonTypeCustom];
+  CGFloat startGameButtonWidth = startGameButtonImage.size.width;
+  CGFloat startGameButtonHeight = startGameButtonImage.size.height;
+  startGameButton.frame = CGRectMake(0, 0, startGameButtonWidth, startGameButtonHeight);
+  [startGameButton addTarget:self 
+                      action:@selector(startGame) 
+            forControlEvents:UIControlEventTouchUpInside];
+  startGameButton.backgroundColor = [UIColor clearColor];
+
   [startGameButton setImage:startGameButtonImage forState:UIControlStateNormal];
   [self.view addSubview:startGameButton];
-  startGameButton.center = CGPointMake(512, 789);
+  startGameButton.center = CGPointMake(kIpadMiddlePointX, kStartGameButtonStartPointY);
   
-  designLevelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  designLevelButton.frame = CGRectMake(0, 0, 400, 100);
-  [designLevelButton addTarget:self action:@selector(designLevel) forControlEvents:UIControlEventTouchUpInside];
-  designLevelButton.backgroundColor = [UIColor clearColor];
   UIImage *designLevelButtonImage = [UIImage imageNamed:@"button-design-level.png"];
+  designLevelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+  CGFloat designLevelButtonWidth = designLevelButtonImage.size.width;
+  CGFloat designLevelButtonHeight = startGameButtonImage.size.height;
+  designLevelButton.frame = CGRectMake(0, 0, designLevelButtonWidth, designLevelButtonHeight);
+  [designLevelButton addTarget:self 
+                        action:@selector(designLevel) 
+              forControlEvents:UIControlEventTouchUpInside];
+  designLevelButton.backgroundColor = [UIColor clearColor];
   [designLevelButton setImage:designLevelButtonImage forState:UIControlStateNormal];
   [self.view addSubview:designLevelButton];
-  designLevelButton.center = CGPointMake(512, 926);
+  designLevelButton.center = CGPointMake(kIpadMiddlePointX, 
+                                         kDesignLevelButtonStartPointY);
   
   [UIView animateWithDuration:1.0
                    animations:^{ 
-                     gameLogo.center = CGPointMake(512, 240);
+                     gameLogo.center = CGPointMake(kIpadMiddlePointX, 
+                                                   kGameLogoEndPointY);
                    } 
                    completion:^(BOOL finished){}];
 
   [UIView animateWithDuration:1.0
                    animations:^{ 
-                     startGameButton.center = CGPointMake(512, 489);
+                     startGameButton.center = CGPointMake(kIpadMiddlePointX, kStartGameButtonEndPointY);
                    } 
                    completion:^(BOOL finished){}];
     
   [UIView animateWithDuration:1.0
                    animations:^{ 
-                     designLevelButton.center = CGPointMake(512, 626);
+                     designLevelButton.center = CGPointMake(kIpadMiddlePointX, 
+                                                            kDesignLevelButtonEndPointY);
                    } 
                    completion:^(BOOL finished){}];
   
@@ -84,18 +95,23 @@
 }
 
 - (void)startGame {
+  // EFFECTS: changes view to the level selector
   LevelSelectorViewController *levelSelectorView = [[LevelSelectorViewController alloc] initWithNibName:nil bundle:nil];
   levelSelectorView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
   [self presentViewController:levelSelectorView animated:YES completion:^(void){}];
 }
 
 - (void)designLevel {
+  // EFFECTS: changes view to the level designer
   DesignViewController *designView = [[DesignViewController alloc] init];
   designView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
   [self presentViewController:designView animated:YES completion:^(void){}];
 }
 
 -(void)toggleMusic { 
+  // MODIFIES: background music
+  // REQUIRES: background music to be initialized
+  // EFFECTS: turns background music on/off
   if (!audioPlayer.playing) {
     [audioPlayer play];
   } else if (audioPlayer.volume >= 0.1) {
@@ -108,6 +124,17 @@
     [audioPlayer prepareToPlay];
     audioPlayer.volume = 1.0;
   }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  [cloudGenerator createInitialClouds];
+  [cloudGenerator startGeneratingClouds];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+  [super viewDidDisappear:animated];
+  [cloudGenerator removeAllClouds];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

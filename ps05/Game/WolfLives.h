@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#define kHeartStartingPositionX 218
+#define kHeartStartingPositionY 131
+#define kDistanceBetweenHearts 10
+
 @interface WolfLives : UIViewController {
   
   int lives;
@@ -16,7 +20,15 @@
 }
 
 - (id)initWithLives:(int)number;
+  // EFFECTS: initializes the lives of the wolf depending on the parameter value
+
 - (void)displayLives;
+  // MODIFIES: view
+  // EFFECTS: view to display the number of hearts corresponding to the number of lives left
+
 - (void)deductLife;
+  // MODIFIES: self (number of lives)
+  // REQUIRIES: wolf to have shot a breathe
+  // EFFECTS: number of lives of wolf is reduced by one
 
 @end

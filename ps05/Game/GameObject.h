@@ -88,7 +88,7 @@ typedef enum {kAwaitingEvent, kEventOccurred} GameResponseState;
   // EFFECTS: the object is scaled up/down with a pinch gesture
 
 - (void)destroyObject;
-// MODIFIES: self view
-// EFFECTS: view is removed from superview
+  // MODIFIES: self (view)
+  // EFFECTS: view is removed from superview
 
 @end

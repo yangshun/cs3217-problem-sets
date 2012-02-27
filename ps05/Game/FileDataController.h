@@ -23,10 +23,31 @@
 }
 
 - (NSString*)dataFilePath:(NSString*)name;
+  // REQUIRES: a non-empty string to be keyed into levelName text field
+  // EFFECTS: returns the file path 
+
 - (void)saveDataToArchivesWithLevelName:(NSString*)name;
+  // MODIFIES: archives
+  // REQUIRES: file path to be valid
+  // EFFECTS: saves the state of the current GameObjects
+
 - (void)loadDataFromArchivesWithLevelName:(NSString*)name;
+  // MODIFIES: GameObjects in self
+  // REQUIRES: file path to be valid
+  // EFFECTS: modifies the state of the current GameObjects in self 
+  //          according to the saved state
+
 - (void)loadSavedLevelWithFileName:(NSString*)name;
+  // MODIFIES: GameObjects in self
+  // REQUIRES: file path to be valid
+  // EFFECTS: modifies the state of the current GameObjects in self
+  //          according to the saved state in the application bundle
+
 - (void)unarchiveDataFromFilePath:(NSString*)filePath;
+  // MODIFIES: GameObjects in self
+  // REQUIRES file path to be valid
+  // EFFECTS: modifies the state of the GameObjects in self according to the 
+  //          archived data given
 
 @property (nonatomic, strong) GameWolf *wolfController;
 @property (nonatomic, strong) GamePig *pigController;

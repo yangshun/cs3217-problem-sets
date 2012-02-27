@@ -1,0 +1,151 @@
+Tay Yang Shun
+A0073063M
+Problem Set 5
+
+**************************************
+Problem 1: What is YOUR game gonna be?
+**************************************
+
+MAIN SCREEN
+===========
+
+The game starts off with the main menu screen where the player can choose between two options:
+
+a. Start Game
+-------------
+- User can choose from 3 pre-designed levels and play it
+
+b. Design Level
+---------------
+- Takes the user to the level designer where the user can design their own level and play it subsequently
+
+THE GAME EXPLAINED
+==================
+
+a. Playing View
+---------------
+The playing view is divided into 3 parts:
+
+1. Scoreboard
+- Displays the number of breathe that the wolf has left. Note that it is the amount of lives left, hence the wolf can effectively shoot 6 breathes.
+
+2. Game Area
+- Has the wolf, the pig, the arrow and shooting guide
+
+3. Power board
+- Has a purple bar indicating the power of the breathe
+- A fire button at the bottom right-hand corner.
+
+b. How to play
+--------------
+The wolf starts with 6 breathes. Each breathe shot will remove a heart.
+User adjusts the direction of the shot by touching the arrow and shifting it.
+To adjust the power, the user can touch the end of the power bar and translate it horizontally.
+To fire the breathe, simply press fire.
+
+c. Objective
+--------------
+The objective of the game is to kill the pig. There are two ways of doing so:
+1. Make the pig hit the ground above a certain velocity.
+2. The breathe touches the pig directly.
+
+The breathe interacts with the objects in the following manner:
+1. Pig: Kills the pig. Itself is destroyed.
+2. Straw block: Destroys straw block and velocity is reduced. Itself is destroyed.
+3. Other blocks: Itself is destroyed.
+4. Ground: Itself is destroyed.
+
+If the breathe gets shot out of the screen, it will be automatically destroyed after 8.0 seconds.
+
+The fire button can only be pressed when the current breathe is destroyed. This is to ensure that only one breathe can be present at any one time.
+
+The game ends when:
+1. Wolf runs out of breathe
+- Game Over screen displayed. User can return to the previous screen.
+
+2. Pig dies
+- Victory screen displayed. User can return to the previous screen.
+
+********************************
+Problem 2: Implementing the Puff
+********************************
+
+a. 
+User adjusts the direction of the shot by touching the arrow and shifting it.
+To adjust the power, the user can touch the end of the power bar and translate it horizontally.
+To fire the breathe, simply press fire button.
+The length of the power bar indicates the starting velocity of the breathe projectile when it is added into the physics engine. I used this method is straightforward and easy to implement.
+
+
+Problem 3: Testing
+
+1. Black-box testing
+	- Test gravity
+		- Objects falls in the right direction for all orientations.
+		- Objects fall faster due to gravitational acceleration.
+		- Change the various properties of the block and make sure that they fall at the same speed.
+	- Test collisions between two objects
+		- Head-on collision between objects of the same size do not result in rotation.
+		- Collision at an angles between two objects result in a change in angular velocity.
+		- When an object of smaller mass hits an object of a larger mass, they exchange velocity.
+		- Overlap between two objects are minimal.
+		- Objects rest on each other at equilibrium.
+		- Final momentum is lesser than initial momentum.
+	- Test collisions between three objects
+		- The objects collide in a realistic fashion.
+		- Objects rest on each other at equilibrium.
+		- No visible lag in movements after collision between each pair of objects.
+		- Final momentum is lesser than initial momentum.
+	- Test collisions with wall
+		- Objects do not sink into wall.
+		- Objects rest properly on the wall after some time.
+		- Objects bounce off at a lower speed after colliding with the wall.
+		- Walls remain in the same position after collision with objects
+	- Test that friction works
+		- Objects take longer to settle down when friction is lower.
+	- Test the effect of restitution coefficient
+		- Objects bounce about longer when restitution coefficient is higher.
+	- Test accelerometer on/off switch
+		- Gravity depends on choice (preset value for each orientation OR accelerometer direction and magnitude).
+
+2. Glass Box Testing
+	- Test View Controller
+		- Rectangle views load properly.
+		- Physics rectangles are initialized properly.
+		- Change in gravity is triggered when orientation is changed.
+		- Timer loads properly and triggers the events after every assigned time interval.
+		- Accelerometer changes the magnitude and direction of gravity. 
+	- Physics World
+		- The Physics Rectangles (blocks and walls) are stored.
+		- Gravity is changed when orientation is changed.
+		- Test that iteration process is correct. 
+			- Rectangles collide with each other properly and they do not intersect much.
+			- Collision contact points are in the object and not outside.
+			- Rectangles settle down eventually.
+			- Momentum is decreased after each collision.
+			- The state of the walls do not change after every iteration.
+	- Physics Rectangle
+		- Blocks:
+			- Blocks initialize properly with parameters and default values.
+			- Blocks accelerate due to gravitational forces.
+			- Angular velocity changes if torque is applied.
+			- Overlap checking algorithm works.
+			- Upon collision between two blocks, impulses are applied to both objects.
+			- Linear and angular velocities are modified after each collision.
+			- The position (center and rotation) are modified after each collision.
+		- Walls:
+			- Walls initialize properly with parameters and default values.
+			- Walls do not accelerate due to gravitational forces.
+			- Angular velocity does not change if torque is applied.
+			- Overlap checking algorithm with blocks.
+			- Upon collision with blocks, impulses has no effect on itself.
+			- Linear and angular velocities are not modified after each collision.
+			- The position (center and rotation) are not modified after each collision.
+
+Bonus Problem: Reflection
+
+a. Around 30 hours. A lot of time is spent debugging the appendix formulas. I checked through around 5 times to make sure that the formulas were right.
+
+b. It would be good to discuss with each other as many of us faced the same bugs. Discuss and learn from each other mistakes (:
+
+c. I think equation 51 and 52 should be better phrased. Many of us thought that it was multiplication. Perhaps should differentiation between multiplication and crossing.

@@ -40,8 +40,37 @@
   UIButton *saveButton;
 }
 
-- (void)dropView:(GameObject*)viewCall;
 - (void)setUpPalette;
+  // MODIFIES: subviews in palette view
+  // REQUIRES: wolfController, pigController and blockController to be nil
+  // EFFECTS: game objects are added to palette  
+
+- (void)scrollViewDisabled;
+  // MODIFIES: scrolling ability of scrollview
+  // REQUIRES: GameObject to be in panning mode
+  // EFFECTS: disables the scrolling ability of gamearea
+
+- (void)scrollViewEnabled;
+  // MODIFIES: scrolling ability of scrollview
+  // REQUIRES: GameObject to have ended panning mode
+  // EFFECTS: enables the scrolling ability of gamearea
+
+- (void)dropView:(GameObject*)viewCaller;
+  // MODIFIES: gamearea scrollview
+  // REQUIRES: GameObject to be out of the palette 
+  // EFFECTS: transfers from view from the palette to the point of release in gamearea
+
+- (void)setUpPalette;
+  // MODIFIES: subviews in palette view
+  // REQUIRES: wolfController, pigController and blockController to be nil
+  // EFFECTS: game objects are added to palette
+
+- (void)clearAllObjectsFromView;
+  // MODIFIES: all GameObjects
+  // EFFECTS: removes all GameObject from both gamearea and palette
+
+- (void)backToMainScreen;
+  // EFFECTS: returns to the level designer
 
 @property (nonatomic, weak) IBOutlet UIImageView *taskbar;
 @property (nonatomic, weak) IBOutlet UITextField *levelName;

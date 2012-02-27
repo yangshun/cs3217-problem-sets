@@ -62,13 +62,16 @@
     }
   }
   
-  UIImage *smokeImage = [UIImage imageNamed:@"pig-die-smoke.png"];
-
+  UIImage *pigDieImage = [UIImage imageNamed:@"pig-die-smoke.png"];
+  
+  CGFloat pigDieImageWidth = pigDieImage.size.width / 5;
+  CGFloat pigDieImageHeight = pigDieImage.size.height / 2;
+  
   for (int i = 0; i < kPigNumberOfSpritesCry; i++) {
-    CGRect spriteFrame = CGRectMake(kPigSpriteCryWidth * (i % (kPigNumberOfSpritesCry / 2)),
-                                    kPigSpriteCryHeight * (i / (kPigNumberOfSpritesCry / 2)), 
-                                    kPigSpriteCryWidth, kPigSpriteCryHeight);
-    CGImageRef pigImageRef = CGImageCreateWithImageInRect([smokeImage CGImage], spriteFrame);
+    CGRect spriteFrame = CGRectMake(pigDieImageWidth * (i % (kPigNumberOfSpritesCry / 2)),
+                                    pigDieImageHeight * (i / (kPigNumberOfSpritesCry / 2)), 
+                                    pigDieImageWidth, pigDieImageHeight);
+    CGImageRef pigImageRef = CGImageCreateWithImageInRect([pigDieImage CGImage], spriteFrame);
     UIImage *croppedSmoke = [UIImage imageWithCGImage:pigImageRef];
     [pigSprite addObject:croppedSmoke];
     CGImageRelease(pigImageRef);

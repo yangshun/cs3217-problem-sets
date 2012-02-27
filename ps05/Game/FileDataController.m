@@ -15,11 +15,6 @@
 @synthesize blockController;
 @synthesize blocksInGameArea;
 
-- (id)init {
-  self = [super init];
-  return self;
-}
-
 - (NSString *)dataFilePath:(NSString*)name {
   // REQUIRES: a non-empty string to be keyed into levelName text field
   // EFFECTS: returns the file path 
@@ -63,21 +58,28 @@
 }
 
 - (void)loadDataFromArchivesWithLevelName:(NSString*)name {
-  // MODIFIES: GameViewController view
+  // MODIFIES: GameObjects in self
   // REQUIRES: file path to be valid
-  // EFFECTS: modifies the state of the current GameObjects according to the saved state
+  // EFFECTS: modifies the state of the current GameObjects in self 
+  //          according to the saved state
   NSString *filePath = [self dataFilePath:name];
   [self unarchiveDataFromFilePath:filePath]; 
 }
 
 - (void)loadSavedLevelWithFileName:(NSString*)name {
-  
+  // MODIFIES: GameObjects in self
+  // REQUIRES: file path to be valid
+  // EFFECTS: modifies the state of the current GameObjects in self
+  //          according to the saved state in the application bundle
   NSString *filePath = [[NSBundle mainBundle] pathForResource:name ofType:@"txt"];
   [self unarchiveDataFromFilePath:filePath]; 
 }
 
 - (void)unarchiveDataFromFilePath:(NSString*)filePath {
-    
+  // MODIFIES: GameObjects in self
+  // REQUIRES file path to be valid
+  // EFFECTS: modifies the state of the GameObjects in self according to the 
+  //          archived data given
   NSMutableData *data;
   
   if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
@@ -121,7 +123,6 @@
   }
   
   [unarchiver finishDecoding];
-
   
 }
 

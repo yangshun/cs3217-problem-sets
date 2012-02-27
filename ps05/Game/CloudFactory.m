@@ -20,24 +20,26 @@
 }
 
 - (id)initWithTimeStep:(double)dt {
-  
+  // REQUIRES: dt to be non-nil
+  // EFFECTS: cloud images are loaded
   self = [super init];
   if (self) {
-    clouds = [[NSMutableArray alloc] init];
     timeStep = dt;
     cloudImage1 = [UIImage imageNamed:@"cloud1.png"];
     cloudImage2 = [UIImage imageNamed:@"cloud2.png"];
     cloudImage3 = [UIImage imageNamed:@"cloud3.png"];
     cloudImage4 = [UIImage imageNamed:@"cloud4.png"];
+    startingPosition = kDefaultCloudPosition;
   }
   return self;
 }
 
 - (void)addCloud:(CloudType)type {
-  
+  // MODIFIES: clouds array
+  // REQUIRES: self != nil
+  // EFFECTS: a cloud object is initialized and added into the clouds array
   CloudObject *cloudImageView;
   
-  CGFloat startingPosition = -500;
   CGFloat cloudWidth1 = cloudImage1.size.width;
   CGFloat cloudHeight1 = cloudImage1.size.height;
   CGFloat cloudWidth2 = cloudImage2.size.width;
@@ -82,17 +84,35 @@
   [clouds addObject:cloudImageView];
 }
 
+- (void)createInitialClouds {
+  // MODIFIES: view and clouds array
+  // REQUIRES: self != nil
+  // EFFECTS: clouds are added into the view before timer is started
+  clouds = [[NSMutableArray alloc] init];
+  for (int i = 0; i < 10; i++) {
+    CloudType type = arc4random() % 4;
+    startingPosition = arc4random() % kIpadLandscapeWidth;
+    [self addCloud:type];
+  }
+  startingPosition = kDefaultCloudPosition;
+}
+
 - (void)startGeneratingClouds {
+  // MODIFIES: view
+  // REQUIRES: parameters to be non-nil
+  // EFFECTS: starts the timer for the cloud factory
   cloudTimer = [NSTimer scheduledTimerWithTimeInterval:timeStep 
                                                 target:self 
                                               selector:@selector(updateClouds) 
                                               userInfo:nil 
                                                repeats:YES];
-  [[NSRunLoop mainRunLoop] addTimer:cloudTimer forMode:NSRunLoopCommonModes];
 }
 
 - (void)updateClouds {
-  
+  // MODIFIES: number of clouds in clouds array
+  // REQUIRES: timer to have started
+  // EFFECTS: randomly adds clouds of random sizes into the cloud array and     
+  //          moves them
   CloudType type = arc4random() % 500;
   if (type < 4) {
     [self addCloud:type];
@@ -102,18 +122,36 @@
 }
 
 - (void)moveClouds {
-  
+  // MODIFIES: position of clouds in clouds array
+  // REQUIRES: timer to have started
+  // EFFECTS: moves a cloud object by its speed given
   for (int i = 0; i < [clouds count]; i++) {
     CloudObject *cloud = [clouds objectAtIndex:i];
     cloud.center = CGPointMake(cloud.center.x + cloud.speed, cloud.center.y);
-    
-    CGFloat maxLimit = 1600;
-    
-    if (cloud.frame.origin.x > maxLimit) {
-      [cloud removeFromSuperview];
-      [clouds removeObject:cloud];
+        
+    if (cloud.frame.origin.x > kIpadLandscapeWidth) {
+      [self removeCloud:cloud];
     }
   }
+}
+
+- (void)removeCloud:(CloudObject*)cloud {
+  // MODIFIES: view
+  // EFFECTS: a particular cloud is removed from the clouds array and from
+  //          superview
+  [cloud removeFromSuperview];
+  [clouds removeObject:cloud];
+}
+
+- (void)removeAllClouds {
+  // MODIFIES: view
+  // EFFECTS: removes all clouds from the array and superview
+  [cloudTimer invalidate];
+  while ([clouds count] > 0) {
+    [[clouds objectAtIndex:([clouds count] - 1)] removeFromSuperview]; 
+    [clouds removeLastObject];
+  }
+  clouds = nil;
 }
 
 - (void)didReceiveMemoryWarning
