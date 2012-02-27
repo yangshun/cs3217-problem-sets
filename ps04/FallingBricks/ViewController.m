@@ -214,8 +214,8 @@
 }
 
 - (void)updateViewRectPositions:(NSNotification*)notification {
-  // MODIFIES: gravity vector of PhysicsWorld object
-  // EFFECTS: changes the gravity vector according to the orientation of the device
+  // MODIFIES: position of the ViewRect object
+  // EFFECTS: ViewRect is shown in the new position on the screen
   PhysicsRect *block = [notification object];
   
   UIView* thisView = [viewRectArray objectAtIndex:block.tag];
