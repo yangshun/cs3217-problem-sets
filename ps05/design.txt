@@ -477,6 +477,12 @@ Problem 4: The Bells & Whistles
 Problem 5: Final Reflection
 ***************************
 
+I think my physics engine was designed correctly as I compared it with open source physics engines and it was similar in terms of the usage. It is possible to improve on the design of the game. I did not have an explicit class to store the model of the GameObjects, which can be done so to make the model very clear.
+
+*************************
+Bonus Problem: Reflection 
+*************************
+
 a. The whole recess week was spent on this problem set. I spent 2 days figuring out the Physics Engine for circle-rectangle collision. I was done with the requirements by Wednesday, but I spent the rest of the days designing the game art and improving
   the playing experience.
 
