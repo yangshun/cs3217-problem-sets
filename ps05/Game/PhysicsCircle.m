@@ -43,7 +43,8 @@
 
 - (BOOL)testOverlap:(PhysicsRect*)other {
   // REQUIRES: other to be a PhysicsRect
-  // EFFECTS: Tests whether this circle is overlapping with another rectangle  
+  // EFFECTS: Tests whether this circle is overlapping with another rectangle
+    
   Vector2D *pA = self.center;
  
   otherShape = other;
@@ -96,6 +97,10 @@
   
   return YES;
 }
+
+// TA: need the test overlap with another circle.
+// Besides, you should override the method testOverlap:(PhysicsShape)
+// differentiate the object type and call the correct overlapping function.
 
 - (void)applyImpulses {
   // MODIFIES: PhysicsCircle object (linear velocity and angular velocity)

@@ -72,6 +72,8 @@
 - (BOOL)testOverlap:(PhysicsShape*)other {
   // REQUIRES: otherRect != nil
   // EFFECTS: Tests whether this rectangle is overlapping with another rectangle  
+  
+    // TA: why is it still testOverlap in the PhysicsShape?
   Vector2D *hA = [Vector2D vectorWith:width/2 y:height/2];
   Vector2D *pA = [Vector2D vectorWith:center.x y:center.y];
   Matrix2D *rotA = [Matrix2D initRotationMatrix:rotation];
