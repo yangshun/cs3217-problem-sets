@@ -290,7 +290,7 @@
   windSuck.animationImages = windSuckSprite;
   
     // TA: no magic string!
-    // -5pts
+    // -2pts
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(handleObjectObjectCollisions:) 
                                                name:@"ObjectObjectCollision"

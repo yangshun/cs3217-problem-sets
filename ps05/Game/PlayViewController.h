@@ -102,6 +102,7 @@ typedef enum {kOutcomeUndetermined, kOutcomeVictory, kOutcomeLose} GameOutcome;
   // MODIFIES: game object
   // EFFECTS: game object (physics and view) is removed from the view controller
 
+// TA: Very good. You documented your code well.
 - (void)victory;
   // EFFECTS: victory message displayed
   //          the powerboard is removed and user can go back to the previous screen

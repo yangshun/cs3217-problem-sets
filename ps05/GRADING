@@ -10,22 +10,21 @@ Problem 2b          : 20/20
 Problem 2c          : 30/30
 Problem 2d          : 15/15
 Problem 2e          : 5/5
-Implementation deduction: -6
- Sub Total          : 94/100
+ Sub Total          : 100/100
 
-Problem 3           : 30/30
+Problem 3           : 24/30     // -6
 
-Problem 4           : 40/60
+Problem 4           : 55/60     // -5
 
 Problem 5           : 10/10
 
 Bonus               : 4/4
 
-Basic score : 174/200
+Basic score : 189/200
 
-Coding Style Deduction: 5/60
+Coding Style Deduction: 2/60
 
-Final Score: 169/200
+Final Score: 187/200
 
 
 
@@ -44,6 +43,8 @@ Something nice to have:
 - Only one pigs? And the health of the pig is handled in PlayViewController?
 - Other kind of blocks, except for straw one will never be destroyed?
 - How will you support multiple kind of breaths?
+- After saving a level, the level should appear in Play mode as well. I don't
+want to have to go to level design and select level.
 Instead you could have had the health of each objects handled in the GameObjects.
 Objects lose health upon collisions.
 
