@@ -8,9 +8,9 @@ Grading
 Problem 2a          : 30/30
 Problem 2b          : 20/20
 Problem 2c          : 30/30
-Problem 2d          : 15/15
+Problem 2d          : 10/15     // -5 for game should not stop when scrolling the game area
 Problem 2e          : 5/5
- Sub Total          : 100/100
+ Sub Total          : 95/100
 
 Problem 3           : 24/30     // -6
 
@@ -20,11 +20,11 @@ Problem 5           : 10/10
 
 Bonus               : 4/4
 
-Basic score : 189/200
+Basic score : 184/200
 
 Coding Style Deduction: 2/60
 
-Final Score: 187/200
+Final Score: 182/200
 
 
 
@@ -38,6 +38,7 @@ Can be improved:
 - Count of wolf's lives are not correct? I still can play 1 more turn even when     // -2pts
 there is no lives left.
 - Game performance can be improved. It's probably due to you using your own engine.
+- When scroll gamearea, the game should still play.
 
 Something nice to have:
 - Only one pigs? And the health of the pig is handled in PlayViewController?
