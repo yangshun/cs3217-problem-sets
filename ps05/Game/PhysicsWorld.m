@@ -35,6 +35,9 @@
   return self;
 }
 
+// TA: so you can't add more objects to the PhysicsWorld?
+
+
 - (void)updateBlocksState {
   // MODIFIES: position of the blocks based on inter-block collisions
   // REQUIRES: timer to be started, timestep > 0

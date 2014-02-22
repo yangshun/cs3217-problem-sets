@@ -1,0 +1,63 @@
+CS3217 - Software Engineering on Moderm Application Platforms
+Grading Report for Problem Set 5
+Student:
+
+
+Grading
+
+Problem 2a          : 30/30
+Problem 2b          : 20/20
+Problem 2c          : 30/30
+Problem 2d          : 10/15     // -5 for game should not stop when scrolling the game area
+Problem 2e          : 5/5
+ Sub Total          : 95/100
+
+Problem 3           : 24/30     // -6
+
+Problem 4           : 55/60     // -5
+
+Problem 5           : 10/10
+
+Bonus               : 4/4
+
+Basic score : 188/200
+
+Coding Style Deduction: 2/60
+
+Final Score: 186/200
+
+
+
+------
+Comments by Tutor/TA:
+
+Can be improved:
+- Should have disabled device rotation  // -2pts
+- Level design: when editting level name, after I click load, the keyboard should be dismissed  // -2pts
+- Position of the arrows can be better (the arrow should be at the mouth of the wolf
+- Count of wolf's lives are not correct? I still can play 1 more turn even when     // -2pts
+there is no lives left.
+- Game performance can be improved. It's probably due to you using your own engine.
+- When scroll gamearea, the game should still play.
+
+Something nice to have:
+- Only one pigs? And the health of the pig is handled in PlayViewController?
+- Other kind of blocks, except for straw one will never be destroyed?
+- How will you support multiple kind of breaths?
+- After saving a level, the level should appear in Play mode as well. I don't
+want to have to go to level design and select level.
+Instead you could have had the health of each objects handled in the GameObjects.
+Objects lose health upon collisions.
+
+I think you put too much logic on PlayViewController. When you add more features
+you definitely need to have them handled by different kind of objects, otherwise
+PlayViewController will be very complicated.
+
+You traded the complexity of the games (while still barely fulfil requirements)
+with the better UI. If you added a few things I mentioned above, the game would
+be more complicated and require changes in code design.
+
+However, it is fine if you're aware of the trade-off you're making here.
+
+Truth to be told, your submission is very welldone.
+Very nice UI & animation =) You even had sound! I like it.

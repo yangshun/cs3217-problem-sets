@@ -82,6 +82,13 @@ I implemented a new subclass of PhysicsShape called PhysicsCircle. Next, I refer
 
 Also, I modified the loop in the Physics Engine which checks for overlapping. If one of the objects is a circle, the circle-rectangle overlapping algorithm will be used instead of the usual rectangle-rectangle algorithm.
 
+// TA: your design still doesn't show that adding more objects can be done easily.
+// You still need to change PhysicsWorld to handle that. There's a way that you do not have to
+// change any other file, just simply add a new object type that subclass PhysicsShape and it would work
+// I will let you think about it.
+
+// TA: and you haven't handled PhysicsCircle vs PhysicsCirlce interaction
+
 c. 
 Interaction 1: Pig and Breathe
 Pig will be killed and breathe will be destroyed. 
@@ -281,6 +288,7 @@ Problem 3: Integration Testing
       - Test the effect of restitution coefficient
           - Objects bounce about longer when restitution coefficient is higher.
       
+      // TA: test collisions between Circle, Rectangle should be rescribed separately
 
 2. Glass box testing (depends on the actual code)
 

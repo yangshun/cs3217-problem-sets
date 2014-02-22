@@ -58,6 +58,9 @@
 
 - (void)viewDidLoad {
   
+    // TA: viewDidLoad is too long. I think it's possible to break it down
+    // to smaller functions.
+    
   [super viewDidLoad];
   // Do any additional setup after loading the view from its nib.
   
@@ -133,7 +136,7 @@
                                                        andWidth:groundWidth
                                                       andHeight:groundHeight
                                                         andMass:INFINITY
-                                                  andRotation:0 
+                                                    andRotation:0 
                                                     andFriction:5
                                                  andRestitution:0
                                                         andView:nil];
@@ -286,6 +289,8 @@
   windSuck = [[UIImageView alloc] initWithImage: [windSuckSprite objectAtIndex:0]];
   windSuck.animationImages = windSuckSprite;
   
+    // TA: no magic string!
+    // -2pts
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(handleObjectObjectCollisions:) 
                                                name:@"ObjectObjectCollision"
@@ -358,6 +363,10 @@
   // MODIFIES: state of objects in the view
   // REQUIRES: objects in the physics world to have collided
   // EFFECTS: takes the necessary actions for collision of certain objects
+    
+    // TA: should the logic of collisions be handled by GameObjects itself?
+    // similar to how each PhysicsShape handle collisions with other kind of objects.
+    
   NSArray *objectIndices = [notification object];
   int index1 = [[objectIndices objectAtIndex:0] intValue];
   int index2 = [[objectIndices objectAtIndex:1] intValue];
