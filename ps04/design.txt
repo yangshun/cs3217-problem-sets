@@ -10,6 +10,13 @@ There are two kinds of rectangles here, physics rectangles and view rectangles.
 Physics rectangles contain the various physical attributes of the rectangle, such as mass, angular velocity, linear velocity, position, time step, moment of inertia and the various coefficients.
 View rectangles are UIView objects that appear on the user interface, they contain the position and the colour of the rectangle.
  
+ // People usually uses a table (like in CS2103 teaches you) to hold an object's properties, not
+ // using bubbles like you used.
+ 
+ // You should have a general PhysicsObject (has properties such as mass, restitution, etc.)
+ // PhysicsRectangle, PhysicsCircle, etc. will subclass PhysicsObject.
+ // -2pts.
+ 
 b. Draw a module-dependency diagram (MDD) and describe what each module is used for. Ex- plain the rationale for your design over alternatives.
 
 The main view contains an array of view rectangles. The physics engine has a physics world object and in the world object there are many physics rectangles. When the timer starts, the world object repeatedly updates the state of the physics rectangles according to the gravity, external forces, external torques and collision between the rectangles. The physics engine then updates the main view controller which subsequently changes the state of the view rectangles.
@@ -18,6 +25,16 @@ I chose this design as it conforms to apple's MVC pattern where the model and vi
 
 For more complex shapes, I will approximate the shape to be made up of smaller rectangles that form that complex shape. These rectangles will be bounded to each other, such that the when one of the rectangles experience a collision and moves, the others will follow suit. However, the mass that is used in the calculation will be the combined mass of the rectangles that make up the shape. A less accurate alternative will be to approximate a rectangular bounding box for the shape and apply the existing algorithm.
 
+// TA: I would not encourage you to use this method.
+// How will you accomodate a Circle object?
+// Do you think it will works correctly with polygon? Will your object be considered multiple
+// times, each time corresponding to a rectangle that make up the object?
+// -3pts.
+
+// Actually, when adding new objects, the only thing you need to change is finding contact points
+// between different shapes. You can find collisions of rectangles, polygons, or circle using geometry
+// After having found the contact points between shapes, you can apply the same method described 
+// in the appendix.
 
 Problem 3: Testing
 
@@ -91,3 +108,6 @@ a. Around 30 hours. A lot of time is spent debugging the appendix formulas. I ch
 b. It would be good to discuss with each other as many of us faced the same bugs. Discuss and learn from each other mistakes (:
 
 c. I think equation 51 and 52 should be better phrased. Many of us thought that it was multiplication. Perhaps should differentiation between multiplication and crossing.
+
+// TA:
+// Thanks! There is a note at the beginning of the appendix that talks about the difference of multiplication and crossing. However, we should mention it again near the equation 51 & 52.
