@@ -46,6 +46,7 @@
 
 - (UIImageView*)pigImageView:(CGRect)frame {
   // returns an UIImageView of this GameObject subclass at the specified position
+  // TA: No magic string.
   UIImage *pigImage = [UIImage imageNamed:@"pig.png"];
   UIImageView *gamePigImageView = [[UIImageView alloc]initWithImage:pigImage];
   gamePigImageView.frame = frame;
@@ -54,6 +55,7 @@
 
 - (CGRect)frameInGameArea:(CGPoint)point {
   return CGRectMake(point.x - 15, point.y + 10, 88, 88);
+  // Prof: magic numbers here. 
 }
 
 @end

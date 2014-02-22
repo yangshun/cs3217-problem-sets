@@ -67,6 +67,8 @@
   // EFFECTS: rotate a GameObject view by a specified angle
   self.view.transform = CGAffineTransformRotate(self.view.transform, rotation);
   return;
+  // Prof: redundant return here. You only use return if you want to terminate execution in
+  // the middle of a block. 
 }
 
 - (void)translate:(UIPanGestureRecognizer *)gesture {
@@ -95,9 +97,9 @@
   }
   
   center.x += diffx;
-	center.y += diffy;
+  center.y += diffy;
   
-	self.view.center = center;
+  self.view.center = center;
   
   prevPanPoint = curr;
   
@@ -125,7 +127,12 @@
   // MODIFIES: self (game object)
   // REQUIRES: a rotation gesture to be recognized
   // EFFECTS: rotate a GameObject view by the specified finger positions
-   
+  // does not modify GameWolf and GamePig
+  if ([self isKindOfClass: [GameWolf class]] || 
+      [self isKindOfClass: [GamePig class]]) {
+    return;
+  }
+  
   if (gesture.state == UIGestureRecognizerStateBegan) {
     prevRotation = 0.0;
   } 
@@ -140,9 +147,20 @@
   // MODIFIES: self (game object)
   // REQUIRES: a pinch gesture to be recognized
   // EFFECTS: resizes a GameObject view by the specified finger positions
-
-	if (gesture.state == UIGestureRecognizerStateBegan) {
-		prevPinchScale = 1.0;
+  // TA: WHY NOT? It's a part of the requirement.
+  // does not modify GameWolf and GamePig
+  // Besides, GameObject shouldn't know about its subclasses. It shouldn't care.
+  // if you intended to do this, you should override the method in the subclass.
+  if ([self isKindOfClass: [GameWolf class]] || 
+      [self isKindOfClass: [GamePig class]]) {
+    return;
+  }
+  
+  // Prof: this implementation is wrong. If you want to disable zoom for wolf and pig, you should
+  // override zoom in Wolf and pig instead. You shouldn't be hacking GameObject. :-( 
+  
+  if (gesture.state == UIGestureRecognizerStateBegan) {
+    prevPinchScale = 1.0;
   }
   
   float thisScale = 1 + (gesture.scale - prevPinchScale);
