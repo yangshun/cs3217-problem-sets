@@ -19,6 +19,8 @@
 -(id)initWithCoeff:(RatNum*)c Exp:(int)e {
   // REQUIRES: (c, e) is a valid RatTerm
   // EFFECTS: returns a RatTerm with coefficient c and exponent e
+  // TA: should call [self init] and check nil
+  // -2pts.
     
   RatNum *ZERO = [RatNum initZERO];
   // if coefficient is 0, exponent must also be 0
@@ -91,6 +93,9 @@
   //            throws NSException if (self.expt != arg.expt) and neither argument is zero or NaN.
   RatTerm* new_RatTerm;
   
+  // TA: You should use newRatTerm. Don't mix _ (C style) with camelCase. (Java style).
+  // It's better to use the camelCase style.
+  // -1pt
   if ([self isNaN] || [arg isNaN]) {
     new_RatTerm = [RatTerm initNaN];
   } else if ((self.expt != arg.expt) && ![self isZero] && ![arg isZero]) {
@@ -116,6 +121,8 @@
   //            throws NSException if (self.expt != arg.expt) and neither argument is zero or NaN.
   RatTerm* new_RatTerm;
   
+  // TA: use [self add:[arg negate]]
+  // -2pts.
   if ([self isNaN] || [arg isNaN]) {
     new_RatTerm = [RatTerm initNaN];
   } else if((self.expt != arg.expt) && ![self isZero] && ![arg isZero])
@@ -221,6 +228,7 @@
     NSArray* parts = [str componentsSeparatedByString:@"*"];
     
     if ([parts count] == 1) {
+      // TA: Good comments. But you could have indented the cases better.
       //An NSArray of size 1 is returned as there is no "*" in str. Possible cases:
       //(i) Integer. Eg: 1, 2, -3
       //(ii) Rational number. Eg: 1/2, -1/3

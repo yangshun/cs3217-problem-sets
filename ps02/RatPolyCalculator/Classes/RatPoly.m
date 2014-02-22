@@ -10,6 +10,7 @@
   // EFFECTS: returns the degree of this RatPoly object.
   int maxExpt = 0;
   
+  // TA: Add space after 'if' and before 'count'
   if([[self terms]count] == 0) {
     maxExpt = 0;
   } else {
@@ -26,6 +27,7 @@
   // forall i such that (0 <= i < length(p)), C(p,i) != 0 &&
   // forall i such that (0 <= i < length(p)), E(p,i) >= 0 &&
   // forall i such that (0 <= i < length(p) - 1), E(p,i) > E(p, i+1)
+  // // TA: No need the lines above. Comments should explain the logic only
   // In other words:
   // * The terms field always points to some usable object.
   // * No term in a RatPoly has a zero coefficient.
@@ -34,15 +36,24 @@
   // (It is implied that 'terms' does not contain any null elements by the
   // above
   // invariant.)	
+  //
+  // TA: Always Use
+  // if (..) {
+  //    ..
+  // } else {
+  //    ..
+  // }
   if (terms == nil)
     [NSException raise:@"ratpoly representation error" 
                 format:@"terms pointing to nil"];
   if ([self isNaN])
     return;
+  // TA: Add space before <
   for (int i = 0; i< [terms count]; i++) {
     RatTerm* curr = [terms objectAtIndex:i];
     // checkRep for RatTerm
     if ([curr coeff] == nil) {
+      // TA: ratpoly should be RatPoly
       [NSException raise:@"ratpoly representation error" 
                   format:@"a term has a coefficient that is nil"];
     }
@@ -80,6 +91,7 @@
   // EFFECTS: constructs a polynomial with zero terms, which is effectively the zero polynomial
   //           remember to call checkRep to check for representation invariant
   self = [super init];
+  // TA: check nil.
   terms = [[NSArray alloc]init];
   [self checkRep];
   return self;
@@ -91,6 +103,7 @@
   //             a zero polynomial remember to call checkRep to check for representation invariant
   self = [super init];
   
+  // TA: Space before 'init'
   if ([rt isZero]) {
     terms = [[NSArray alloc]init];
   } else {
@@ -117,6 +130,8 @@
   // REQUIRES: self != nil && ![self isNaN]
   // EFFECTS: returns the term associated with degree "deg". If no such term exists, return
   //            the zero RatTerm
+  //  TA: add space after 'for' and 'if', before 'expt', before and after <
+  //  -1pts.
   for(int i = 0; i<[terms count]; i++) {
     if([[terms objectAtIndex:i]expt] == deg) {
       return [terms objectAtIndex:i];
@@ -130,6 +145,7 @@
   // REQUIRES: self != nil
   // EFFECTS: returns YES if this RatPoly is NaN
   //             i.e. returns YES if and only if some coefficient = "NaN".
+  // TA: adding space properly pls.
   for (int i = 0; i < [terms count]; i++) {
     if ([[[terms objectAtIndex:i]coeff]isNaN]) {
       return YES;
@@ -186,6 +202,9 @@
     NSMutableArray* combinedTerms = [[NSMutableArray alloc]initWithCapacity:
                                      [[self terms]count]+[[p terms]count]];
     int selfIter = 0, pIter = 0;
+    // TA: Instead of maintaining a counter, you could maintain two RatTerm.
+    // You repeat [self terms]objectAtIndex:selfIter] too many times.
+    // -2pts.
         
     // Repeatedly add RatTerm objects into the array based on exponent value
     while (selfIter != [[self terms]count] && pIter != [[p terms] count]) { 
@@ -301,6 +320,10 @@
   //     subtract s from existing u using polynomial subtraction algorithm
   //   set r = u
   // }
+  //
+  // TA: It's rather hard to read the code. Adding more spaces please
+  // Actually divisor and dividend are not good names. They looks too similar.
+  // -2pts.
   RatPoly* divisor = [p copyObject];
   RatPoly* dividend = [self copyObject];
   if ([dividend isNaN] || [divisor isNaN] || [[p terms] count] == 0) {
@@ -310,10 +333,14 @@
   } else {
     NSMutableArray* quotientTerms = [[NSMutableArray alloc]initWithCapacity:
                                      [[dividend terms]count]];
+    // TA: should use [divident isZero] instead of [[divident] terms] count]
+    // Shoul use getTerm instead of accessing [divident terms]
+    // -1pt.
     while ([dividend degree] >= [divisor degree] && 
            [[dividend terms]count] != 0 && divisor != nil) {
       RatTerm* quotientTerm = (RatTerm*)[[[dividend terms]objectAtIndex:0] div:
                                   [[divisor terms]objectAtIndex:0]];
+      // TA: Should remove log in the final version. (Or consider using debugging flag)
       NSLog(@"%@", [quotientTerm stringValue]);
       [quotientTerms addObject:quotientTerm];
       RatPoly* s = [[[RatPoly alloc]initWithTerm: quotientTerm] mul:divisor];
@@ -390,6 +417,8 @@
     }
   }
     
+  // TA: Should return a NSString from the NSMutableString, instead of returning
+  // the actual NSMutableString
   return polyString;
 }
 
@@ -499,6 +528,7 @@
  set q = empty and r = empty
  if degree(u) < degree(v)
    q = empty and r = v
+// TA: q = 0
  else {
    while (degree(u) >= degree(v)) {
     set RatTerm qTerm to be the quotient of T(q,0) and T(v,0)
@@ -571,6 +601,9 @@
  1. checkRep
     - More complex in terms of clarity and execution efficiency.
     - Have to enforce the new requirement
+
+  // TA: Need to change initWithCoeff to handle the case where coeff is NaN
+  // but expt is not 0
  
  Question 3(d)
  ========
@@ -589,7 +622,10 @@
  Day 5 - Creating unit test cases + debugging
  
  In total I think I spent around 20 over hours. I worked on this problem set every single day and I find that debugging takes longer than the coding itself.
- 
+
+ // TA: good practice to work on it everyday!
+ // Prof: Right. Debugging always takes up the most time, which is why you need to be thinking hard
+ // about the problem and design before you start. More thinking. Less coding -- or debugging will kill you. 
  
  (b) In retrospect, what could you have done better to reduce the time you spent solving this problem set?
  
@@ -606,5 +642,6 @@
  This problem set is extremely well set. I'm glad that the ambiguity is reduced as compared to problem set 1. It was a good thing to provide us with the implementation of RatNum, which kickstart-ed us in doing RatTerm followed by RatPoly. From this problem set, I see for myself how code is built up from small classes to bigger ones which consist of many smaller classes.
  
  All in all, I enjoyed this problem set. It is challenging and very rewarding.
+ // Prof: Good. :-)
  
  */
