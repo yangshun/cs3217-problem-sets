@@ -586,7 +586,7 @@
 			name = "Huff & PuffTests";
 			productName = GameTests;
 			productReference = 6DA8FE1A14C5FA16009BD349 /* Huff & PuffTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -596,6 +596,11 @@
 			attributes = {
 				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = "National University of Singapore";
+				TargetAttributes = {
+					6DA8FE1914C5FA16009BD349 = {
+						TestTargetID = 6DA8FDF514C5FA16009BD349;
+					};
+				};
 			};
 			buildConfigurationList = 6DA8FDF014C5FA16009BD349 /* Build configuration list for PBXProject "Huff & Puff" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -882,16 +887,16 @@
 		6DA8FE3014C5FA17009BD349 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Game.app/Game";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Game/Game-Prefix.pch";
+				GCC_PREFIX_HEADER = "Game/Huff & Puff-Prefix.pch";
 				INFOPLIST_FILE = "GameTests/Huff & PuffTests-Info.plist";
 				PRODUCT_NAME = "Huff & PuffTests";
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Huff & Puff.app/Huff & Puff";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -899,16 +904,16 @@
 		6DA8FE3114C5FA17009BD349 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Game.app/Game";
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Game/Game-Prefix.pch";
+				GCC_PREFIX_HEADER = "Game/Huff & Puff-Prefix.pch";
 				INFOPLIST_FILE = "GameTests/Huff & PuffTests-Info.plist";
 				PRODUCT_NAME = "Huff & PuffTests";
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Huff & Puff.app/Huff & Puff";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
